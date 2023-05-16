@@ -10,6 +10,3 @@ def _patch_openai():
     openai.Completion.create = wrap_class_method(openai.Completion, openai.Completion.create)
     print("Patched create")
     setattr(openai, "__promptly_patch", True)
-
-def init(api_key):
-    _patch_openai()
