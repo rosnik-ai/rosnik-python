@@ -1,4 +1,4 @@
-from utils import wrap_class_method
+from promptly.utils import wrap_class_method
 
 def _patch_openai():
     import openai
