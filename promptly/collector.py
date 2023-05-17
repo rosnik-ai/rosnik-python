@@ -6,6 +6,7 @@ import queue
 event_queue = queue.Queue()
 
 # TODO: support batching
+# should probably be by kb size
 MAX_BATCH_SIZE = 1
 
 

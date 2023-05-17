@@ -3,6 +3,7 @@ import sys
 
 from promptly import collector
 
+
 def get_stack_frames(num, useGetFrame=True):
     """
     https://gist.github.com/csm10495/39dde7add5f1b1e73c4e8299f5df1116
