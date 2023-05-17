@@ -1,29 +1,31 @@
 import inspect
 import sys
 
+
 def getStackFrame(num, useGetFrame=True):
-    '''
+    """
     https://gist.github.com/csm10495/39dde7add5f1b1e73c4e8299f5df1116
     Brief:
         Gets a stack frame with the passed in num on the stack.
             If useGetFrame, uses sys._getframe (implementation detail of Cython)
                 Otherwise or if sys._getframe is missing, uses inspect.stack() (which is really slow).
-    '''
+    """
     # Not all versions of python have the sys._getframe() method.
     # All should have inspect, though it is really slow
-    if useGetFrame and hasattr(sys, '_getframe'):
+    if useGetFrame and hasattr(sys, "_getframe"):
         print("using get frame")
         frame = sys._getframe(0)
         frames = [frame]
 
         while frame.f_back is not None and len(frames) <= num:
-                frames.append(frame.f_back)
-                frame = frame.f_back
+            frames.append(frame.f_back)
+            frame = frame.f_back
 
         return frames
     else:
         print("using inspect")
         return inspect.stack()[:num]
+
 
 def getThisStackFrame(useGetFrame=True):
     """
@@ -62,7 +64,7 @@ def wrap_class_method(cls, wrapped_func):
         # Do something after the method is called
         print("After calling the method")
 
-        # Return the result 
+        # Return the result
         return result
 
     # Return the wrapped function as a class method
