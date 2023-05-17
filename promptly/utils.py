@@ -55,10 +55,10 @@ def wrap_class_method(cls, wrapped_func):
         # Disable context so it's a bit faster
         # inspect.stack is slow. Replace with: https://gist.github.com/csm10495/39dde7add5f1b1e73c4e8299f5df1116
         # outer_frames = inspect.stack(context=0)
-        outer_frames = getStackFrame(5)
+        limited_frames = getStackFrame(5)
         # Get the first 5~ frames for fingerprinting
         # limited_frames = outer_frames[:5]
-        calling_functions = [outer_frame.function for outer_frame in limited_frames]
+        calling_functions = [frame.f_code.co_name for frame in limited_frames]
         print(calling_functions)
 
         # Do something after the method is called
