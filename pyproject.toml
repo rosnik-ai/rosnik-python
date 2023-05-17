@@ -8,7 +8,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 # Target 3.8+ since that's receiving patches through 2025
-python = ">=3.8"
+# Don't support 4 yet.
+python = ">=3.8,<4"
+openai = {version = "^0.27.6", optional = true}
 
 [tool.poetry.group.static.dependencies]
 bandit = "^1.7"
@@ -16,11 +18,13 @@ safety = "^2.3"
 black = "^23.3.0"
 mypy = "^0.730.0"
 ruff = "^0.0.267"
+poetry-dotenv-plugin = "^0.1.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^5.0"
 pytest-cov = "^2.7"
 pytest-mock = "^1.10"
+pytest-recording = "^0.12.2"
 
 [tool.poetry.extras]
 openai = ["openai"]
