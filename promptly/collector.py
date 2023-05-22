@@ -26,6 +26,7 @@ def capture_data(
     end_time: int,
     metadata: PromptHqMetadata,
 ):
+    print("Event enqueued:", payload, function_fingerprint, metadata)
     event_queue.put(
         {
             "request": payload,
@@ -43,7 +44,9 @@ def process_events(api_key=None):
     api_client = api.PromptHqHttpClient(api_key=api_key)
     while True:
         # Wait for events to be available in the queue
+        print("Waiting for event")
         event = event_queue.get()
+        print("Event got")
         api_client.send_event(event)
 
         # TODO: implement batching server-side

@@ -27,6 +27,7 @@ class PromptHqHttpClient:
         platform = event["_prompthq_metadata"]["platform"]
         action = event["_prompthq_metadata"]["action"]
         url = f"{_base_url}/{platform}/{action}"
+        print(f"Sending event to {url}")
         try:
             response = self.session.post(url, headers=self.headers, json=event)
             response.raise_for_status()

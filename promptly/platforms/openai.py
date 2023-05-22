@@ -29,6 +29,7 @@ def _patch_openai(openai=None):
 
     print("Patching create")
     _patch_completion(openai)
+    _patch_chat_completion(openai)
     print("Patched create")
     setattr(openai, "__promptly_patch", True)
 
