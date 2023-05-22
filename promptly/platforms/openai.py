@@ -1,20 +1,21 @@
-import typing
-
 from promptly.utils import wrap_class_method
-
+from promptly.types import PromptHqMetadata
 
 from openai.openai_object import OpenAIObject
 
+_OAI = "openai"
+completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "completion"}
+chat_completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "chatcompletion"}
 
 def _patch_completion(openai):
     openai.Completion.create = wrap_class_method(
-        openai.Completion, openai.Completion.create, "/v1/ingest/openai/completion"
+        openai.Completion, openai.Completion.create, completion_metadata
     )
 
 
 def _patch_chat_completion(openai):
     openai.ChatCompletion.create = wrap_class_method(
-        openai.ChatCompletion, openai.ChatCompletion.create, "/v1/ingest/openai/chatcompletion"
+        openai.ChatCompletion, openai.ChatCompletion.create, chat_completion_metadata
     )
 
 

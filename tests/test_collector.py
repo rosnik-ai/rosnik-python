@@ -5,6 +5,7 @@ import time
 import pytest
 
 from promptly import collector
+from promptly.types import PromptHqMetadata
 
 
 @pytest.fixture
@@ -14,8 +15,8 @@ def event_queue():
     while collector.event_queue.qsize() > 0:
         collector.event_queue.get(block=False)
 
-
-def test_capture_data(event_queue):
+@pytest.fixture
+def added_fake_event():
     payload = {
         "model": "text-davinci-003",
         "prompt": "Suggest three names for an animal that is a superhero.\n\nAnimal: Cat\nNames: Captain Sharpclaw, Agent Fluffball, The Incredible Feline\nAnimal: Dog\nNames: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot\nAnimal: Mixed mini poodle\nNames:",
@@ -46,9 +47,12 @@ def test_capture_data(event_queue):
     ]
     start_time = time.time()
     end_time = time.time() + 100
-    endpoint = "/v1/ingest/openai/completion"
-    collector.capture_data(payload, response, function_fingerprint, start_time, end_time, endpoint)
-    
+    completion_metadata: PromptHqMetadata = {"platform": "openai", "action": "completion"}
+    collector.capture_data(payload, response, function_fingerprint, start_time, end_time, completion_metadata)
+    return (payload, response, function_fingerprint, start_time, end_time, completion_metadata)
+
+def test_capture_data(event_queue, added_fake_event):
+    (payload, response, function_fingerprint, start_time, end_time, completion_metadata) = added_fake_event
     assert event_queue.qsize() == 1
     event = event_queue.get()
     assert event["request"] == payload
@@ -56,4 +60,7 @@ def test_capture_data(event_queue):
     assert event["function_fingerprint"] == function_fingerprint
     assert event["start_time"] == start_time
     assert event["end_time"] == end_time
-    assert event["_endpoint"] == endpoint
+    assert event["_prompthq_metadata"] == completion_metadata
+
+def test_send_event(event_queue, added_fake_event):
+    collector.send_event(added_fake_event)

@@ -1,8 +1,10 @@
 import json
 import threading
+import typing
 import queue
 
 from promptly.platforms import openai as promptly_openai
+from promptly.types import PromptHqMetadata
 
 # Define the buffer as a thread-safe queue
 event_queue = queue.Queue()
@@ -15,15 +17,15 @@ _SERIALIZERS = {"openai": promptly_openai.serialize_result}
 
 
 # Function for capturing data and adding it to the buffer
-def capture_data(payload, result, function_fingerprint, start_time, end_time, endpoint):
+def capture_data(payload: dict, response: dict, function_fingerprint: typing.List[str], start_time: int, end_time: int, metadata: PromptHqMetadata):
     event_queue.put(
         {
             "request": payload,
-            "response": result,
+            "response": response,
             "function_fingerprint": function_fingerprint,
             "start_time": start_time,
             "end_time": end_time,
-            "_endpoint": endpoint,
+            "_prompthq_metadata": metadata
         }
     )
 
