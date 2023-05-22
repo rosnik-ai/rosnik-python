@@ -1,5 +1,6 @@
 import inspect
 import sys
+import time
 
 from promptly import collector
 
@@ -28,19 +29,23 @@ def get_stack_frames(num, useGetFrame=True):
 
 
 # Define a wrapper function that takes a custom function as an argument
-def wrap_class_method(cls, wrapped_func):
+def wrap_class_method(cls, wrapped_func, prompthq_metadata):
     def wrapper(*args, **kwargs):
         # Do something before the method is called
         print("Before calling the method")
 
         # Call the custom function
         print("Prep for ingest request:", kwargs)
+        start_time = time.time()
         result = wrapped_func(*args, **kwargs)
+        end_time = time.time()
         print("Send to ingest response:", result)
 
         limited_frames = get_stack_frames(5)
         calling_functions = [frame.f_code.co_name for frame in limited_frames]
-        collector.capture_data(kwargs, result, calling_functions)
+        collector.capture_data(
+            kwargs, result, calling_functions, start_time, end_time, prompthq_metadata
+        )
 
         # Do something after the method is called
         print("After calling the method")
