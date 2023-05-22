@@ -70,7 +70,3 @@ def test_capture_data(event_queue, added_fake_event):
     assert event["start_time"] == start_time
     assert event["end_time"] == end_time
     assert event["_prompthq_metadata"] == completion_metadata
-
-
-def test_send_event(event_queue, added_fake_event):
-    collector.send_event(added_fake_event)

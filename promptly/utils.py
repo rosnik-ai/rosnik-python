@@ -3,9 +3,9 @@ import logging
 import sys
 import time
 
-logger = logging.getLogger(__name__)
-
 from promptly import collector
+
+logger = logging.getLogger(__name__)
 
 
 def get_stack_frames(num, useGetFrame=True):

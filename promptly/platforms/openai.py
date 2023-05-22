@@ -13,9 +13,7 @@ chat_completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "chatc
 
 
 def _patch_completion(openai):
-    openai.Completion.create = wrap_class_method(
-        openai.Completion.create, completion_metadata
-    )
+    openai.Completion.create = wrap_class_method(openai.Completion.create, completion_metadata)
 
 
 def _patch_chat_completion(openai):

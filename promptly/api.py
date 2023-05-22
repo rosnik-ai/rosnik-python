@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 # TODO: use the prompthq.ai domain
 _base_url = "https://ingest-naqivjfzva-uc.a.run.app/api/v1/ingest"
 
+
 # TODO: add env, lang.
 class PromptHqHttpClient:
     def __init__(self, api_key=None):
