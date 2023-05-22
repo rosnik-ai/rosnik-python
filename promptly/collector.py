@@ -32,7 +32,6 @@ def capture_data(payload: dict, response: dict, function_fingerprint: typing.Lis
 
 def process_events():
     print("Running event processor in thread:", threading.get_ident())
-    batch = []
     while True:
         # Wait for events to be available in the queue
         event = event_queue.get()

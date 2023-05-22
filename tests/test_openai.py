@@ -37,7 +37,7 @@ def openai():
 @pytest.mark.vcr
 def test_completion(openai):
     promptly_openai._patch_completion(openai)
-    result = openai.Completion.create(
+    openai.Completion.create(
         model="text-davinci-003",
         prompt=generate_prompt("Mixed mini poodle"),
         temperature=0.6,
@@ -49,7 +49,7 @@ def test_chat_completion(openai):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
     promptly_openai._patch_chat_completion(openai)
-    result = openai.ChatCompletion.create(
+    openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": system_prompt},
