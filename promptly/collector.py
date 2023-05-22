@@ -3,6 +3,7 @@ import threading
 import typing
 import queue
 
+from promptly import api
 from promptly.platforms import openai as promptly_openai
 from promptly.types import PromptHqMetadata
 
@@ -37,12 +38,13 @@ def capture_data(
     )
 
 
-def process_events():
+def process_events(api_key=None):
     print("Running event processor in thread:", threading.get_ident())
+    api_client = api.PromptHqHttpClient(api_key=api_key)
     while True:
         # Wait for events to be available in the queue
         event = event_queue.get()
-        send_event(event)
+        api_client.send_event(event)
 
         # TODO: implement batching server-side
         # Add the event to the batch

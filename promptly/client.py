@@ -10,11 +10,13 @@ except ImportError:
     print("Skipping openai instrumentation.")
 
 
-def init(api_key):
+def init(api_key=None):
     if openai_enabled:
         promptly_openai._patch_openai()
 
     # Start the background thread
-    thread = threading.Thread(target=collector.process_events, daemon=True)
+    thread = threading.Thread(
+        target=collector.process_events, kwargs={"api_key": api_key}, daemon=True
+    )
     # TODO: handle shutdowns safely
     thread.start()
