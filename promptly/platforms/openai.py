@@ -1,7 +1,11 @@
+import logging
+
 from promptly.utils import wrap_class_method
 from promptly.types import PromptHqMetadata
 
 from openai.openai_object import OpenAIObject
+
+logger = logging.getLogger(__name__)
 
 _OAI = "openai"
 completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "completion"}
@@ -15,7 +19,6 @@ def _patch_completion(openai):
 
 
 def _patch_chat_completion(openai):
-    print("Patch chat completion")
     openai.ChatCompletion.create = wrap_class_method(
         openai.ChatCompletion.create, chat_completion_metadata
     )
@@ -26,13 +29,11 @@ def _patch_openai(openai=None):
         import openai
 
     if getattr(openai, "__promptly_patch", False):
-        print("Not patching. Already patched.")
+        logger.debug("Not patching. Already patched.")
         return
 
-    print("Patching create")
     _patch_completion(openai)
     _patch_chat_completion(openai)
-    print("Patched create")
     setattr(openai, "__promptly_patch", True)
 
 
