@@ -7,6 +7,7 @@ _OAI = "openai"
 completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "completion"}
 chat_completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "chatcompletion"}
 
+
 def _patch_completion(openai):
     openai.Completion.create = wrap_class_method(
         openai.Completion, openai.Completion.create, completion_metadata

@@ -4,7 +4,6 @@ from promptly import collector
 openai_enabled = False
 
 try:
-
     openai_enabled = True
     from promptly.platforms import openai as promptly_openai
 except ImportError:

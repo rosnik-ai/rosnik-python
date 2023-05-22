@@ -13,6 +13,7 @@ def event_queue():
     while collector.event_queue.qsize() > 0:
         collector.event_queue.get(block=False)
 
+
 @pytest.fixture
 def added_fake_event():
     payload = {
@@ -46,11 +47,21 @@ def added_fake_event():
     start_time = time.time()
     end_time = time.time() + 100
     completion_metadata: PromptHqMetadata = {"platform": "openai", "action": "completion"}
-    collector.capture_data(payload, response, function_fingerprint, start_time, end_time, completion_metadata)
+    collector.capture_data(
+        payload, response, function_fingerprint, start_time, end_time, completion_metadata
+    )
     return (payload, response, function_fingerprint, start_time, end_time, completion_metadata)
 
+
 def test_capture_data(event_queue, added_fake_event):
-    (payload, response, function_fingerprint, start_time, end_time, completion_metadata) = added_fake_event
+    (
+        payload,
+        response,
+        function_fingerprint,
+        start_time,
+        end_time,
+        completion_metadata,
+    ) = added_fake_event
     assert event_queue.qsize() == 1
     event = event_queue.get()
     assert event["request"] == payload
@@ -59,6 +70,7 @@ def test_capture_data(event_queue, added_fake_event):
     assert event["start_time"] == start_time
     assert event["end_time"] == end_time
     assert event["_prompthq_metadata"] == completion_metadata
+
 
 def test_send_event(event_queue, added_fake_event):
     collector.send_event(added_fake_event)

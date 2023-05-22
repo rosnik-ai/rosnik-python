@@ -6,12 +6,8 @@ from promptly import collector
 
 
 def get_stack_frames(num, useGetFrame=True):
-    """
+    """Quickly get stack frames via:
     https://gist.github.com/csm10495/39dde7add5f1b1e73c4e8299f5df1116
-    Brief:
-        Gets a stack frame with the passed in num on the stack.
-            If useGetFrame, uses sys._getframe (implementation detail of Cython)
-                Otherwise or if sys._getframe is missing, uses inspect.stack() (which is really slow).
     """
     # Not all versions of python have the sys._getframe() method.
     # All should have inspect, though it is really slow

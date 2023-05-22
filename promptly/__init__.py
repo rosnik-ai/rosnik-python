@@ -1,1 +1,2 @@
-from .client import *
+from .client import init
+__all__ = ["init"]

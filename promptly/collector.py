@@ -17,7 +17,14 @@ _SERIALIZERS = {"openai": promptly_openai.serialize_result}
 
 
 # Function for capturing data and adding it to the buffer
-def capture_data(payload: dict, response: dict, function_fingerprint: typing.List[str], start_time: int, end_time: int, metadata: PromptHqMetadata):
+def capture_data(
+    payload: dict,
+    response: dict,
+    function_fingerprint: typing.List[str],
+    start_time: int,
+    end_time: int,
+    metadata: PromptHqMetadata,
+):
     event_queue.put(
         {
             "request": payload,
@@ -25,7 +32,7 @@ def capture_data(payload: dict, response: dict, function_fingerprint: typing.Lis
             "function_fingerprint": function_fingerprint,
             "start_time": start_time,
             "end_time": end_time,
-            "_prompthq_metadata": metadata
+            "_prompthq_metadata": metadata,
         }
     )
 
