@@ -9,8 +9,8 @@ class PromptHqMetadata(TypedDict):
 
 
 class PromptHqEvent(TypedDict):
-    request: dict[str]
-    response: dict[str]
+    request: dict
+    response: dict
     function_fingerprint: List[str]
     start_time: int
     end_time: int
