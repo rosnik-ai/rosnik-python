@@ -25,19 +25,21 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0SQT4/TQAzFv4rl87TqtoFCblCEBAfgwIE/h5UzcRLTyTid8WwVVfvdUdqynGw9
-        +T39ni8oLdboBzI/TmG1/3SqDj99+vxLtu+/ffyxb74et4cv24cPp+LRoTZ/2NvdsfY6ToFNNKJD
-        n5iMW6wfXr+p9tuq2lQOR205YI39ZKvd+tXKSmp0tdltHtBhydQz1hecko6TPZoeOWast5XD/9Ev
-        8n7n0NQovChv988O/aDiOWP9+4Ij53+ZSQNjjZSzZKNoC6FG47jQv4NWe5AMBJ2WtArc99xCqyNn
-        E7/0gJHGkQLYQAYNB419BlOwgeFAUVpi6GiUMK/h+8AzUGIIOlOAhZ2iaLwahjJSzECxvZ4co54j
-        dJqWJElAjQSxebmckj5Jy4u/02QOMvuSxGZ3c9+reAaJ8ERJtGQ405wdSPShtBJ76Iss08FQot0W
-        TjdlCclMyQ/XNXH2ha/0ia9sI8UZWuk6ThwNmsTcZtBu+VZ2wOQHOIsNd/SlSIlyKgx+oETeOMny
-        v1tbSySW1/jssJMoeXhMTFkj1phNJ3R/pZSZl5JaoWRlUBtbywUAAAD//wMAnU1vbooCAAA=
+        H4sIAAAAAAAAA0SQUWsUQRCE/0rTL77sHdnkTM59CwoaEEEUNFGQ3pm+mTEz3ctM78Ul+N9lzxjf
+        moKq+roeMXkc0EUyV6a8ubo5fngf7i5vr/v54+Hrpy+3+7dxOuNf5zfvCDvU8Sc7e3JsnZYpsyUV
+        7NBVJmOPQ3+5313tdvu+77Co54wDhsk2F9uXG5vrqJuzi7MeO5wbBcbhEaeqZbIfpvcsDYfzXYf/
+        o5/lV7sOTY3ys9L3+98duqjJccPh2yMWbv9Cq2bGAam11IzEVkQVY1nxr8FrgNSA4KBz3WQOgT14
+        LdwsufURKFQKZRg5q4QkAUzBIsNrkuSJ4UAl5WULbzQ0oMoQU4h5gaYuUQaSVCg3sEgGkY4MI7PA
+        WNnDuECcC0mDg1Y4Uk06N5jmOmnj1kESl2e/dsZZLEnoIMxU/emK/HSsG5EklRbT1AGJh8b1mBxv
+        4XPk5QR1L/ogpxqLnCpkXSjbsnYY55wCi+O/5kNNLD4vIGRzZTB9oOrbE2oHDzG5CJEaMFVhvyaW
+        0ySS3L1QYfiOheRFg5HbH5bIYAWBGAaid78i5FwWz/stilSaaFhNJKnoLvTfpXavw2MY3tS9bzph
+        X+M0HL21OJUAYyjCTE5a/2dcnahEAs/DtiiEbATs9oQqukK1daf6FY/sN4KP+dLpkU/YErKoxP3i
+        lMMUZ4xqL0woWuiL87Gd2+EHAAD//wMAo4NX1vcCAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7cb1ce871be897c9-SJC
+      - 7cb3c0c13849cebd-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -47,7 +49,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 22 May 2023 03:00:13 GMT
+      - Mon, 22 May 2023 08:40:27 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -61,7 +63,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '8666'
+      - '15576'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -79,7 +81,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 19ms
       x-request-id:
-      - 9ac4ff9607adade2b75ba8b2518cf926
+      - 2427e7d27beb68f0c74ed966072eaf29
     status:
       code: 200
       message: OK

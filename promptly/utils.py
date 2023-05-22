@@ -25,7 +25,7 @@ def get_stack_frames(num, useGetFrame=True):
 
 
 # Define a wrapper function that takes a custom function as an argument
-def wrap_class_method(cls, wrapped_func, prompthq_metadata):
+def wrap_class_method(wrapped_func, prompthq_metadata):
     def wrapper(*args, **kwargs):
         # Do something before the method is called
         print("Before calling the method")
@@ -50,4 +50,4 @@ def wrap_class_method(cls, wrapped_func, prompthq_metadata):
         return result
 
     # Return the wrapped function as a class method
-    return classmethod(wrapper)
+    return wrapper

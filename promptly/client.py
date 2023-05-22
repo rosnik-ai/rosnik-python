@@ -12,6 +12,7 @@ except ImportError:
 
 def init(api_key=None):
     if openai_enabled:
+        print("OpenAI is enabled. Patching.")
         promptly_openai._patch_openai()
 
     # Start the background thread
