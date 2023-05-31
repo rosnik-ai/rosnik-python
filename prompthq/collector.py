@@ -3,9 +3,9 @@ import threading
 import typing
 import queue
 
-from promptly import api
-from promptly.platforms import openai as promptly_openai
-from promptly.types import PromptHqMetadata
+from prompthq import api
+from prompthq.platforms import openai as phq_openai
+from prompthq.types import PromptHqMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ event_queue = queue.Queue()
 # should probably be by kb size
 MAX_BATCH_SIZE = 1
 
-_SERIALIZERS = {"openai": promptly_openai.serialize_result}
+_SERIALIZERS = {"openai": phq_openai.serialize_result}
 
 
 # Function for capturing data and adding it to the buffer

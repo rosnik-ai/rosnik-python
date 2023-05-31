@@ -1,14 +1,14 @@
 import logging
 import os
 
-from promptly import types
+from prompthq import types
 
 import requests
 
 logger = logging.getLogger(__name__)
 
 # TODO: use the prompthq.ai domain
-_base_url = "https://ingest-naqivjfzva-uc.a.run.app/api/v1/ingest"
+_base_url = "https://ingest-xb6xg3ggrq-uc.a.run.app/api/v1/ingest"
 
 
 # TODO: add env, lang.

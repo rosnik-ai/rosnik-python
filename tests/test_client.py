@@ -2,9 +2,9 @@ import threading
 
 
 def test_init(mocker):
-    mocker.patch("promptly.platforms.openai._patch_openai")
+    mocker.patch("prompthq.platforms.openai._patch_openai")
     mocker.patch("threading.Thread")
-    import promptly
+    import prompthq
 
-    promptly.init()
+    prompthq.init()
     threading.Thread.assert_called_once()

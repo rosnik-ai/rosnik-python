@@ -1,4 +1,4 @@
-# promptly-python
+# prompthq-python
 
 ## Building
 
@@ -53,12 +53,17 @@ Sending: {
 }
 
 # This is the way
-customer.runpromptly.com/api/v1/ingest/openai/completion
+ingest.prompthq.ai/api/v1/ingest/openai/completion
 {
 "data": data,
 }
 """
 
+## Poetry Install Extras
+
+```
+poetry install --all-extras
+```
 
 ## TODO
 - [ ] Rip HTTP request headers somehow (user agent)

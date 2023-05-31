@@ -1,7 +1,7 @@
 import logging
 
-from promptly.utils import wrap_class_method
-from promptly.types import PromptHqMetadata
+from prompthq.utils import wrap_class_method
+from prompthq.types import PromptHqMetadata
 
 from openai.openai_object import OpenAIObject
 
@@ -26,13 +26,13 @@ def _patch_openai(openai=None):
     if not openai:
         import openai
 
-    if getattr(openai, "__promptly_patch", False):
+    if getattr(openai, "__prompthq_patch", False):
         logger.debug("Not patching. Already patched.")
         return
 
     _patch_completion(openai)
     _patch_chat_completion(openai)
-    setattr(openai, "__promptly_patch", True)
+    setattr(openai, "__prompthq_patch", True)
 
 
 def serialize_result(obj: OpenAIObject):

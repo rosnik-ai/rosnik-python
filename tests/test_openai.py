@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from promptly.platforms import openai as promptly_openai
+from prompthq.platforms import openai as phq_openai
 
 
 def generate_prompt(animal):
@@ -36,7 +36,7 @@ def openai():
 
 @pytest.mark.vcr
 def test_completion(openai):
-    promptly_openai._patch_completion(openai)
+    phq_openai._patch_completion(openai)
     openai.Completion.create(
         model="text-davinci-003",
         prompt=generate_prompt("Mixed mini poodle"),
@@ -48,7 +48,7 @@ def test_completion(openai):
 def test_chat_completion(openai):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
-    promptly_openai._patch_chat_completion(openai)
+    phq_openai._patch_chat_completion(openai)
     openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[

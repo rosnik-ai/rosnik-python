@@ -2,8 +2,8 @@ import time
 
 import pytest
 
-from promptly import collector
-from promptly.types import PromptHqMetadata
+from prompthq import collector
+from prompthq.types import PromptHqMetadata
 
 
 @pytest.fixture

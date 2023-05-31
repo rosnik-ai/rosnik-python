@@ -1,7 +1,7 @@
 import logging
 import threading
 
-from promptly import collector
+from prompthq import collector
 
 logger = logging.getLogger(__name__)
 
@@ -9,7 +9,7 @@ openai_enabled = False
 
 try:
     openai_enabled = True
-    from promptly.platforms import openai as promptly_openai
+    from prompthq.platforms import openai as phq_openai
 except ImportError:
     logger.debug("Skipping OpenAI instrumentation.")
 
@@ -17,7 +17,7 @@ except ImportError:
 def init(api_key=None):
     if openai_enabled:
         logger.debug("OpenAI is enabled. Patching.")
-        promptly_openai._patch_openai()
+        phq_openai._patch_openai()
 
     # Start the background thread
     thread = threading.Thread(

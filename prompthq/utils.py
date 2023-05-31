@@ -3,7 +3,7 @@ import logging
 import sys
 import time
 
-from promptly import collector
+from prompthq import collector
 
 logger = logging.getLogger(__name__)
 

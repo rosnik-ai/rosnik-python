@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "promptly"
-version = "0.0.2"
-description = "Promptly Python SDK"
+name = "prompthq"
+version = "0.0.3"
+description = "PromptHQ Python SDK"
 authors = ["Nick DiRienzo <me@nickdirienzo.com>"]
 license = "MIT"
 readme = "README.md"
