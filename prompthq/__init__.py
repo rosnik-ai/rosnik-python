@@ -1,4 +1,4 @@
 
-from .client import init
+from .client import init, track_feedback
 
-__all__ = ["init"]
+__all__ = ["init", "track_feedback"]

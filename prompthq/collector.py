@@ -1,5 +1,7 @@
 import logging
+import platform
 import threading
+import time
 import typing
 import queue
 
@@ -17,6 +19,7 @@ event_queue = queue.Queue()
 MAX_BATCH_SIZE = 1
 
 _SERIALIZERS = {"openai": phq_openai.serialize_result}
+_PYTHON_VERSION = platform.python_version()
 
 
 # Function for capturing data and adding it to the buffer
@@ -40,6 +43,23 @@ def capture_data(
         }
     )
 
+def enqueue_feedback(completion_id: str, user_id: str, score: int, **kwargs):
+    logger.debug("Feedback event enqueued:", completion_id, user_id, score)
+    event_queue.put({
+        "timestamp": time.time(),
+        "completion_id": completion_id,
+        "user_id": user_id,
+        "score": score,
+        "metadata": kwargs,
+        "_prompthq_metadata": {
+            # Hard coding OpenAI for now.
+            "platform": phq_openai._OAI,
+            "action": "feedback",
+            "lang": _PYTHON_VERSION,
+            # Hard code production for now.
+            "environment": "production"
+        }
+    })
 
 def process_events(api_key=None):
     logger.debug("Running event processor in thread:", threading.get_ident())

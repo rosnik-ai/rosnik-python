@@ -1,3 +1,4 @@
+import platform
 import time
 
 import pytest
@@ -70,3 +71,36 @@ def test_capture_data(event_queue, added_fake_event):
     assert event["start_time"] == start_time
     assert event["end_time"] == end_time
     assert event["_prompthq_metadata"] == completion_metadata
+
+def test_enqueue_feedback(mocker, event_queue, added_fake_event):
+    mocker.patch("time.time", return_value=123456789)
+    (
+        _,
+        response,
+        _,
+        _,
+        _,
+        _,
+    ) = added_fake_event
+    assert event_queue.qsize() == 1
+    _ = event_queue.get()
+    assert event_queue.qsize() == 0
+    collector.enqueue_feedback(response["id"], None, 10, comment="Great completion!")
+    assert event_queue.qsize() == 1
+    event = event_queue.get()
+    expected_dict = {
+        "timestamp": 123456789,
+        "completion_id": response["id"],
+        "user_id": None,
+        "score": 10,
+        "metadata": {
+            "comment": "Great completion!"
+        },
+        "_prompthq_metadata": {
+            "platform": "openai",
+            "action": "feedback",
+            "lang": platform.python_version(),
+            "environment": "production"
+        }
+    }
+    assert event == expected_dict
