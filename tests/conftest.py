@@ -3,6 +3,8 @@ import sys
 
 import pytest
 
+from prompthq import collector
+
 
 @pytest.fixture(scope="module")
 def vcr_config():
@@ -23,3 +25,11 @@ def openai():
     for m in mods:
         del sys.modules[m]
 
+
+@pytest.fixture
+def event_queue():
+    yield collector.event_queue
+    # Clear queue
+    while collector.event_queue.qsize() > 0:
+        collector.event_queue.get(block=False)
+    assert collector.event_queue.qsize() == 0

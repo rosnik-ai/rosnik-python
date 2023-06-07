@@ -68,6 +68,7 @@ poetry install --all-extras
 ## TODO
 - [ ] Rip HTTP request headers somehow (user agent)
 - [ ] Support streams
-- [ ] Support chat completion (OAI)
+- [x] Support chat completion (OAI)
 - [ ] Support Anthropic
 - [ ] Support Cohere
+- [ ] Support sync mode

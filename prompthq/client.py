@@ -26,5 +26,10 @@ def init(api_key=None):
     # TODO: handle shutdowns safely
     thread.start()
 
-def track_feedback(completion_id: str, user_id: str, score: int, **kwargs):
-    collector.enqueue_feedback(completion_id, user_id, score, **kwargs)
+
+def track_feedback(
+    completion_id: str = None, user_id: str = None, score: int = None, metadata: dict = None
+):
+    return collector.enqueue_feedback(
+        completion_id=completion_id, user_id=user_id, score=score, metadata=metadata
+    )

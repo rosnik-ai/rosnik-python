@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "prompthq"
-version = "0.0.4"
+version = "0.0.5"
 description = "PromptHQ Python SDK"
 authors = ["Nick DiRienzo <me@nickdirienzo.com>"]
 license = "MIT"

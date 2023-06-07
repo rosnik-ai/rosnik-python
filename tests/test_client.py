@@ -9,10 +9,22 @@ def test_init(mocker):
     prompthq.init()
     threading.Thread.assert_called_once()
 
+
 def test_track_feedback_simple(mocker):
-    mocker.patch("prompthq.collector.enqueue_feedback")
+    mocker.patch("prompthq.collector.enqueue_feedback", return_value=True)
     mocker.patch("threading.Thread")
     import prompthq
 
-    prompthq.track_feedback("cmpl-123", "user-123", 10, comment="Whoa this is cool")
-    prompthq.collector.enqueue_feedback.assert_called_once_with("cmpl-123", "user-123", 10, comment="Whoa this is cool")
+    result = prompthq.track_feedback(
+        completion_id="cmpl-123",
+        user_id="user-123",
+        score=10,
+        metadata={"comment": "Great feature!"},
+    )
+    assert result is True
+    prompthq.collector.enqueue_feedback.assert_called_once_with(
+        completion_id="cmpl-123",
+        user_id="user-123",
+        score=10,
+        metadata={"comment": "Great feature!"},
+    )

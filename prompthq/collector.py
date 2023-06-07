@@ -42,24 +42,32 @@ def capture_data(
             "_prompthq_metadata": metadata,
         }
     )
+    return True
 
-def enqueue_feedback(completion_id: str, user_id: str, score: int, **kwargs):
-    logger.debug("Feedback event enqueued:", completion_id, user_id, score)
-    event_queue.put({
-        "timestamp": time.time(),
-        "completion_id": completion_id,
-        "user_id": user_id,
-        "score": score,
-        "metadata": kwargs,
-        "_prompthq_metadata": {
-            # Hard coding OpenAI for now.
-            "platform": phq_openai._OAI,
-            "action": "feedback",
-            "lang": _PYTHON_VERSION,
-            # Hard code production for now.
-            "environment": "production"
+
+def enqueue_feedback(
+    completion_id: str = None, user_id: str = None, score: int = None, metadata: dict = None
+):
+    logger.debug("Feedback event enqueued:", completion_id)
+    event_queue.put(
+        {
+            "timestamp": time.time(),
+            "completion_id": completion_id,
+            "user_id": user_id,
+            "score": score,
+            "metadata": metadata,
+            "_prompthq_metadata": {
+                # Hard coding OpenAI for now.
+                "platform": phq_openai._OAI,
+                "action": "feedback",
+                "lang": _PYTHON_VERSION,
+                # Hard code production for now.
+                "environment": "production",
+            },
         }
-    })
+    )
+    return True
+
 
 def process_events(api_key=None):
     logger.debug("Running event processor in thread:", threading.get_ident())
@@ -77,3 +85,10 @@ def process_events(api_key=None):
         # if len(batch) >= MAX_BATCH_SIZE:
         # process_and_send_batch(batch)
         # batch = []
+
+def _flush_events(api_key=None):
+    logger.debug("Flushing event queue with size:", event_queue.qsize())
+    api_client = api.PromptHqHttpClient(api_key=api_key)
+    while event_queue.qsize() > 0:
+        event = event_queue.get()
+        api_client.send_event(event)

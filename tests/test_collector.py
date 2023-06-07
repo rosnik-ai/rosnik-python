@@ -8,14 +8,6 @@ from prompthq.types import PromptHqMetadata
 
 
 @pytest.fixture
-def event_queue():
-    yield collector.event_queue
-    # Clear queue
-    while collector.event_queue.qsize() > 0:
-        collector.event_queue.get(block=False)
-
-
-@pytest.fixture
 def added_fake_event():
     payload = {
         "model": "text-davinci-003",
@@ -72,6 +64,7 @@ def test_capture_data(event_queue, added_fake_event):
     assert event["end_time"] == end_time
     assert event["_prompthq_metadata"] == completion_metadata
 
+
 def test_enqueue_feedback(mocker, event_queue, added_fake_event):
     mocker.patch("time.time", return_value=123456789)
     (
@@ -85,7 +78,12 @@ def test_enqueue_feedback(mocker, event_queue, added_fake_event):
     assert event_queue.qsize() == 1
     _ = event_queue.get()
     assert event_queue.qsize() == 0
-    collector.enqueue_feedback(response["id"], None, 10, comment="Great completion!")
+    collector.enqueue_feedback(
+        completion_id=response["id"],
+        user_id=None,
+        score=10,
+        metadata={"comment": "Great completion!"},
+    )
     assert event_queue.qsize() == 1
     event = event_queue.get()
     expected_dict = {
@@ -93,14 +91,12 @@ def test_enqueue_feedback(mocker, event_queue, added_fake_event):
         "completion_id": response["id"],
         "user_id": None,
         "score": 10,
-        "metadata": {
-            "comment": "Great completion!"
-        },
+        "metadata": {"comment": "Great completion!"},
         "_prompthq_metadata": {
             "platform": "openai",
             "action": "feedback",
             "lang": platform.python_version(),
-            "environment": "production"
-        }
+            "environment": "production",
+        },
     }
     assert event == expected_dict
