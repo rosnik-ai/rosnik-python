@@ -30,8 +30,10 @@ def _patch_openai(openai=None):
         logger.debug("Not patching. Already patched.")
         return
 
-    _patch_completion(openai)
-    _patch_chat_completion(openai)
+    if getattr(openai, "Completion", None):
+        _patch_completion(openai)
+    if getattr(openai, "ChatCompletion", None):
+        _patch_chat_completion(openai)
     setattr(openai, "__prompthq_patch", True)
 
 
