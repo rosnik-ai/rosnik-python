@@ -82,4 +82,156 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"model": "text-davinci-003", "prompt": "Suggest three names for an animal
+      that is a superhero.\n\nAnimal: Cat\nNames: Captain Sharpclaw, Agent Fluffball,
+      The Incredible Feline\nAnimal: Dog\nNames: Ruff the Protector, Wonder Canine,
+      Sir Barks-a-Lot\nAnimal: Mixed mini poodle\nNames:", "temperature": 0.6}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '305'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.6
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
+        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
+        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
+        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/completions
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"message\": \"The server had an error while
+        processing your request. Sorry about that!\",\n    \"type\": \"server_error\",\n
+        \   \"param\": null,\n    \"code\": null\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7d3600647d139846-SJC
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '176'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 07 Jun 2023 04:02:47 GMT
+      Server:
+      - cloudflare
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - text-davinci-003
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '278'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3000'
+      x-ratelimit-limit-tokens:
+      - '250000'
+      x-ratelimit-remaining-requests:
+      - '2999'
+      x-ratelimit-remaining-tokens:
+      - '249983'
+      x-ratelimit-reset-requests:
+      - 20ms
+      x-ratelimit-reset-tokens:
+      - 3ms
+      x-request-id:
+      - 192a04086e5f57b469ab73ac5c3754a3
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"model": "text-davinci-003", "prompt": "Suggest three names for an animal
+      that is a superhero.\n\nAnimal: Cat\nNames: Captain Sharpclaw, Agent Fluffball,
+      The Incredible Feline\nAnimal: Dog\nNames: Ruff the Protector, Wonder Canine,
+      Sir Barks-a-Lot\nAnimal: Mixed mini poodle\nNames:", "temperature": 0.6}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '305'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.6
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
+        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
+        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
+        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/completions
+  response:
+    body:
+      string: "{\n  \"error\": {\n    \"message\": \"The server had an error while
+        processing your request. Sorry about that!\",\n    \"type\": \"server_error\",\n
+        \   \"param\": null,\n    \"code\": null\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7d3601cddd25cfac-SJC
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '176'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 07 Jun 2023 04:03:45 GMT
+      Server:
+      - cloudflare
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - text-davinci-003
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '223'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3000'
+      x-ratelimit-limit-tokens:
+      - '250000'
+      x-ratelimit-remaining-requests:
+      - '2999'
+      x-ratelimit-remaining-tokens:
+      - '249983'
+      x-ratelimit-reset-requests:
+      - 20ms
+      x-ratelimit-reset-tokens:
+      - 3ms
+      x-request-id:
+      - 8dd7ec6222ae6c0e48715d7008b42915
+    status:
+      code: 429
+      message: Too Many Requests
 version: 1

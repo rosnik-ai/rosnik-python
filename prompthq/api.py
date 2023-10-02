@@ -12,6 +12,7 @@ _base_url = "https://ingest.prompthq.ai/api/v1/ingest"
 # TODO: add env, lang.
 class PromptHqHttpClient:
     def __init__(self, api_key=None):
+        # TODO: This might not work in a separate thread? Not sure why this didn't get picked up.
         self.api_key = os.environ.get("PROMPTHQ_API_KEY", api_key)
         if self.api_key is None:
             logger.warning("PROMPTHQ_API_KEY is not set and an API token was not provided on init")

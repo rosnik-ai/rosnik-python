@@ -85,4 +85,175 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '150'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.6
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
+        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
+        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
+        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2SQMW8bMQyF/wqh+Wz4mtgObgvQoR2CLBmCdChoiWcplkhF5MW4Gv3vxSVpOnR9
+        eO97j7y4FNzgfETzpebV/p7G8dfjbvft9p6/by3ePb5s+Py8uW5PT65zcngmbx+JtZdSM1kSdp3z
+        jdAouKHf3ez6frPd7TtXJFB2gztWW12ttyub2kFWm6tN7zo3KR7JDRdXm5RqP01OxOqGL9ed+4f+
+        lG/2nTMxzJ9K3/e/O+ejJE/qhh8XV0j/QptkcoND1aSGbMtEYSNe5t9CkCMkBYSCpWAG5AAIXkoR
+        hiiTUpQcoJKBRbTFe2I5M4zSIJlClhmzzW/BsSXikGdgtKnRGh4izYCNQEYjhkkpvAWpyHITZtCp
+        VmnWLZUVOQlrTLV736FwlnZKfATkVDArJIZXbEkmhTFRDgo6+bg4M56BeJTmqRBbBxapYZ3fUUrY
+        Fh8HaKR+ojV8laMurbRAC/IMIY0jNWKDQyMK2gGhj3BOFhdaajBxepkIapw1+Y9vHSjia5KGGXzE
+        ht6oJbXk9b/7G430hwUyRqEQBqJg7ynCa2zkY+1ZFEnMqinclbwIv8ndRfQAwwyTs0RX7EkecXht
+        6YKwfO9GuCCLv/ggn5Qlm24umEa+Mft1eOUPtcOaNHGfs3iaYgCLneiQNMofQ1+n2twAAAD//wMA
+        YcXer90CAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7d360067de59ce58-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 07 Jun 2023 04:02:54 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0301
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '6761'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89971'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 19ms
+      x-request-id:
+      - da037a92559ddef50033663199998904
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '150'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.6
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
+        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
+        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
+        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0SQTW/bMAyG/wqhsxMk7ZKuvhUbVgwbth0G7Osw0BJtqZFET6QSGMH++2An7W4C
+        Bb7P+/BsgjOtsR7VpjGu7j7T0D1+t49d2f/8+OPD+/qgT98G9+7NF/5kGsPdE1m9bqwtpzGSBs6m
+        MbYQKjnTbvev99vtZn+za0xiR9G0Zhh1dbverbSWjleb283WNKYKDmTasxkLp1F/Kx8oi2lvXjXm
+        f/TL+G7XGGXF+DK5v//bGOs5WBLT/jqbRPKcWTiSaQ2KBFHMOjfkrJTn9g/geIAggOA4kWiwc3dI
+        mBJGwOwAwXJKnMFzFfIcHYyka/jqaQIsBIfMpww9F1BPoUDkCaNODWDfk52boxJk1FqouUR2IQad
+        QBnGwsfgaGaMmANn8WGcPy5ZvibMwKdMRRZkoYWZME/gQt9ToazQFSInwP2sIw0QWg+noB5qDn8q
+        wegnCfZq1JHHY+CCEazHglaphFld1vCWB1kIGIWv5nGCKuQWxSOWwFVAUQ4CUq0HFPA1a8hDA56K
+        Wx4z5+IW8gDPx7e0OBOPkS79XJDLNQLJP+kp1eoopWXmZRZnxBelJhbn5ylZKRWX5Bco6Shl5qWk
+        VihZGdTG1nIBAAAA//8DAJ+QXbasAgAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7d3601d05d6996a8-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 07 Jun 2023 04:03:51 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0301
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '5833'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89971'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 19ms
+      x-request-id:
+      - 82d089a74513f0bb38e018319a2c1417
+    status:
+      code: 200
+      message: OK
 version: 1
