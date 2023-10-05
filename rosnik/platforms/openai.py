@@ -1,7 +1,7 @@
 import logging
 
-from prompthq.utils import wrap_class_method
-from prompthq.types import PromptHqMetadata
+from rosnik.utils import wrap_class_method
+from rosnik.types import PromptHqMetadata
 
 from openai.openai_object import OpenAIObject
 

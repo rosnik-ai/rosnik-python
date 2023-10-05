@@ -1,6 +1,6 @@
 import pytest
 
-from prompthq.platforms import openai as phq_openai
+from rosnik.platforms import openai as phq_openai
 
 
 def generate_prompt(animal):

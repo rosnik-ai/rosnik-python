@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from prompthq import collector
+from rosnik import collector
 
 
 @pytest.fixture(scope="module")

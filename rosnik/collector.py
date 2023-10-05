@@ -5,9 +5,9 @@ import time
 import typing
 import queue
 
-from prompthq import api
-from prompthq.platforms import openai as phq_openai
-from prompthq.types import PromptHqMetadata
+from rosnik import api
+from rosnik.platforms import openai as phq_openai
+from rosnik.types import PromptHqMetadata
 
 logger = logging.getLogger(__name__)
 

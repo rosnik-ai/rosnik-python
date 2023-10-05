@@ -1,7 +1,7 @@
 import logging
 import threading
 
-from prompthq import collector
+from rosnik import collector
 
 logger = logging.getLogger(__name__)
 
@@ -9,7 +9,7 @@ openai_enabled = False
 
 try:
     openai_enabled = True
-    from prompthq.platforms import openai as phq_openai
+    from rosnik.platforms import openai as phq_openai
 except ImportError:
     logger.debug("Skipping OpenAI instrumentation.")
 

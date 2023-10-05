@@ -1,13 +1,13 @@
 import pytest
-import prompthq
-from prompthq import collector
-from prompthq.platforms import openai as phq_openai
+import rosnik
+from rosnik import collector
+from rosnik.platforms import openai as phq_openai
 
 
 @pytest.mark.vcr
 def test_e2e_chat_completion(mocker, openai, event_queue):
     # e2e-ish
-    mocker.patch("prompthq.api.PromptHqHttpClient._post")
+    mocker.patch("rosnik.api.PromptHqHttpClient._post")
 
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
@@ -22,7 +22,7 @@ def test_e2e_chat_completion(mocker, openai, event_queue):
         user=fake_user_id,
     )
     assert event_queue.qsize() == 1
-    prompthq.track_feedback(
+    rosnik.track_feedback(
         completion_id=result.id,
         user_id=fake_user_id,
         score=10,

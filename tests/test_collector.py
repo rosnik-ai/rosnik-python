@@ -3,8 +3,8 @@ import time
 
 import pytest
 
-from prompthq import collector
-from prompthq.types import PromptHqMetadata
+from rosnik import collector
+from rosnik.types import PromptHqMetadata
 
 
 @pytest.fixture

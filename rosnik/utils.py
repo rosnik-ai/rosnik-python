@@ -3,7 +3,7 @@ import logging
 import sys
 import time
 
-from prompthq import collector
+from rosnik import collector
 
 logger = logging.getLogger(__name__)
 

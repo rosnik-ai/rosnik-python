@@ -1,7 +1,7 @@
 import logging
 import os
 
-from prompthq import types
+from rosnik import types
 
 import requests
 
