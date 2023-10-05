@@ -2,7 +2,7 @@ import threading
 
 
 def test_init(mocker):
-    mocker.patch("prompthq.platforms.openai._patch_openai")
+    mocker.patch("rosnik.platforms.openai._patch_openai")
     mocker.patch("threading.Thread")
     import rosnik
 
@@ -11,7 +11,7 @@ def test_init(mocker):
 
 
 def test_track_feedback_simple(mocker):
-    mocker.patch("prompthq.collector.enqueue_feedback", return_value=True)
+    mocker.patch("rosnik.collector.enqueue_feedback", return_value=True)
     mocker.patch("threading.Thread")
     import rosnik
 

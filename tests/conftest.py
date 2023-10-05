@@ -15,7 +15,7 @@ def vcr_config():
 def openai():
     import openai
 
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    openai.api_key = os.getenv("OPENAI_API_KEY", "fake-key")
     # TODO: support organizations
     # openai.organization = openai_organization
     yield openai
