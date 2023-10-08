@@ -16,15 +16,15 @@ openai = {version = "^0.27.6", optional = true}
 bandit = "^1.7"
 safety = "^2.3"
 black = "^23.3.0"
-mypy = "^0.730.0"
+mypy = "^1.5.1"
 ruff = "^0.0.267"
 poetry-dotenv-plugin = "^0.1.0"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^5.0"
-pytest-cov = "^2.7"
-pytest-mock = "^1.10"
-pytest-recording = "^0.12.2"
+pytest = "^7.4"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.1"
+pytest-recording = "^0.13.0"
 
 [tool.poetry.extras]
 openai = ["openai"]

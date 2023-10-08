@@ -21,7 +21,6 @@ MAX_BATCH_SIZE = 1
 _SERIALIZERS = {"openai": phq_openai.serialize_result}
 _PYTHON_VERSION = platform.python_version()
 
-
 # Function for capturing data and adding it to the buffer
 def capture_data(
     payload: dict,

@@ -2,8 +2,11 @@ import inspect
 import logging
 import sys
 import time
+from typing import Callable
 
 from rosnik import collector
+from rosnik.events import ai
+from rosnik.types.ai import AIFunctionMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +30,11 @@ def get_stack_frames(num, useGetFrame=True):
         return inspect.stack()[:num]
 
 
-def wrap_class_method(wrapped_func, prompthq_metadata):
+# TODO: will need more wrappers.
+def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
     def wrapper(*args, **kwargs):
         logger.debug("Prep for ingest request:", kwargs)
+        ai.track_request_start(wrapped_func, kwargs, metadata)
         start_time = time.time()
         result = wrapped_func(*args, **kwargs)
         end_time = time.time()
@@ -37,8 +42,9 @@ def wrap_class_method(wrapped_func, prompthq_metadata):
 
         limited_frames = get_stack_frames(5)
         calling_functions = [frame.f_code.co_name for frame in limited_frames]
+        
         collector.capture_data(
-            kwargs, result, calling_functions, start_time, end_time, prompthq_metadata
+            kwargs, result, calling_functions, start_time, end_time
         )
         return result
 

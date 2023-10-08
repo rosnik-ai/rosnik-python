@@ -1,5 +1,10 @@
-from dataclasses import field, dataclass
+from dataclasses import dataclass
+from typing import TypedDict
 from rosnik.types.core import AIEvent
+
+class AIFunctionMetadata(TypedDict):
+    ai_provider: str
+    ai_action: str
 
 @dataclass(kw_only=True, slots=True)
 class AIRequestStart(AIEvent):

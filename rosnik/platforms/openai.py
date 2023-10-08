@@ -1,4 +1,5 @@
 import logging
+from rosnik.types.ai import AIFunctionMetadata
 
 from rosnik.utils import wrap_class_method
 from rosnik.types.core import Metadata
@@ -12,8 +13,8 @@ except ImportError:
     logger.warning("openai is not installed")
 
 _OAI = "openai"
-completion_metadata: Metadata = {"platform": _OAI, "action": "completion"}
-chat_completion_metadata: Metadata = {"platform": _OAI, "action": "chatcompletion"}
+completion_metadata: AIFunctionMetadata = {"ai_provider": _OAI, "ai_action": "completion"}
+chat_completion_metadata: AIFunctionMetadata = {"ai_provider": _OAI, "ai_action": "chatcompletion"}
 
 
 def _patch_completion(openai):
@@ -39,7 +40,6 @@ def _patch_openai(openai=None):
     if getattr(openai, "ChatCompletion", None):
         _patch_chat_completion(openai)
     setattr(openai, "__prompthq_patch", True)
-
 
 def serialize_result(obj: OpenAIObject):
     """For now, do the naive thing."""
