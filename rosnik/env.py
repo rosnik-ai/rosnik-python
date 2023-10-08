@@ -1,7 +1,7 @@
 import os
 
-PROMPTHQ_API_KEY = "PROMPTHQ_API_KEY"
+API_KEY = "ROSNIK_API_KEY"
 
 
 def get_api_key():
-    return os.environ.get(PROMPTHQ_API_KEY)
+    return os.environ.get(API_KEY)

@@ -31,6 +31,8 @@ def get_stack_frames(num, useGetFrame=True):
 
 
 # TODO: will need more wrappers.
+# TODO: I think I need a trick here to rename `wrapper` to `wrapped_func` s
+# datadog and other tracing libs don't record the wrong thing.
 def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
     def wrapper(*args, **kwargs):
         logger.debug("Prep for ingest request:", kwargs)

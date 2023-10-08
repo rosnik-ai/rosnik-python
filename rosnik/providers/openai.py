@@ -1,7 +1,7 @@
 import logging
 from rosnik.types.ai import AIFunctionMetadata
 
-from rosnik.utils import wrap_class_method
+from rosnik.wrap import wrap_class_method
 from rosnik.types.core import Metadata
 
 logger = logging.getLogger(__name__)
