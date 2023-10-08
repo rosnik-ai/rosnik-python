@@ -9,6 +9,7 @@ def test_init(mocker):
     rosnik.init()
     threading.Thread.assert_called_once()
 
+
 # TODO: rewrite
 # def test_track_feedback_simple(mocker):
 #     mocker.patch("rosnik.events.queue.enqueue_feedback", return_value=True)

@@ -1,5 +1,4 @@
 from typing import List
-import time
 
 from rosnik.events import queue
 from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart
@@ -25,9 +24,13 @@ def track_request_start(
     queue.enqueue_event(event)
     return event.request_id
 
+
 # TODO: technically `response_payload` is a openai.openai_object.OpenAIObject
 def track_request_finish(
-    response_payload: dict, metadata: AIFunctionMetadata, function_fingerprint: List[str], request_id: str
+    response_payload: dict,
+    metadata: AIFunctionMetadata,
+    function_fingerprint: List[str],
+    request_id: str,
 ):
     # TODO: Technically yes, we can pull this from the payload,
     # but this feels precarious.

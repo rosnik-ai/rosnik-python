@@ -1,7 +1,6 @@
 import inspect
 import logging
 import sys
-import time
 from typing import Callable
 
 from rosnik.events import ai
@@ -44,7 +43,7 @@ def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
         request_id = ai.track_request_start(kwargs, metadata, calling_functions)
         result = wrapped_func(*args, **kwargs)
         ai.track_request_finish(result, metadata, calling_functions, request_id)
-        
+
         return result
 
     return wrapper
