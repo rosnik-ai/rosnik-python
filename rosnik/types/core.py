@@ -1,8 +1,10 @@
 import time
 import os
 import platform
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
+
+from rosnik import journey
 
 
 @dataclass(kw_only=True, slots=True)
@@ -23,7 +25,7 @@ class Metadata(StaticMetadata):
 class Event:
     event_type: str
     # Epoch
-    journey_id: int = 123
+    journey_id: int = field(default_factory=journey.get_or_create_journey_id)
     # Epoch
     sent_at: int = int(time.time())
     # Epoch unless not set, which will be -1

@@ -21,6 +21,7 @@ def track_request_start(
         request_payload=request_payload,
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
+    import pdb; pdb.set_trace()
     queue.enqueue_event(event)
     return event.request_id
 
