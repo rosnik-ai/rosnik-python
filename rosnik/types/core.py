@@ -25,7 +25,7 @@ class Metadata(StaticMetadata):
 class Event:
     event_type: str
     # Epoch
-    journey_id: int = field(default_factory=journey.get_or_create_journey_id)
+    journey_id: str = field(default_factory=journey.get_or_create_journey_id)
     # Epoch
     sent_at: int = int(time.time())
     # Epoch unless not set, which will be -1
