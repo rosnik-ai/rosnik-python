@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from rosnik import collector
+from rosnik.events import queue
 
 
 @pytest.fixture(scope="module")
@@ -28,8 +28,8 @@ def openai():
 
 @pytest.fixture
 def event_queue():
-    yield collector.event_queue
+    yield queue.event_queue
     # Clear queue
-    while collector.event_queue.qsize() > 0:
-        collector.event_queue.get(block=False)
-    assert collector.event_queue.qsize() == 0
+    while queue.event_queue.qsize() > 0:
+        queue.event_queue.get(block=False)
+    assert queue.event_queue.qsize() == 0

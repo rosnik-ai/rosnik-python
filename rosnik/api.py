@@ -1,5 +1,6 @@
 import logging
 import os
+from rosnik import env
 
 from rosnik.types import core
 
@@ -7,15 +8,15 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-_base_url = "https://ingest.prompthq.ai/api/v1/ingest"
+_base_url = "https://ingest.prompthq.ai/api/v1/events"
 
-# TODO: add env, lang.
-class PromptHqHttpClient:
+
+class IngestClient:
     def __init__(self, api_key=None):
         # TODO: This might not work in a separate thread? Not sure why this didn't get picked up.
-        self.api_key = os.environ.get("PROMPTHQ_API_KEY", api_key)
+        self.api_key = os.environ.get(f"{env.API_KEY}", api_key)
         if self.api_key is None:
-            logger.warning("PROMPTHQ_API_KEY is not set and an API token was not provided on init")
+            logger.warning(f"{env.API_KEY} is not set and an API token was not provided on init")
 
         self.headers = {
             "Authorization": f"Bearer {api_key}",
@@ -27,12 +28,9 @@ class PromptHqHttpClient:
         return self.session.post(*args, **kwargs)
 
     def send_event(self, event: core.Event):
-        platform = event["_prompthq_metadata"]["platform"]
-        action = event["_prompthq_metadata"]["action"]
-        url = f"{_base_url}/{platform}/{action}"
-        logger.debug(f"Sending event to {url}")
+        logger.debug(f"Sending event to {_base_url}")
         try:
-            response = self._post(url, headers=self.headers, json=event)
+            response = self._post(_base_url, headers=self.headers, json=event)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            logger.warning("Failed to send PromptHQ event:", e)
+            logger.warning("Failed to send event:", e)

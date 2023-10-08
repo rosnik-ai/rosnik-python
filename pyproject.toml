@@ -11,6 +11,7 @@ readme = "README.md"
 # Don't support 4 yet.
 python = ">=3.10,<4"
 openai = {version = "^0.27.6", optional = true}
+ulid-py = "^1.1.0"
 
 [tool.poetry.group.static.dependencies]
 bandit = "^1.7"

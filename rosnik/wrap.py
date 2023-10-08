@@ -4,7 +4,6 @@ import sys
 import time
 from typing import Callable
 
-from rosnik import collector
 from rosnik.events import ai
 from rosnik.types.ai import AIFunctionMetadata
 
@@ -36,18 +35,16 @@ def get_stack_frames(num, useGetFrame=True):
 def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
     def wrapper(*args, **kwargs):
         logger.debug("Prep for ingest request:", kwargs)
-        ai.track_request_start(wrapped_func, kwargs, metadata)
-        start_time = time.time()
-        result = wrapped_func(*args, **kwargs)
-        end_time = time.time()
-        logger.debug("Send to ingest response:", result)
-
+        # TODO: profile this.
         limited_frames = get_stack_frames(5)
-        calling_functions = [frame.f_code.co_name for frame in limited_frames]
+        # Flatten into a period separated sequence so we can do function chain search later.
+        calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
+
+        # TODO: support stream
+        request_id = ai.track_request_start(kwargs, metadata, calling_functions)
+        result = wrapped_func(*args, **kwargs)
+        ai.track_request_finish(result, metadata, calling_functions, request_id)
         
-        collector.capture_data(
-            kwargs, result, calling_functions, start_time, end_time
-        )
         return result
 
     return wrapper

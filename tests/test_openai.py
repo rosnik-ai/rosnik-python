@@ -25,7 +25,7 @@ def test_completion(openai, event_queue):
         prompt=generate_prompt("Mixed mini poodle"),
         temperature=0.6,
     )
-    assert event_queue.qsize() == 1
+    assert event_queue.qsize() == 2
 
 
 @pytest.mark.vcr
@@ -41,4 +41,4 @@ def test_chat_completion(openai, event_queue):
             {"role": "user", "content": input_text},
         ],
     )
-    assert event_queue.qsize() == 1
+    assert event_queue.qsize() == 2

@@ -16,27 +16,29 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
+      - OpenAI/v1 PythonBindings/0.27.10
       X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-12.6.7-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Jun  8
+        23:57:12 PDT 2023; root:xnu-8020.240.18.701.6~1/RELEASE_X86_64 x86_64 i386"}'
     method: POST
     uri: https://api.openai.com/v1/completions
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA0SPUWvCMBRG3/crwvecQmWddXkbG8IGDkFBZIzSptc2Ls2NTSq64n8fG0Nfzzkv
-        Z4SpoaA7b5P89fj+ttcHvZ09Vzafx+Vhvd5Wq81yQy+Q4GpPOkIh0ikWmjtvKRp2kNA9lZFqqMl0
-        luVZNksfJTquyf7nSV0ejdMmSdP7375loylAfYx/GgpiNXjqxdwOu91ZioVp2ngWC+OMFOuWxFNX
-        fhvXiCVzbQkSxtV0gkolLDe+5ypAucFaiZ1xJrRFT2VgB4UQ2ePyKTGEsiGoEb7nzsci8he5ADXN
-        JG4/VzyZSESOpb2S/OFyufsBAAD//wMAMpNRTTQBAAA=
+      string: "{\n  \"warning\": \"This model version is deprecated. Migrate before
+        January 4, 2024 to avoid disruption of service. Learn more https://platform.openai.com/docs/deprecations\",\n
+        \ \"id\": \"cmpl-87Kd86qcyHaCE5HcSpONqXoglezuM\",\n  \"object\": \"text_completion\",\n
+        \ \"created\": 1696758290,\n  \"model\": \"text-davinci-003\",\n  \"choices\":
+        [\n    {\n      \"text\": \" Super Poodle, Mighty Fluffster, The Courageous
+        Poodle\",\n      \"index\": 0,\n      \"logprobs\": null,\n      \"finish_reason\":
+        \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 64,\n    \"completion_tokens\":
+        14,\n    \"total_tokens\": 78\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7cb3c0b0abbf16a6-SJC
+      - 812d72956c61964f-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -46,7 +48,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 22 May 2023 08:40:11 GMT
+      - Sun, 08 Oct 2023 09:44:51 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -54,13 +56,13 @@ interactions:
       access-control-allow-origin:
       - '*'
       alt-svc:
-      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+      - h3=":443"; ma=86400
       openai-model:
       - text-davinci-003
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '2490'
+      - '442'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -69,16 +71,22 @@ interactions:
       - '3000'
       x-ratelimit-limit-tokens:
       - '250000'
+      x-ratelimit-limit-tokens_usage_based:
+      - '250000'
       x-ratelimit-remaining-requests:
       - '2999'
       x-ratelimit-remaining-tokens:
+      - '249983'
+      x-ratelimit-remaining-tokens_usage_based:
       - '249983'
       x-ratelimit-reset-requests:
       - 20ms
       x-ratelimit-reset-tokens:
       - 3ms
+      x-ratelimit-reset-tokens_usage_based:
+      - 3ms
       x-request-id:
-      - e60b7d257b21b14433907e9fdd262980
+      - cd48ccb15e1cb36856020e6466f73ca3
     status:
       code: 200
       message: OK
@@ -99,34 +107,43 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
+      - OpenAI/v1 PythonBindings/0.27.10
       X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-12.6.7-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Jun  8
+        23:57:12 PDT 2023; root:xnu-8020.240.18.701.6~1/RELEASE_X86_64 x86_64 i386"}'
     method: POST
     uri: https://api.openai.com/v1/completions
   response:
     body:
-      string: "{\n  \"error\": {\n    \"message\": \"The server had an error while
-        processing your request. Sorry about that!\",\n    \"type\": \"server_error\",\n
-        \   \"param\": null,\n    \"code\": null\n  }\n}\n"
+      string: "{\n  \"warning\": \"This model version is deprecated. Migrate before
+        January 4, 2024 to avoid disruption of service. Learn more https://platform.openai.com/docs/deprecations\",\n
+        \ \"id\": \"cmpl-87Kexze2xPfrtU8Q6hjzVhaxShpH6\",\n  \"object\": \"text_completion\",\n
+        \ \"created\": 1696758403,\n  \"model\": \"text-davinci-003\",\n  \"choices\":
+        [\n    {\n      \"text\": \" Super Snugglepuff, Mighty Muffin, The Amazing
+        Fluffinator\",\n      \"index\": 0,\n      \"logprobs\": null,\n      \"finish_reason\":
+        \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 64,\n    \"completion_tokens\":
+        15,\n    \"total_tokens\": 79\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7d3600647d139846-SJC
+      - 812d7555acfad03d-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
       Connection:
       - keep-alive
-      Content-Length:
-      - '176'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json
       Date:
-      - Wed, 07 Jun 2023 04:02:47 GMT
+      - Sun, 08 Oct 2023 09:46:44 GMT
       Server:
       - cloudflare
+      Transfer-Encoding:
+      - chunked
       access-control-allow-origin:
       - '*'
       alt-svc:
@@ -136,7 +153,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '278'
+      - '556'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -145,19 +162,25 @@ interactions:
       - '3000'
       x-ratelimit-limit-tokens:
       - '250000'
+      x-ratelimit-limit-tokens_usage_based:
+      - '250000'
       x-ratelimit-remaining-requests:
       - '2999'
       x-ratelimit-remaining-tokens:
+      - '249983'
+      x-ratelimit-remaining-tokens_usage_based:
       - '249983'
       x-ratelimit-reset-requests:
       - 20ms
       x-ratelimit-reset-tokens:
       - 3ms
+      x-ratelimit-reset-tokens_usage_based:
+      - 3ms
       x-request-id:
-      - 192a04086e5f57b469ab73ac5c3754a3
+      - c46efc82a6cb408d2157ba2521c11f94
     status:
-      code: 429
-      message: Too Many Requests
+      code: 200
+      message: OK
 - request:
     body: '{"model": "text-davinci-003", "prompt": "Suggest three names for an animal
       that is a superhero.\n\nAnimal: Cat\nNames: Captain Sharpclaw, Agent Fluffball,
@@ -175,34 +198,43 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
+      - OpenAI/v1 PythonBindings/0.27.10
       X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-12.6.7-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Jun  8
+        23:57:12 PDT 2023; root:xnu-8020.240.18.701.6~1/RELEASE_X86_64 x86_64 i386"}'
     method: POST
     uri: https://api.openai.com/v1/completions
   response:
     body:
-      string: "{\n  \"error\": {\n    \"message\": \"The server had an error while
-        processing your request. Sorry about that!\",\n    \"type\": \"server_error\",\n
-        \   \"param\": null,\n    \"code\": null\n  }\n}\n"
+      string: "{\n  \"warning\": \"This model version is deprecated. Migrate before
+        January 4, 2024 to avoid disruption of service. Learn more https://platform.openai.com/docs/deprecations\",\n
+        \ \"id\": \"cmpl-87Ki5WgR7Eki65lMcYDKXr9e9XnzE\",\n  \"object\": \"text_completion\",\n
+        \ \"created\": 1696758597,\n  \"model\": \"text-davinci-003\",\n  \"choices\":
+        [\n    {\n      \"text\": \" Sir Fluffypants, Captain Cuddles, Braveheart
+        the Poodle\",\n      \"index\": 0,\n      \"logprobs\": null,\n      \"finish_reason\":
+        \"length\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 64,\n    \"completion_tokens\":
+        16,\n    \"total_tokens\": 80\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7d3601cddd25cfac-SJC
+      - 812d7a131878965e-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
       Connection:
       - keep-alive
-      Content-Length:
-      - '176'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json
       Date:
-      - Wed, 07 Jun 2023 04:03:45 GMT
+      - Sun, 08 Oct 2023 09:49:58 GMT
       Server:
       - cloudflare
+      Transfer-Encoding:
+      - chunked
       access-control-allow-origin:
       - '*'
       alt-svc:
@@ -212,7 +244,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '223'
+      - '587'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -221,17 +253,23 @@ interactions:
       - '3000'
       x-ratelimit-limit-tokens:
       - '250000'
+      x-ratelimit-limit-tokens_usage_based:
+      - '250000'
       x-ratelimit-remaining-requests:
       - '2999'
       x-ratelimit-remaining-tokens:
+      - '249983'
+      x-ratelimit-remaining-tokens_usage_based:
       - '249983'
       x-ratelimit-reset-requests:
       - 20ms
       x-ratelimit-reset-tokens:
       - 3ms
+      x-ratelimit-reset-tokens_usage_based:
+      - 3ms
       x-request-id:
-      - 8dd7ec6222ae6c0e48715d7008b42915
+      - ea0df8186e38c18594eae3e87c2f1304
     status:
-      code: 429
-      message: Too Many Requests
+      code: 200
+      message: OK
 version: 1

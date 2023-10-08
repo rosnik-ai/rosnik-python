@@ -2,7 +2,6 @@ import logging
 from rosnik.types.ai import AIFunctionMetadata
 
 from rosnik.wrap import wrap_class_method
-from rosnik.types.core import Metadata
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +39,7 @@ def _patch_openai(openai=None):
     if getattr(openai, "ChatCompletion", None):
         _patch_chat_completion(openai)
     setattr(openai, "__prompthq_patch", True)
+
 
 def serialize_result(obj: OpenAIObject):
     """For now, do the naive thing."""

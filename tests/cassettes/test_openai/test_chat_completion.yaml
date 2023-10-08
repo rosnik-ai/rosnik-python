@@ -14,32 +14,35 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
+      - OpenAI/v1 PythonBindings/0.27.10
       X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-12.6.7-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Jun  8
+        23:57:12 PDT 2023; root:xnu-8020.240.18.701.6~1/RELEASE_X86_64 x86_64 i386"}'
     method: POST
     uri: https://api.openai.com/v1/chat/completions
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA0SQUWsUQRCE/0rTL77sHdnkTM59CwoaEEEUNFGQ3pm+mTEz3ctM78Ul+N9lzxjf
-        moKq+roeMXkc0EUyV6a8ubo5fngf7i5vr/v54+Hrpy+3+7dxOuNf5zfvCDvU8Sc7e3JsnZYpsyUV
-        7NBVJmOPQ3+5313tdvu+77Co54wDhsk2F9uXG5vrqJuzi7MeO5wbBcbhEaeqZbIfpvcsDYfzXYf/
-        o5/lV7sOTY3ys9L3+98duqjJccPh2yMWbv9Cq2bGAam11IzEVkQVY1nxr8FrgNSA4KBz3WQOgT14
-        LdwsufURKFQKZRg5q4QkAUzBIsNrkuSJ4UAl5WULbzQ0oMoQU4h5gaYuUQaSVCg3sEgGkY4MI7PA
-        WNnDuECcC0mDg1Y4Uk06N5jmOmnj1kESl2e/dsZZLEnoIMxU/emK/HSsG5EklRbT1AGJh8b1mBxv
-        4XPk5QR1L/ogpxqLnCpkXSjbsnYY55wCi+O/5kNNLD4vIGRzZTB9oOrbE2oHDzG5CJEaMFVhvyaW
-        0ySS3L1QYfiOheRFg5HbH5bIYAWBGAaid78i5FwWz/stilSaaFhNJKnoLvTfpXavw2MY3tS9bzph
-        X+M0HL21OJUAYyjCTE5a/2dcnahEAs/DtiiEbATs9oQqukK1daf6FY/sN4KP+dLpkU/YErKoxP3i
-        lMMUZ4xqL0woWuiL87Gd2+EHAAD//wMAo4NX1vcCAAA=
+      string: "{\n  \"id\": \"chatcmpl-87Kf1hjsb7Y2nH5sshE9ehCb0kBeJ\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1696758407,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal that
+        belongs to the Canidae family. They are known for their loyalty, companionship,
+        and variety of breeds. Dogs are highly adaptable animals that have been selectively
+        bred by humans for thousands of years for various purposes such as hunting,
+        herding, guarding, and serving as pets. They come in different sizes, shapes,
+        and coat types, with a wide range of temperaments and abilities. Dogs are
+        known for their keen senses, including hearing and smell, and are often referred
+        to as \\\"man's best friend\\\" due to their close relationship with humans.\"\n
+        \     },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n
+        \   \"prompt_tokens\": 22,\n    \"completion_tokens\": 120,\n    \"total_tokens\":
+        142\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7cb3c0c13849cebd-SJC
+      - 812d756dbf18ce50-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -49,7 +52,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 22 May 2023 08:40:27 GMT
+      - Sun, 08 Oct 2023 09:46:51 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -57,13 +60,13 @@ interactions:
       access-control-allow-origin:
       - '*'
       alt-svc:
-      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+      - h3=":443"; ma=86400
       openai-model:
-      - gpt-3.5-turbo-0301
+      - gpt-3.5-turbo-0613
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '15576'
+      - '3345'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -81,7 +84,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 19ms
       x-request-id:
-      - 2427e7d27beb68f0c74ed966072eaf29
+      - 28ff4193cd028abab8eb977cde115907
     status:
       code: 200
       message: OK
@@ -100,32 +103,32 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
+      - OpenAI/v1 PythonBindings/0.27.10
       X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-12.6.7-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Jun  8
+        23:57:12 PDT 2023; root:xnu-8020.240.18.701.6~1/RELEASE_X86_64 x86_64 i386"}'
     method: POST
     uri: https://api.openai.com/v1/chat/completions
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA2SQMW8bMQyF/wqh+Wz4mtgObgvQoR2CLBmCdChoiWcplkhF5MW4Gv3vxSVpOnR9
-        eO97j7y4FNzgfETzpebV/p7G8dfjbvft9p6/by3ePb5s+Py8uW5PT65zcngmbx+JtZdSM1kSdp3z
-        jdAouKHf3ez6frPd7TtXJFB2gztWW12ttyub2kFWm6tN7zo3KR7JDRdXm5RqP01OxOqGL9ed+4f+
-        lG/2nTMxzJ9K3/e/O+ejJE/qhh8XV0j/QptkcoND1aSGbMtEYSNe5t9CkCMkBYSCpWAG5AAIXkoR
-        hiiTUpQcoJKBRbTFe2I5M4zSIJlClhmzzW/BsSXikGdgtKnRGh4izYCNQEYjhkkpvAWpyHITZtCp
-        VmnWLZUVOQlrTLV736FwlnZKfATkVDArJIZXbEkmhTFRDgo6+bg4M56BeJTmqRBbBxapYZ3fUUrY
-        Fh8HaKR+ojV8laMurbRAC/IMIY0jNWKDQyMK2gGhj3BOFhdaajBxepkIapw1+Y9vHSjia5KGGXzE
-        ht6oJbXk9b/7G430hwUyRqEQBqJg7ynCa2zkY+1ZFEnMqinclbwIv8ndRfQAwwyTs0RX7EkecXht
-        6YKwfO9GuCCLv/ggn5Qlm24umEa+Mft1eOUPtcOaNHGfs3iaYgCLneiQNMofQ1+n2twAAAD//wMA
-        YcXer90CAAA=
+      string: "{\n  \"id\": \"chatcmpl-87Ki6DDpBICn3mU5gTYz8WFc9cJQO\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1696758598,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal that
+        belongs to the Canidae family. They are known for their loyalty and companionship
+        to humans. Dogs come in various breeds and have different sizes, appearances,
+        and temperaments. They are often kept as pets but can also be used for various
+        purposes such as working, hunting, herding, and providing assistance to people
+        with disabilities.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n
+        \ ],\n  \"usage\": {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\":
+        76,\n    \"total_tokens\": 98\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7d360067de59ce58-SJC
+      - 812d7a177fc3cf35-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -135,7 +138,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 07 Jun 2023 04:02:54 GMT
+      - Sun, 08 Oct 2023 09:50:00 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -145,11 +148,11 @@ interactions:
       alt-svc:
       - h3=":443"; ma=86400
       openai-model:
-      - gpt-3.5-turbo-0301
+      - gpt-3.5-turbo-0613
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '6761'
+      - '1947'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -167,92 +170,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 19ms
       x-request-id:
-      - da037a92559ddef50033663199998904
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '150'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
-    method: POST
-    uri: https://api.openai.com/v1/chat/completions
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA0SQTW/bMAyG/wqhsxMk7ZKuvhUbVgwbth0G7Osw0BJtqZFET6QSGMH++2An7W4C
-        Bb7P+/BsgjOtsR7VpjGu7j7T0D1+t49d2f/8+OPD+/qgT98G9+7NF/5kGsPdE1m9bqwtpzGSBs6m
-        MbYQKjnTbvev99vtZn+za0xiR9G0Zhh1dbverbSWjleb283WNKYKDmTasxkLp1F/Kx8oi2lvXjXm
-        f/TL+G7XGGXF+DK5v//bGOs5WBLT/jqbRPKcWTiSaQ2KBFHMOjfkrJTn9g/geIAggOA4kWiwc3dI
-        mBJGwOwAwXJKnMFzFfIcHYyka/jqaQIsBIfMpww9F1BPoUDkCaNODWDfk52boxJk1FqouUR2IQad
-        QBnGwsfgaGaMmANn8WGcPy5ZvibMwKdMRRZkoYWZME/gQt9ToazQFSInwP2sIw0QWg+noB5qDn8q
-        wegnCfZq1JHHY+CCEazHglaphFld1vCWB1kIGIWv5nGCKuQWxSOWwFVAUQ4CUq0HFPA1a8hDA56K
-        Wx4z5+IW8gDPx7e0OBOPkS79XJDLNQLJP+kp1eoopWXmZRZnxBelJhbn5ylZKRWX5Bco6Shl5qWk
-        VihZGdTG1nIBAAAA//8DAJ+QXbasAgAA
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7d3601d05d6996a8-SJC
-      Cache-Control:
-      - no-cache, must-revalidate
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 07 Jun 2023 04:03:51 GMT
-      Server:
-      - cloudflare
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-origin:
-      - '*'
-      alt-svc:
-      - h3=":443"; ma=86400
-      openai-model:
-      - gpt-3.5-turbo-0301
-      openai-organization:
-      - user-owo4fzpozfbbclosr06eubzj
-      openai-processing-ms:
-      - '5833'
-      openai-version:
-      - '2020-10-01'
-      strict-transport-security:
-      - max-age=15724800; includeSubDomains
-      x-ratelimit-limit-requests:
-      - '3500'
-      x-ratelimit-limit-tokens:
-      - '90000'
-      x-ratelimit-remaining-requests:
-      - '3499'
-      x-ratelimit-remaining-tokens:
-      - '89971'
-      x-ratelimit-reset-requests:
-      - 17ms
-      x-ratelimit-reset-tokens:
-      - 19ms
-      x-request-id:
-      - 82d089a74513f0bb38e018319a2c1417
+      - 230373751606db6b226b65c79f7099d4
     status:
       code: 200
       message: OK

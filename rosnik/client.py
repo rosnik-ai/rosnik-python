@@ -1,7 +1,7 @@
 import logging
 import threading
 
-from rosnik import collector
+from rosnik.events import queue
 
 logger = logging.getLogger(__name__)
 
@@ -21,15 +21,15 @@ def init(api_key=None):
 
     # Start the background thread
     thread = threading.Thread(
-        target=collector.process_events, kwargs={"api_key": api_key}, daemon=True
+        target=queue.process_events, kwargs={"api_key": api_key}, daemon=True
     )
     # TODO: handle shutdowns safely
     thread.start()
 
 
-def track_feedback(
-    completion_id: str = None, user_id: str = None, score: int = None, metadata: dict = None
-):
-    return collector.enqueue_feedback(
-        completion_id=completion_id, user_id=user_id, score=score, metadata=metadata
-    )
+# def track_feedback(
+#     completion_id: str = None, user_id: str = None, score: int = None, metadata: dict = None
+# ):
+#     return queue.enqueue_feedback(
+#         completion_id=completion_id, user_id=user_id, score=score, metadata=metadata
+#     )
