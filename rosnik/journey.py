@@ -1,6 +1,5 @@
 
 from contextvars import ContextVar
-import time
 from typing import Optional
 
 from ulid import monotonic as ulid
