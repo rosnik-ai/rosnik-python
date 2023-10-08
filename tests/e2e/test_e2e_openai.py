@@ -1,7 +1,7 @@
 import pytest
 import rosnik
 from rosnik import collector
-from rosnik.platforms import openai as phq_openai
+from rosnik.providers import openai as phq_openai
 
 
 @pytest.mark.vcr

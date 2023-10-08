@@ -9,7 +9,7 @@ openai_enabled = False
 
 try:
     openai_enabled = True
-    from rosnik.platforms import openai as phq_openai
+    from rosnik.providers import openai as phq_openai
 except ImportError:
     logger.debug("Skipping OpenAI instrumentation.")
 

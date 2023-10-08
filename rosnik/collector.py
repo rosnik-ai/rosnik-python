@@ -6,7 +6,7 @@ import typing
 import queue
 
 from rosnik import api
-from rosnik.platforms import openai as phq_openai
+from rosnik.providers import openai as phq_openai
 from rosnik.types.core import Metadata
 
 logger = logging.getLogger(__name__)
