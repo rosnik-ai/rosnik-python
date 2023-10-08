@@ -1,15 +1,19 @@
 import logging
 
 from rosnik.utils import wrap_class_method
-from rosnik.types import PromptHqMetadata
-
-from openai.openai_object import OpenAIObject
+from rosnik.types.core import Metadata
 
 logger = logging.getLogger(__name__)
 
+try:
+    from openai.openai_object import OpenAIObject
+except ImportError:
+    OpenAIObject = dict
+    logger.warning("openai is not installed")
+
 _OAI = "openai"
-completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "completion"}
-chat_completion_metadata: PromptHqMetadata = {"platform": _OAI, "action": "chatcompletion"}
+completion_metadata: Metadata = {"platform": _OAI, "action": "completion"}
+chat_completion_metadata: Metadata = {"platform": _OAI, "action": "chatcompletion"}
 
 
 def _patch_completion(openai):

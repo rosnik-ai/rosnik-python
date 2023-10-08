@@ -4,7 +4,7 @@ import time
 import pytest
 
 from rosnik import collector
-from rosnik.types import PromptHqMetadata
+from rosnik.types.core import Metadata
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def added_fake_event():
     ]
     start_time = time.time()
     end_time = time.time() + 100
-    completion_metadata: PromptHqMetadata = {"platform": "openai", "action": "completion"}
+    completion_metadata: Metadata = {"platform": "openai", "action": "completion"}
     collector.capture_data(
         payload, response, function_fingerprint, start_time, end_time, completion_metadata
     )

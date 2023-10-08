@@ -1,7 +1,7 @@
 import logging
 import os
 
-from rosnik import types
+from rosnik.types import core
 
 import requests
 
@@ -26,7 +26,7 @@ class PromptHqHttpClient:
     def _post(self, *args, **kwargs):
         return self.session.post(*args, **kwargs)
 
-    def send_event(self, event: types.PromptHqEvent):
+    def send_event(self, event: core.Event):
         platform = event["_prompthq_metadata"]["platform"]
         action = event["_prompthq_metadata"]["action"]
         url = f"{_base_url}/{platform}/{action}"

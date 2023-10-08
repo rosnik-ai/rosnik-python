@@ -7,7 +7,7 @@ import queue
 
 from rosnik import api
 from rosnik.platforms import openai as phq_openai
-from rosnik.types import PromptHqMetadata
+from rosnik.types.core import Metadata
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ def capture_data(
     function_fingerprint: typing.List[str],
     start_time: int,
     end_time: int,
-    metadata: PromptHqMetadata,
+    metadata: Metadata,
 ):
     logger.debug("Event enqueued:", payload, function_fingerprint, metadata)
     event_queue.put(
