@@ -9,6 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
 openai = {version = "^0.27.6", optional = true}
+flask = {version = ">= 3,<4", optional = true}
 ulid-py = "^1.1.0"
 
 [tool.poetry.group.static.dependencies]
@@ -27,6 +28,7 @@ pytest-recording = "^0.13.0"
 
 [tool.poetry.extras]
 openai = ["openai"]
+flask = ["flask"]
 
 [build-system]
 requires = ["poetry-core"]
