@@ -28,9 +28,8 @@ def track_request_start(
     return event
 
 
-# TODO: technically `response_payload` is a openai.openai_object.OpenAIObject
 def track_request_finish(
-    response_payload: dict,
+    response_payload,
     metadata: AIFunctionMetadata,
     function_fingerprint: List[str],
     request_event: AIRequestStart,

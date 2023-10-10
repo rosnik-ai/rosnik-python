@@ -1,4 +1,5 @@
 import logging
+from rosnik import client
 from rosnik import headers, interaction, journey
 
 logger = logging.getLogger(__name__)
@@ -21,8 +22,6 @@ def _annotate_response_headers(response):
 
 
 class FlaskRosnik:
-    # TODO: integrate with the environment
-    # and set env var this way.
     def __init__(self, app=None):
         if app is not None:
             self.init_app(app)
@@ -30,3 +29,4 @@ class FlaskRosnik:
     def init_app(self, app):
         app.before_request(_get_journey_id)
         app.after_request(_annotate_response_headers)
+        client.init()

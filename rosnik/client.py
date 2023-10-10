@@ -1,6 +1,7 @@
 import logging
 import threading
 
+from rosnik import env
 from rosnik.events import queue
 
 logger = logging.getLogger(__name__)
@@ -14,12 +15,14 @@ except ImportError:
     logger.debug("Skipping OpenAI instrumentation.")
 
 
-def init(api_key=None):
+def init():
     if openai_enabled:
         logger.debug("OpenAI is enabled. Patching.")
         phq_openai._patch_openai()
 
-    # Start the background thread
-    thread = threading.Thread(target=queue.process_events, kwargs={"api_key": api_key}, daemon=True)
-    # TODO: handle shutdowns safely
-    thread.start()
+    if not env.is_sync():
+        logger.debug("Running event processor in separate thread")
+        # Start the background thread
+        thread = threading.Thread(target=queue.process_events, daemon=True)
+        # TODO: handle shutdowns safely
+        thread.start()

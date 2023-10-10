@@ -3,6 +3,7 @@ import threading
 import queue
 
 from rosnik import api
+from rosnik import env
 from rosnik.types.core import Event
 
 logger = logging.getLogger(__name__)
@@ -14,8 +15,14 @@ event_queue = queue.Queue()
 # should probably be by kb size
 MAX_BATCH_SIZE = 1
 
+api_client = api.IngestClient()
+
 
 def enqueue_event(event: Event):
+    if env.is_sync():
+        api_client.send_event(event)
+        return
+
     try:
         event_queue.put(event, block=False)
     except queue.Full:
@@ -23,9 +30,8 @@ def enqueue_event(event: Event):
         logger.warning("rosnik events queue is full")
 
 
-def process_events(api_key=None):
+def process_events():
     logger.debug("Running event processor in thread:", threading.get_ident())
-    api_client = api.IngestClient(api_key=api_key)
     while True:
         # Wait for events to be available in the queue
         event = event_queue.get()

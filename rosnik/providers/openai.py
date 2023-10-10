@@ -1,6 +1,7 @@
 import logging
 from rosnik.types.ai import AIFunctionMetadata
 
+from rosnik import env
 from rosnik.wrap import wrap_class_method
 
 logger = logging.getLogger(__name__)
@@ -26,11 +27,10 @@ def _patch_chat_completion(openai):
     )
 
 
-def _patch_openai(openai=None):
-    if not openai:
-        import openai
+def _patch_openai():
+    import openai
 
-    if getattr(openai, "__prompthq_patch", False):
+    if getattr(openai, f"__{env.NAMESPACE}_patch", False):
         logger.debug("Not patching. Already patched.")
         return
 
@@ -38,9 +38,5 @@ def _patch_openai(openai=None):
         _patch_completion(openai)
     if getattr(openai, "ChatCompletion", None):
         _patch_chat_completion(openai)
-    setattr(openai, "__prompthq_patch", True)
+    setattr(openai, f"__{env.NAMESPACE}_patch", True)
 
-
-def serialize_result(obj: OpenAIObject):
-    """For now, do the naive thing."""
-    return obj.to_dict_recursive()

@@ -1,3 +1,3 @@
-_NAMESPACE = "ROSNIK"
-JOURNEY_ID_KEY = f"X-{_NAMESPACE}-JourneyId"
-INTERACTION_ID_KEY = f"X-{_NAMESPACE}-InteractionId"
+from rosnik import env
+JOURNEY_ID_KEY = f"X-{env.NAMESPACE}-JourneyId"
+INTERACTION_ID_KEY = f"X-{env.NAMESPACE}-InteractionId"

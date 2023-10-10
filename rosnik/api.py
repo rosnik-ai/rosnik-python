@@ -13,8 +13,7 @@ _base_url = "https://ingest.rosnik.ai/api/v1/events"
 
 class IngestClient:
     def __init__(self, api_key=None):
-        # TODO: This might not work in a separate thread? Not sure why this didn't get picked up.
-        self.api_key = os.environ.get(f"{env.API_KEY}", api_key)
+        self.api_key = env.get_api_key()
         if self.api_key is None:
             logger.warning(f"{env.API_KEY} is not set and an API token was not provided on init")
 
@@ -29,6 +28,9 @@ class IngestClient:
 
     def send_event(self, event: core.Event):
         logger.debug(f"Sending event to {_base_url}")
+        print(f"Sending event to {_base_url}")
+        print("Event", event.to_json())
+        print("Headers", self.headers)
         try:
             response = self._post(_base_url, headers=self.headers, json=event.to_json())
             response.raise_for_status()
