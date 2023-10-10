@@ -8,7 +8,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-_base_url = "https://ingest.prompthq.ai/api/v1/events"
+_base_url = "https://ingest.rosnik.ai/api/v1/events"
 
 
 class IngestClient:
