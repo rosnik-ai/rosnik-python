@@ -22,7 +22,7 @@ def track_request_start(
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
     queue.enqueue_event(event)
-    return event.request_id
+    return event.event_id
 
 
 # TODO: technically `response_payload` is a openai.openai_object.OpenAIObject

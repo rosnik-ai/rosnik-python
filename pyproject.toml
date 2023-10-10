@@ -1,14 +1,12 @@
 [tool.poetry]
 name = "rosnik"
-version = "0.0.8"
+version = "0.0.9"
 description = "ROSNIK Python SDK"
 authors = ["Nick DiRienzo <nick@rosnik.ai>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-# Target 3.8+ since that's receiving patches through 2025
-# Don't support 4 yet.
 python = ">=3.10,<4"
 openai = {version = "^0.27.6", optional = true}
 ulid-py = "^1.1.0"

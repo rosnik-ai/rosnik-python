@@ -3,7 +3,6 @@ from typing import Optional
 
 from ulid import monotonic as ulid
 
-# TODO: this should work for flask apps. need to check.
 journey_id_cv: ContextVar[Optional[str]] = ContextVar("journey_id")
 
 # TODO: turn into a config or smth
@@ -18,13 +17,17 @@ def get_or_create_journey_id():
     # If we don't have one, make one.
     if existing_journey_id is None:
         journey_id_cv.set(new_id_str)
+        # TODO: this needs to be sent to the frontend
         return new_id_str
 
     # If we have one, and it's stale, then make a new one.
-    existing_timestamp = existing_journey_id.timestamp().timestamp
+    existing_journey_ulid = ulid.parse(existing_journey_id)
+    existing_timestamp = existing_journey_ulid.timestamp().timestamp
     if existing_journey_id and now_from_new_id - existing_timestamp > JOURNEY_TIMEOUT:
         journey_id_cv.set(new_id_str)
+        # TODO: this needs to be sent to the frontend
         return new_id_str
 
     # Otherwise the one we have works.
+    # TODO: this needs to be sent to the frontend.
     return existing_journey_id

@@ -4,7 +4,13 @@ import platform
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+from ulid import monotonic as ulid
+
 from rosnik import journey
+from rosnik import workflow
+
+def _generate_event_id():
+    return ulid.new().str
 
 
 @dataclass(kw_only=True, slots=True)
@@ -23,6 +29,8 @@ class Metadata(StaticMetadata):
 
 @dataclass(kw_only=True, slots=True)
 class Event:
+    # Unique event ID
+    event_id: str = field(default_factory=_generate_event_id)
     event_type: str
     # Epoch
     journey_id: str = field(default_factory=journey.get_or_create_journey_id)
@@ -45,6 +53,10 @@ class AIEvent(Event):
     ai_provider: str
     # AI action: completion, chatcompletion
     ai_action: str
+    # User Interaction ID: this is the causal user.interaction.track 
+    # event ID for this AI request. If it's unset then something else
+    # we're not tracking caused this action.
+    user_interaction_id: Optional[str] = None
 
 
 class UserEvent(Event):
