@@ -12,13 +12,13 @@ _base_url = "https://ingest.rosnik.ai/api/v1/events"
 
 
 class IngestClient:
-    def __init__(self, api_key=None):
+    def __init__(self):
         self.api_key = env.get_api_key()
         if self.api_key is None:
             logger.warning(f"{env.API_KEY} is not set and an API token was not provided on init")
 
         self.headers = {
-            "Authorization": f"Bearer {api_key}",
+            "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
         }
         self.session = requests.Session()

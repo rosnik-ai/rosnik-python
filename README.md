@@ -35,3 +35,4 @@ poetry run pytest
 - [ ] Support Cohere
 - [ ] Support sync mode
 - [ ] Support guidance
+- [ ] Allow for debug logs to be printed
