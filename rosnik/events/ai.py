@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from rosnik.events import queue
 from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart
@@ -11,18 +11,21 @@ def track_request_start(
     # TODO: Technically yes, we can pull this from the payload,
     # but this feels precarious.
     ai_model = request_payload["model"]
+    # TODO: we should have a serializer:
+    # OpenAI calls this "user"
+    user_id = request_payload.get("user", None)
     ai_provider = metadata["ai_provider"]
     ai_action = metadata["ai_action"]
-    # TODO: generate a journey ID
     event = AIRequestStart(
         ai_model=ai_model,
         ai_provider=ai_provider,
         ai_action=ai_action,
         request_payload=request_payload,
+        user_id=user_id,
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
     queue.enqueue_event(event)
-    return event.event_id
+    return event
 
 
 # TODO: technically `response_payload` is a openai.openai_object.OpenAIObject
@@ -30,20 +33,20 @@ def track_request_finish(
     response_payload: dict,
     metadata: AIFunctionMetadata,
     function_fingerprint: List[str],
-    request_id: str,
+    request_event: AIRequestStart
 ):
-    # TODO: Technically yes, we can pull this from the payload,
-    # but this feels precarious.
+    # Note: this might be different from the request model,
+    # e.g. gpt-3.5-turbo in request and gpt-3.5-turbo-0613 in response.
     ai_model = response_payload["model"]
     ai_provider = metadata["ai_provider"]
     ai_action = metadata["ai_action"]
-    # TODO: generate a journey ID
     event = AIRequestFinish(
         ai_model=ai_model,
         ai_provider=ai_provider,
         ai_action=ai_action,
         response_payload=response_payload,
-        ai_request_start_event_id=request_id,
+        ai_request_start_event_id=request_event.event_id,
+        user_id=request_event.user_id,
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
     queue.enqueue_event(event)

@@ -40,6 +40,8 @@ class Event:
     # JSONable user defined context
     # TODO: Supplied via either @context or with context({})
     context: Optional[dict] = None
+    # Users could be part of an AI event or a User event
+    user_id: Optional[str] = None
     # Our own metadata
     _metadata: Metadata
 
@@ -59,6 +61,5 @@ class AIEvent(Event):
 
 
 class UserEvent(Event):
-    user_id: str
     # JSONable user properties that can be added
     user_properties: dict

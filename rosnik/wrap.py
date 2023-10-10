@@ -40,9 +40,9 @@ def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
         # TODO: support stream
-        request_id = ai.track_request_start(kwargs, metadata, calling_functions)
+        request_event = ai.track_request_start(kwargs, metadata, calling_functions)
         result = wrapped_func(*args, **kwargs)
-        ai.track_request_finish(result, metadata, calling_functions, request_id)
+        ai.track_request_finish(result, metadata, calling_functions, request_event)
 
         return result
 
