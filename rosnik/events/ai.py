@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from rosnik.events import queue
 from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart
@@ -33,7 +33,7 @@ def track_request_finish(
     response_payload: dict,
     metadata: AIFunctionMetadata,
     function_fingerprint: List[str],
-    request_event: AIRequestStart
+    request_event: AIRequestStart,
 ):
     # Note: this might be different from the request model,
     # e.g. gpt-3.5-turbo in request and gpt-3.5-turbo-0613 in response.

@@ -1,7 +1,6 @@
-from dataclasses import dataclass, field
-from typing import Optional, TypedDict
+from dataclasses import dataclass
+from typing import TypedDict
 
-from ulid import monotonic as ulid
 
 from rosnik.types.core import AIEvent
 

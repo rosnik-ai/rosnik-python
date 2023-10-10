@@ -39,7 +39,10 @@ def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
         # Flatten into a period separated sequence so we can do function chain search later.
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
-        # TODO: support stream
+        # TODO: support stream:
+        # if stream is True, don't track_request_finish here
+        # instead we need to expose a hook for tracking it
+        # or patch the response object generator and when it ends, we fire.
         request_event = ai.track_request_start(kwargs, metadata, calling_functions)
         result = wrapped_func(*args, **kwargs)
         ai.track_request_finish(result, metadata, calling_functions, request_event)

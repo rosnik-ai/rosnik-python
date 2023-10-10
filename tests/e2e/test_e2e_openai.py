@@ -14,9 +14,9 @@ def test_e2e_chat_completion(mocker, openai, event_queue):
     fake_user_id = "fake-user-123"
     phq_openai._patch_chat_completion(openai)
     expected_messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": input_text},
-        ]
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
     openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,
@@ -39,7 +39,7 @@ def test_e2e_chat_completion(mocker, openai, event_queue):
     assert response_event.ai_model == "gpt-3.5-turbo-0613"
     assert response_event.ai_provider == "openai"
     assert response_event.ai_request_start_event_id == request_event.event_id
-    
+
     # rosnik.track_feedback(
     #     completion_id=result.id,
     #     user_id=fake_user_id,

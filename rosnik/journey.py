@@ -11,8 +11,10 @@ journey_id_cv: ContextVar[Optional[str]] = ContextVar("journey_id")
 # TODO: turn into a config or smth
 JOURNEY_TIMEOUT = 30 * 60  # 30 minutes
 
+
 def get_journey_id():
     return journey_id_cv.get(None)
+
 
 def get_or_create_journey_id():
     _new_id = ulid.new()
@@ -22,7 +24,6 @@ def get_or_create_journey_id():
     # If we don't have one, make one.
     if existing_journey_id is None:
         set_journey_id(new_id_str)
-        # TODO: this needs to be sent to the frontend
         return new_id_str
 
     # If we have one, and it's stale, then make a new one.
@@ -30,11 +31,9 @@ def get_or_create_journey_id():
     existing_timestamp = existing_journey_ulid.timestamp().timestamp
     if existing_journey_id and now_from_new_id - existing_timestamp > JOURNEY_TIMEOUT:
         set_journey_id(new_id_str)
-        # TODO: this needs to be sent to the frontend
         return new_id_str
 
     # Otherwise the one we have works.
-    # TODO: this needs to be sent to the frontend.
     return existing_journey_id
 
 

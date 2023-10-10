@@ -8,6 +8,7 @@ from ulid import monotonic as ulid
 
 from rosnik import journey
 
+
 def _generate_event_id():
     return ulid.new().str
 
@@ -38,7 +39,7 @@ class Event:
     # Epoch unless not set, which will be -1
     occurred_at: Optional[int] = None
     # JSONable user defined context
-    # TODO: Supplied via either @context or with context({})
+    # TODO: Supplied via either @context or with context({})?
     context: Optional[dict] = None
     # Users could be part of an AI event or a User event
     user_id: Optional[str] = None
@@ -54,7 +55,7 @@ class AIEvent(Event):
     ai_provider: str
     # AI action: completion, chatcompletion
     ai_action: str
-    # User Interaction ID: this is the causal user.interaction.track 
+    # User Interaction ID: this is the causal user.interaction.track
     # event ID for this AI request. If it's unset then something else
     # we're not tracking caused this action.
     user_interaction_id: Optional[str] = None
