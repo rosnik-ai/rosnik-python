@@ -4,6 +4,7 @@ import platform
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+from dataclasses_json import DataClassJsonMixin
 from ulid import monotonic as ulid
 
 from rosnik import journey
@@ -28,7 +29,7 @@ class Metadata(StaticMetadata):
 
 
 @dataclass(kw_only=True, slots=True)
-class Event:
+class Event(DataClassJsonMixin):
     # Unique event ID
     event_id: str = field(default_factory=_generate_event_id)
     event_type: str
