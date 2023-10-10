@@ -7,7 +7,6 @@ from typing import List, Optional
 from ulid import monotonic as ulid
 
 from rosnik import journey
-from rosnik import workflow
 
 def _generate_event_id():
     return ulid.new().str

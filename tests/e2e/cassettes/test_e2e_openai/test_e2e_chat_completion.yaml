@@ -15,260 +15,6 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
-    method: POST
-    uri: https://api.openai.com/v1/chat/completions
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA0yPzW7cMAyEX4XgWbvYzf4k8a0FcigQoCiaXtpDQFu0pa4kuiKdrRPk3QunbZIr
-        Z77hzBNGjw12gazLY1pdfvZ3+y+76ePNt9L+eiT+frzZzp++hqvbwy06lPYnd/aPWHeSx8QWpaDD
-        rjIZe2y2x6vjdnO43l84zOI5YYPDaKvd+rCyqbay2uw2W3Q4KQ2MzROOVfJo9yYnLorNxd7hW/Tr
-        +XLr0MQovV6uD88OuyCxY8XmxxNm1v+ZVRJjg6Qa1ajY0lCKcVnafwAvA0QFgl6muko8DOwhU86U
-        wALZInaSs5Q0w4lHA1rcI9sa7gLPQJXhVORcoJcKFjhWSDJTstnBmGjupwSFbKoMVDxQG1O0GUwW
-        IEOXRBlaKV7hHC1AmDIVfUlfkMqQqczgY99z5WLQVmavIP1SXt1f6oFqlElB4yOrA+M8cqXMxfTd
-        28j6rjYlFZDeuMCk7JdlZ6mnWAagEjMldaBTFxZhGRemYrEMDgJXv7ikgnJ9iB2/gGt8dtjHEjXc
-        VyaVgg2qyYgOY/H8G//IyqA2tpYLAAAA//8DACuHu6dtAgAA
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7d358f7c6980fa82-SJC
-      Cache-Control:
-      - no-cache, must-revalidate
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 07 Jun 2023 02:45:47 GMT
-      Server:
-      - cloudflare
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-origin:
-      - '*'
-      alt-svc:
-      - h3=":443"; ma=86400
-      openai-model:
-      - gpt-3.5-turbo-0301
-      openai-organization:
-      - user-owo4fzpozfbbclosr06eubzj
-      openai-processing-ms:
-      - '5310'
-      openai-version:
-      - '2020-10-01'
-      strict-transport-security:
-      - max-age=15724800; includeSubDomains
-      x-ratelimit-limit-requests:
-      - '3500'
-      x-ratelimit-limit-tokens:
-      - '90000'
-      x-ratelimit-remaining-requests:
-      - '3499'
-      x-ratelimit-remaining-tokens:
-      - '89970'
-      x-ratelimit-reset-requests:
-      - 17ms
-      x-ratelimit-reset-tokens:
-      - 19ms
-      x-request-id:
-      - ce895bf540ec7cf95404998046041bb2
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}],
-      "user": "fake-user-123"}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '175'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
-    method: POST
-    uri: https://api.openai.com/v1/chat/completions
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA0SPQU8bQQyF7/0Vls+z0SaEUPaGqtIKDlwqcagq5Mw4u4aZ8TLjpU2j/PdqQ4Hb
-        03t+n54PKAE79AOZT2NsLu54l77cf72+vbtf+Zvn1n97Hi4Tl8frq+/oULeP7O1/Y+E1jZFNNKND
-        X5iMA3bLzefNctmeX6wdJg0cscN+tOZscd7YVLbatGftEh1OlXrG7oBj0TTag+kT54rdau3wA/1u
-        r1cOTY3iu7PZHB36QcVzxe7nARPXN2bRyNgh1SrVKNu8ULNxntdfQdAepALBTqfSRO57DpAoJYpA
-        OQCB15Q0Q9DE1cTPv8HItoAfA+/nlEEyvFARnSpsC3Oop2qVv/yqqDA8Zf2dYacFbGApEHVP0fav
-        +VaimHCFOvkBqMIwZZPcO+gnKuGkTkguL5L7+aKfJDBQlkSxLvDocCdZ6vBQmKpm7LCajuhQcuA/
-        2LXHX8dP/wAAAP//AwAxb4Y/5wEAAA==
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7d36009358052289-SJC
-      Cache-Control:
-      - no-cache, must-revalidate
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 07 Jun 2023 04:02:58 GMT
-      Server:
-      - cloudflare
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-origin:
-      - '*'
-      alt-svc:
-      - h3=":443"; ma=86400
-      openai-model:
-      - gpt-3.5-turbo-0301
-      openai-organization:
-      - user-owo4fzpozfbbclosr06eubzj
-      openai-processing-ms:
-      - '3517'
-      openai-version:
-      - '2020-10-01'
-      strict-transport-security:
-      - max-age=15724800; includeSubDomains
-      x-ratelimit-limit-requests:
-      - '3500'
-      x-ratelimit-limit-tokens:
-      - '90000'
-      x-ratelimit-remaining-requests:
-      - '3499'
-      x-ratelimit-remaining-tokens:
-      - '89971'
-      x-ratelimit-reset-requests:
-      - 17ms
-      x-ratelimit-reset-tokens:
-      - 19ms
-      x-request-id:
-      - 581c59ce65d453e10f3bf695242c4b92
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}],
-      "user": "fake-user-123"}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '175'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.6
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.6", "httplib": "requests", "lang": "python", "lang_version":
-        "3.8.16", "platform": "macOS-12.6.5-x86_64-i386-64bit", "publisher": "openai",
-        "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Mar  9 20:08:59
-        PST 2023; root:xnu-8020.240.18.700.8~1/RELEASE_X86_64 x86_64 i386"}'
-    method: POST
-    uri: https://api.openai.com/v1/chat/completions
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA0RRQW7bQAz8CsGzbEhx6ya6Bei1KFDkEvcQUFpKy1paKkuuE8PI3ws5aXojyJnh
-        DHlBCdhiH8n7eZk2337yGO/88VdzqOXw2tz+KDf1Iz8cnk/jGSvU7g/3/sHY9jovE7towgr7zOQc
-        sG32t/umqfe7psJZA0/Y4rj4Zrf9uvGSO93Uu7rBCovRyNhecMk6L/7keuRk2N58qfC/9Gd7v6/Q
-        1Wn67NzVbxX2UaVnw/b3BWe2f5pZJ8YWyUzMKfnqUJNzWt3fQ9ARxIBg0JI3E48jB5hpnmkCj+Tr
-        sNd51jSd4ciLA63ohR00QzEOMGiGE2XRYrCUvKixgZU+rtBYkksaK4icw7UYC31UlAK8+5I0gqQg
-        JwmFJoMX8QhBjDqZxIVtCw+RMwNlhpnSGYIMA2dODl1mDgY6rFmsAqY+vgt4ZMmgLwlKkufCsMSz
-        SU/TdXPHkU6ieQ2aSdy28F1Hu644ppW1But49Tbp+YNFw8D9+g5yXg+zUBJNBq4Qy0zJtvhW4SBJ
-        LD5lJtOELZrrghVKCvz6V0pWBrWxtVwAAAAA//8DAAXgroJyAgAA
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7d3601f5db6e15a4-SJC
-      Cache-Control:
-      - no-cache, must-revalidate
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 07 Jun 2023 04:03:56 GMT
-      Server:
-      - cloudflare
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-origin:
-      - '*'
-      alt-svc:
-      - h3=":443"; ma=86400
-      openai-model:
-      - gpt-3.5-turbo-0301
-      openai-organization:
-      - user-owo4fzpozfbbclosr06eubzj
-      openai-processing-ms:
-      - '4958'
-      openai-version:
-      - '2020-10-01'
-      strict-transport-security:
-      - max-age=15724800; includeSubDomains
-      x-ratelimit-limit-requests:
-      - '3500'
-      x-ratelimit-limit-tokens:
-      - '90000'
-      x-ratelimit-remaining-requests:
-      - '3499'
-      x-ratelimit-remaining-tokens:
-      - '89970'
-      x-ratelimit-reset-requests:
-      - 17ms
-      x-ratelimit-reset-tokens:
-      - 19ms
-      x-request-id:
-      - 387981a6e0c252e1b6828d6d115548ca
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}],
-      "user": "fake-user-123"}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '175'
-      Content-Type:
-      - application/json
-      User-Agent:
       - OpenAI/v1 PythonBindings/0.27.10
       X-OpenAI-Client-User-Agent:
       - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
@@ -279,21 +25,23 @@ interactions:
     uri: https://api.openai.com/v1/chat/completions
   response:
     body:
-      string: "{\n  \"id\": \"chatcmpl-87KfZPmZVXTTKftnFEuie8mt2HO5L\",\n  \"object\":
-        \"chat.completion\",\n  \"created\": 1696758441,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+      string: "{\n  \"id\": \"chatcmpl-889rzBJgJAWCAYUluvQJP8pGJv2aE\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1696955255,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
         \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
-        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal that
-        is part of the canidae family. They are known for their loyalty, sociability,
-        and ability to be trained. Dogs come in various breeds, shapes, and sizes,
-        and are often kept as pets or working animals for tasks such as herding, hunting,
-        or providing assistance to people with disabilities.\"\n      },\n      \"finish_reason\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated carnivorous
+        mammal that belongs to the Canidae family. They are beloved pets and are known
+        for their loyalty and companionship. Dogs come in various breeds, sizes, and
+        temperaments, and are often kept as pets for their ability to provide comfort,
+        protection, and a sense of joy to their owners. They also serve important
+        roles in various tasks such as search and rescue, therapy, police work, and
+        guiding individuals with disabilities.\"\n      },\n      \"finish_reason\":
         \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\":
-        71,\n    \"total_tokens\": 93\n  }\n}\n"
+        94,\n    \"total_tokens\": 116\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 812d763e5fb4cf09-SJC
+      - 81403b410fdb06a9-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -303,7 +51,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 08 Oct 2023 09:47:23 GMT
+      - Tue, 10 Oct 2023 16:27:38 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -317,95 +65,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '2294'
-      openai-version:
-      - '2020-10-01'
-      strict-transport-security:
-      - max-age=15724800; includeSubDomains
-      x-ratelimit-limit-requests:
-      - '3500'
-      x-ratelimit-limit-tokens:
-      - '90000'
-      x-ratelimit-remaining-requests:
-      - '3499'
-      x-ratelimit-remaining-tokens:
-      - '89971'
-      x-ratelimit-reset-requests:
-      - 17ms
-      x-ratelimit-reset-tokens:
-      - 19ms
-      x-request-id:
-      - 461b16dea62b45c789fcdee95c839148
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}],
-      "user": "fake-user-123"}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '175'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.10
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
-        "lang_version": "3.10.11", "platform": "macOS-12.6.7-x86_64-i386-64bit", "publisher":
-        "openai", "uname": "Darwin 21.6.0 Darwin Kernel Version 21.6.0: Thu Jun  8
-        23:57:12 PDT 2023; root:xnu-8020.240.18.701.6~1/RELEASE_X86_64 x86_64 i386"}'
-    method: POST
-    uri: https://api.openai.com/v1/chat/completions
-  response:
-    body:
-      string: "{\n  \"id\": \"chatcmpl-87Ki8YouxUIvoRn7a2oCoKGHnfuPu\",\n  \"object\":
-        \"chat.completion\",\n  \"created\": 1696758600,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
-        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
-        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal that
-        belongs to the canine family. They are known for their loyalty and their ability
-        to form close bonds with humans. Dogs come in many different breeds, each
-        with its own unique characteristics and traits. They are often kept as pets
-        and are known for their companionship, as well as their service in various
-        roles such as search and rescue, therapy, and assistance for individuals with
-        disabilities.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n
-        \ \"usage\": {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\": 84,\n
-        \   \"total_tokens\": 106\n  }\n}\n"
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 812d7a268da32519-SJC
-      Cache-Control:
-      - no-cache, must-revalidate
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Sun, 08 Oct 2023 09:50:03 GMT
-      Server:
-      - cloudflare
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-origin:
-      - '*'
-      alt-svc:
-      - h3=":443"; ma=86400
-      openai-model:
-      - gpt-3.5-turbo-0613
-      openai-organization:
-      - user-owo4fzpozfbbclosr06eubzj
-      openai-processing-ms:
-      - '2142'
+      - '3108'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -423,7 +83,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 19ms
       x-request-id:
-      - 9960c4cea803a8aecf7d56fc67913d13
+      - 833647d646e4537e048a928576791205
     status:
       code: 200
       message: OK

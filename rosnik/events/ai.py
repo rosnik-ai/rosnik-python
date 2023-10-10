@@ -43,7 +43,7 @@ def track_request_finish(
         ai_provider=ai_provider,
         ai_action=ai_action,
         response_payload=response_payload,
-        request_id=request_id,
+        ai_request_start_event_id=request_id,
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
     queue.enqueue_event(event)
