@@ -49,3 +49,4 @@ def track_request_finish(
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
     queue.enqueue_event(event)
+    return event
