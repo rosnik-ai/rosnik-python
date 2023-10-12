@@ -13,15 +13,33 @@ except ImportError:
     logger.warning("openai is not installed")
 
 _OAI = "openai"
-completion_metadata: AIFunctionMetadata = {"ai_provider": _OAI, "ai_action": "completion"}
-chat_completion_metadata: AIFunctionMetadata = {"ai_provider": _OAI, "ai_action": "chatcompletion"}
+completion_metadata: AIFunctionMetadata = {
+    "ai_provider": _OAI,
+    "ai_action": "completions"
+}
+chat_completion_metadata: AIFunctionMetadata = {
+    "ai_provider": _OAI,
+    "ai_action": "chat.completions"
+}
 
 
 def _patch_completion(openai):
+    openai_attributes = {}
+    openai_attributes["api_base"] = openai.api_base
+    openai_attributes["api_type"] = openai.api_type
+    openai_attributes["api_version"] = openai.api_version
+    completion_metadata["openai_attributes"] = openai_attributes
+
     openai.Completion.create = wrap_class_method(openai.Completion.create, completion_metadata)
 
 
 def _patch_chat_completion(openai):
+    openai_attributes = {}
+    openai_attributes["api_base"] = openai.api_base
+    openai_attributes["api_type"] = openai.api_type
+    openai_attributes["api_version"] = openai.api_version
+    chat_completion_metadata["openai_attributes"] = openai_attributes
+
     openai.ChatCompletion.create = wrap_class_method(
         openai.ChatCompletion.create, chat_completion_metadata
     )
