@@ -1,4 +1,3 @@
-from contextvars import ContextVar
 import time
 import os
 import platform
@@ -9,6 +8,7 @@ from dataclasses_json import DataClassJsonMixin
 from ulid import monotonic as ulid
 
 from rosnik import state
+
 
 def _generate_event_id():
     return ulid.new().str
@@ -46,6 +46,7 @@ class Event(DataClassJsonMixin):
     device_id: Optional[str] = field(default_factory=state.get_device_id)
     # Our own metadata
     _metadata: Metadata
+
 
 @dataclass(kw_only=True, slots=True)
 class AIEvent(Event):

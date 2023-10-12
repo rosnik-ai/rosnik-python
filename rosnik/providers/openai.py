@@ -13,13 +13,10 @@ except ImportError:
     logger.warning("openai is not installed")
 
 _OAI = "openai"
-completion_metadata: AIFunctionMetadata = {
-    "ai_provider": _OAI,
-    "ai_action": "completions"
-}
+completion_metadata: AIFunctionMetadata = {"ai_provider": _OAI, "ai_action": "completions"}
 chat_completion_metadata: AIFunctionMetadata = {
     "ai_provider": _OAI,
-    "ai_action": "chat.completions"
+    "ai_action": "chat.completions",
 }
 
 
@@ -57,4 +54,3 @@ def _patch_openai():
     if getattr(openai, "ChatCompletion", None):
         _patch_chat_completion(openai)
     setattr(openai, f"__{env.NAMESPACE}_patch", True)
-

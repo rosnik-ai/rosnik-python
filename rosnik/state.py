@@ -23,27 +23,33 @@ journey_id_cv: ContextVar[Optional[str]] = ContextVar(_journey_id_key)
 user_interaction_id_cv: ContextVar[Optional[str]] = ContextVar(_user_interaction_id_key)
 device_id_cv: ContextVar[Optional[str]] = ContextVar(_device_id_key)
 
+
 class State(Enum):
     JOURNEY_ID = _journey_id_key
     USER_INTERACTION_ID = _user_interaction_id_key
     DEVICE_ID = _device_id_key
 
+
 _state = {
     State.JOURNEY_ID: journey_id_cv,
     State.USER_INTERACTION_ID: user_interaction_id_cv,
-    State.DEVICE_ID: device_id_cv
+    State.DEVICE_ID: device_id_cv,
 }
+
 
 def store(state_type: State, value: str):
     _state[state_type].set(value)
 
+
 def retrieve(state_type: State):
     return _state[state_type].get(None)
+
 
 def create_journey_id():
     journey_id = ulid.new().str
     store(State.JOURNEY_ID, journey_id)
     return journey_id
+
 
 def get_journey_id():
     journey_id = retrieve(State.JOURNEY_ID)
@@ -51,8 +57,10 @@ def get_journey_id():
         return create_journey_id()
     return journey_id
 
+
 def get_device_id():
     return retrieve(State.DEVICE_ID)
+
 
 def get_user_interaction_id():
     return retrieve(State.USER_INTERACTION_ID)

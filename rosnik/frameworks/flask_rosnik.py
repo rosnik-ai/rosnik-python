@@ -12,13 +12,13 @@ def _before_request():
     if journey_id is None:
         journey_id = state.create_journey_id()
     state.store(state.State.JOURNEY_ID, journey_id)
-    
+
     interaction_id = request.headers.get(headers.INTERACTION_ID_KEY)
     state.store(state.State.USER_INTERACTION_ID, interaction_id)
-    
+
     device_id = request.headers.get(headers.DEVICE_ID_KEY)
     state.store(state.State.DEVICE_ID, device_id)
-    
+
 
 def _annotate_response_headers(response):
     response.headers[headers.JOURNEY_ID_KEY] = state.get_journey_id()

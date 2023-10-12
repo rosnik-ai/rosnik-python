@@ -1,5 +1,4 @@
 import logging
-import os
 from rosnik import env
 
 from rosnik.types import core
@@ -27,7 +26,9 @@ class IngestClient:
         return self.session.post(*args, **kwargs)
 
     def send_event(self, event: core.Event):
-        logger.debug(f"Sending {event.event_type} event to {_base_url} with event ID {event.event_id} and journey ID {event.journey_id}")
+        logger.debug(
+            f"Sending {event.event_type} event to {_base_url} with event ID {event.event_id} and journey ID {event.journey_id}" # noqa
+        )
         try:
             response = self._post(_base_url, headers=self.headers, json=event.to_json())
             response.raise_for_status()

@@ -26,4 +26,3 @@ def init():
         thread = threading.Thread(target=queue.process_events, daemon=True)
         # TODO: handle shutdowns safely
         thread.start()
-

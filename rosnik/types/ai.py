@@ -10,6 +10,7 @@ class OpenAIAttributes(TypedDict):
     api_type: str
     api_version: str
 
+
 @dataclass(kw_only=True, slots=True)
 class AIFunctionMetadata:
     ai_provider: str

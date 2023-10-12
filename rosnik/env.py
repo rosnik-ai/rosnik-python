@@ -10,6 +10,7 @@ SYNC = f"{NAMESPACE}_SYNC"
 def get_api_key():
     return os.environ.get(API_KEY)
 
+
 def is_sync():
     sync = os.environ.get(SYNC)
     return sync is not None and sync != "0"
