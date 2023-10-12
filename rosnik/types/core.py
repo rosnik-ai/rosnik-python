@@ -20,7 +20,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.18"
+    sdk_version: str = "0.0.19"
 
 
 @dataclass(kw_only=True, slots=True)
@@ -46,6 +46,10 @@ class Event(DataClassJsonMixin):
     device_id: Optional[str] = field(default_factory=state.get_device_id)
     # Our own metadata
     _metadata: Metadata
+    # User Interaction ID: this is the causal user.interaction.track
+    # event ID for this event. If it's unset then something else
+    # we're not tracking caused this action.
+    user_interaction_id: Optional[str] = field(default_factory=state.get_user_interaction_id)
 
 
 @dataclass(kw_only=True, slots=True)
@@ -56,10 +60,6 @@ class AIEvent(Event):
     ai_provider: str
     # AI action: completion, chatcompletion
     ai_action: str
-    # User Interaction ID: this is the causal user.interaction.track
-    # event ID for this AI request. If it's unset then something else
-    # we're not tracking caused this action.
-    user_interaction_id: Optional[str] = field(default_factory=state.get_user_interaction_id)
 
 
 class UserEvent(Event):
