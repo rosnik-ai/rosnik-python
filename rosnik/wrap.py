@@ -33,7 +33,7 @@ def get_stack_frames(num, useGetFrame=True):
 # datadog and other tracing libs don't record the wrong thing.
 def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
     def wrapper(*args, **kwargs):
-        logger.debug("Prep for ingest request:", kwargs)
+        logger.debug("Prep for ingest request: %s", kwargs)
         # TODO: profile this.
         limited_frames = get_stack_frames(5)
         # Flatten into a period separated sequence so we can do function chain search later.

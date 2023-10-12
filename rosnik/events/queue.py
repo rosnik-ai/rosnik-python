@@ -31,7 +31,7 @@ def enqueue_event(event: Event):
 
 
 def process_events():
-    logger.debug("Running event processor in thread:", threading.get_ident())
+    logger.debug("Running event processor in thread: %s", threading.get_ident())
     while True:
         # Wait for events to be available in the queue
         event = event_queue.get()
@@ -48,7 +48,7 @@ def process_events():
 
 
 def _flush_events(send_events=True):
-    logger.debug("Flushing event queue with size:", event_queue.qsize())
+    logger.debug("Flushing event queue with size: %s", event_queue.qsize())
     api_client = api.IngestClient()
     while event_queue.qsize() > 0:
         event = event_queue.get()
