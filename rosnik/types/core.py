@@ -20,7 +20,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.17"
+    sdk_version: str = "0.0.18"
 
 
 @dataclass(kw_only=True, slots=True)
@@ -43,6 +43,7 @@ class Event(DataClassJsonMixin):
     context: Optional[dict] = None
     # Users could be part of an AI event or a User event
     user_id: Optional[str] = None
+    device_id: Optional[str] = field(default_factory=state.get_device_id)
     # Our own metadata
     _metadata: Metadata
 
@@ -57,7 +58,7 @@ class AIEvent(Event):
     # User Interaction ID: this is the causal user.interaction.track
     # event ID for this AI request. If it's unset then something else
     # we're not tracking caused this action.
-    user_interaction_id: Optional[str] = None
+    user_interaction_id: Optional[str] = field(default_factory=state.get_user_interaction_id)
 
 
 class UserEvent(Event):

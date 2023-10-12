@@ -50,3 +50,9 @@ def get_journey_id():
     if journey_id is None:
         return create_journey_id()
     return journey_id
+
+def get_device_id():
+    return retrieve(State.DEVICE_ID)
+
+def get_user_interaction_id():
+    return retrieve(State.USER_INTERACTION_ID)
