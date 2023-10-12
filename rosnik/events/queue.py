@@ -47,9 +47,10 @@ def process_events():
         # batch = []
 
 
-def _flush_events(api_key=None):
+def _flush_events(send_events=True):
     logger.debug("Flushing event queue with size:", event_queue.qsize())
-    api_client = api.IngestClient(api_key=api_key)
+    api_client = api.IngestClient()
     while event_queue.qsize() > 0:
         event = event_queue.get()
-        api_client.send_event(event)
+        if send_events:
+            api_client.send_event(event)

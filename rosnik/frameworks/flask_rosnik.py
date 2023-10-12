@@ -1,23 +1,27 @@
 import logging
-from rosnik import client
-from rosnik import headers, interaction, journey
+from rosnik import client, headers, state
 
 logger = logging.getLogger(__name__)
 
 
-def _get_journey_id():
+def _before_request():
     # Import this JIT to avoid warning needlessly.
     from flask import request
 
     journey_id = request.headers.get(headers.JOURNEY_ID_KEY)
+    if journey_id is None:
+        journey_id = state.create_journey_id()
+    state.store(state.State.JOURNEY_ID, journey_id)
+    
     interaction_id = request.headers.get(headers.INTERACTION_ID_KEY)
-    journey.set_journey_id(journey_id)
-    interaction.set_interaction_id(interaction_id)
-
+    state.store(state.State.USER_INTERACTION_ID, interaction_id)
+    
+    device_id = request.headers.get(headers.DEVICE_ID_KEY)
+    state.store(state.State.DEVICE_ID, device_id)
+    
 
 def _annotate_response_headers(response):
-    response.headers[headers.JOURNEY_ID_KEY] = journey.get_journey_id()
-    response.headers[headers.INTERACTION_ID_KEY] = interaction.get_interaction_id()
+    response.headers[headers.JOURNEY_ID_KEY] = state.get_journey_id()
     return response
 
 
@@ -27,6 +31,6 @@ class FlaskRosnik:
             self.init_app(app)
 
     def init_app(self, app):
-        app.before_request(_get_journey_id)
+        app.before_request(_before_request)
         app.after_request(_annotate_response_headers)
         client.init()

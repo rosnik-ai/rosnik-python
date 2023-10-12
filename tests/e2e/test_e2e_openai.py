@@ -47,5 +47,5 @@ def test_e2e_chat_completion(mocker, openai, event_queue):
     #     metadata={"comment": "Great feature!"},
     # )
     # assert event_queue.qsize() == 2
-    queue._flush_events()
+    queue._flush_events(send_events=False)
     assert event_queue.qsize() == 0

@@ -12,12 +12,6 @@ class UserGoalSuccess(UserEvent):
     goal_name: str
 
 
-# TODO: do we need this?
-@dataclass(kw_only=True, slots=True)
-class UserJourneyStart(UserEvent):
-    """Fired if we generate a new Journey ID."""
-    event_type: str = "user.journey.start"
-
 
 @dataclass(kw_only=True, slots=True)
 class UserInteractionTrack(UserEvent):

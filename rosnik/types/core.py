@@ -1,3 +1,4 @@
+from contextvars import ContextVar
 import time
 import os
 import platform
@@ -7,8 +8,7 @@ from typing import List, Optional
 from dataclasses_json import DataClassJsonMixin
 from ulid import monotonic as ulid
 
-from rosnik import journey
-
+from rosnik import state
 
 def _generate_event_id():
     return ulid.new().str
@@ -20,7 +20,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.14"
+    sdk_version: str = "0.0.15"
 
 
 @dataclass(kw_only=True, slots=True)
@@ -33,8 +33,7 @@ class Event(DataClassJsonMixin):
     # Unique event ID
     event_id: str = field(default_factory=_generate_event_id)
     event_type: str
-    # Epoch
-    journey_id: str = field(default_factory=journey.get_or_create_journey_id)
+    journey_id: str = field(default_factory=state.get_journey_id)
     # Epoch
     sent_at: int = int(time.time())
     # Epoch unless not set, which will be -1
@@ -46,7 +45,6 @@ class Event(DataClassJsonMixin):
     user_id: Optional[str] = None
     # Our own metadata
     _metadata: Metadata
-
 
 @dataclass(kw_only=True, slots=True)
 class AIEvent(Event):
