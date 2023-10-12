@@ -28,11 +28,8 @@ class IngestClient:
 
     def send_event(self, event: core.Event):
         logger.debug(f"Sending event to {_base_url}")
-        print(f"Sending event to {_base_url}")
-        print("Event", event.to_json())
-        print("Headers", self.headers)
         try:
             response = self._post(_base_url, headers=self.headers, json=event.to_json())
             response.raise_for_status()
-        except requests.exceptions.RequestException as e:
+        except requests.exceptions.HTTPError as e:
             logger.warning("Failed to send event:", e)
