@@ -1,7 +1,7 @@
 from typing import Callable, List
 
 from rosnik.events import queue
-from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart
+from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart, ResponseData
 from rosnik.types.core import Metadata
 
 
@@ -34,19 +34,22 @@ def track_request_finish(
     metadata: AIFunctionMetadata,
     function_fingerprint: List[str],
     request_event: AIRequestStart,
-    response_serializer: Callable
+    response_serializer: Callable[['OpenAIObject'], ResponseData]
 ):
     # Note: this might be different from the request model,
     # e.g. gpt-3.5-turbo in request and gpt-3.5-turbo-0613 in response.
     ai_model = response_payload["model"]
     ai_provider = metadata["ai_provider"]
     ai_action = metadata["ai_action"]
+    response_data = response_serializer(response_payload)
+    metadata["openai_attributes"]["organization"] = response_data["organization"]
     event = AIRequestFinish(
         ai_model=ai_model,
         ai_provider=ai_provider,
         ai_action=ai_action,
         ai_metadata=metadata,
-        response_payload=response_serializer(response_payload),
+        response_payload=response_data["response_payload"],
+        response_ms=response_data["response_ms"],
         ai_request_start_event_id=request_event.event_id,
         user_id=request_event.user_id,
         _metadata=Metadata(function_fingerprint=function_fingerprint),

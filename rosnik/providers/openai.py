@@ -1,5 +1,5 @@
 import logging
-from rosnik.types.ai import AIFunctionMetadata
+from rosnik.types.ai import AIFunctionMetadata, ResponseData
 
 from rosnik import env
 from rosnik.wrap import wrap_class_method
@@ -20,8 +20,8 @@ chat_completion_metadata: AIFunctionMetadata = {
 }
 
 
-def response_serializer(payload: 'OpenAIObject'):
-    return payload.to_dict()
+def response_serializer(payload: 'OpenAIObject') -> ResponseData:
+    return {"response_payload": payload.to_dict_recursive(), "organization": payload.organization, "latency": payload.response_ms}
 
 
 def _patch_completion(openai):

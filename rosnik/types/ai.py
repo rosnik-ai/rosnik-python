@@ -5,10 +5,16 @@ from typing import Optional, TypedDict
 from rosnik.types.core import AIEvent
 
 
+class ResponseData(TypedDict):
+    response_payload: dict
+    organization: str
+    response_ms: int
+
 class OpenAIAttributes(TypedDict):
     api_base: str
     api_type: str
     api_version: str
+    organization: str
 
 
 @dataclass(kw_only=True, slots=True)
@@ -35,6 +41,7 @@ class AIRequestFinish(AIEvent):
     # event that caused this finish action.
     ai_request_start_event_id: str
     ai_metadata: AIFunctionMetadata
+    response_ms: int
 
 
 @dataclass(kw_only=True, slots=True)
