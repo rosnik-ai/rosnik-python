@@ -23,6 +23,8 @@ class IngestClient:
         self.session = requests.Session()
 
     def _post(self, *args, **kwargs):
+        # Wait up to 3 seconds before giving up
+        kwargs["timeout"] = 3
         return self.session.post(*args, **kwargs)
 
     def send_event(self, event: core.Event):
