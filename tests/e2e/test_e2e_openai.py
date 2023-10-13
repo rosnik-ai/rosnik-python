@@ -1,6 +1,6 @@
 import pytest
 from rosnik.events import queue
-from rosnik.providers import openai as phq_openai
+from rosnik.providers import openai as openai_
 from rosnik.types.ai import AIRequestFinish, AIRequestStart
 
 
@@ -12,7 +12,7 @@ def test_e2e_chat_completion(mocker, openai, event_queue):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
     fake_user_id = "fake-user-123"
-    phq_openai._patch_chat_completion(openai)
+    openai_._patch_chat_completion(openai)
     expected_messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": input_text},

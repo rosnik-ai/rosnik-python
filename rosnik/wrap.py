@@ -6,6 +6,8 @@ from typing import Callable
 from rosnik.events import ai
 from rosnik.types.ai import AIFunctionMetadata
 
+import wrapt
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,10 +31,10 @@ def get_stack_frames(num, useGetFrame=True):
 
 
 # TODO: will need more wrappers.
-# TODO: I think I need a trick here to rename `wrapper` to `wrapped_func` s
-# datadog and other tracing libs don't record the wrong thing.
-def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
-    def wrapper(*args, **kwargs):
+def wrap_class_method(metadata: AIFunctionMetadata, response_serializer: Callable):
+
+    @wrapt.decorator
+    def wrapper(wrapped, instance, args, kwargs):
         logger.debug("Prep for ingest request: %s", kwargs)
         # TODO: profile this.
         limited_frames = get_stack_frames(5)
@@ -44,8 +46,8 @@ def wrap_class_method(wrapped_func: Callable, metadata: AIFunctionMetadata):
         # instead we need to expose a hook for tracking it
         # or patch the response object generator and when it ends, we fire.
         request_event = ai.track_request_start(kwargs, metadata, calling_functions)
-        result = wrapped_func(*args, **kwargs)
-        ai.track_request_finish(result, metadata, calling_functions, request_event)
+        result = wrapped(*args, **kwargs)
+        ai.track_request_finish(result, metadata, calling_functions, request_event, response_serializer)
 
         return result
 

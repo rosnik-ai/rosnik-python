@@ -12,6 +12,7 @@ openai = {version = "^0.27.6", optional = true}
 flask = {version = ">= 3,<4", optional = true}
 ulid-py = "^1.1.0"
 dataclasses-json = "^0.6.1"
+wrapt = "^1.15.0"
 
 [tool.poetry.group.static.dependencies]
 bandit = "^1.7"

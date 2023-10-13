@@ -4,7 +4,7 @@ NAMESPACE = "ROSNIK"
 API_KEY = f"{NAMESPACE}_API_KEY"
 # If set to a non-0 value,
 # we will send values synchronously.
-SYNC = f"{NAMESPACE}_SYNC"
+SYNC_MODE = f"{NAMESPACE}_SYNC_MODE"
 
 
 def get_api_key():
@@ -12,5 +12,5 @@ def get_api_key():
 
 
 def is_sync():
-    sync = os.environ.get(SYNC)
+    sync = os.environ.get(SYNC_MODE)
     return sync is not None and sync != "0"

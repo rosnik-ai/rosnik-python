@@ -10,7 +10,7 @@ openai_enabled = False
 
 try:
     openai_enabled = True
-    from rosnik.providers import openai as phq_openai
+    from rosnik.providers import openai as openai_
 except ImportError:
     logger.debug("Skipping OpenAI instrumentation.")
 
@@ -18,7 +18,7 @@ except ImportError:
 def init():
     if openai_enabled:
         logger.debug("OpenAI is enabled. Patching.")
-        phq_openai._patch_openai()
+        openai_._patch_openai()
 
     if not env.is_sync():
         logger.debug("Running event processor in separate thread")

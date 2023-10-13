@@ -1,6 +1,6 @@
 import pytest
 
-from rosnik.providers import openai as phq_openai
+from rosnik.providers import openai as openai_
 
 
 def generate_prompt(animal):
@@ -18,13 +18,14 @@ Names:""".format(
 
 @pytest.mark.vcr
 def test_completion(openai, event_queue):
-    phq_openai._patch_completion(openai)
+    openai_._patch_completion(openai)
     assert event_queue.qsize() == 0
     openai.Completion.create(
         model="text-davinci-003",
         prompt=generate_prompt("Mixed mini poodle"),
         temperature=0.6,
     )
+    import pdb; pdb.set_trace()
     assert event_queue.qsize() == 2
 
 
@@ -32,7 +33,7 @@ def test_completion(openai, event_queue):
 def test_chat_completion(openai, event_queue):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
-    phq_openai._patch_chat_completion(openai)
+    openai_._patch_chat_completion(openai)
     assert event_queue.qsize() == 0
     openai.ChatCompletion.create(
         model="gpt-3.5-turbo",

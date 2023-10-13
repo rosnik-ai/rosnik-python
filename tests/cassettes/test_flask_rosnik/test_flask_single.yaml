@@ -1,0 +1,101 @@
+interactions:
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a world class poet."}, {"role": "user", "content": "Write a poem about dogs."}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '159'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-89K4ijXwW734viQ5lEL67kIenO2nu\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1697232812,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"In lands afar, where stories roam,\\nWhere
+        loyalty is writ in stone,\\nA creature dwells, both kind and true,\\nA friend,
+        a guide, forever through.\\n\\nOh, dogs, the keepers of our hearts,\\nWith
+        love that knows no bounds or parts,\\nA gentle spirit, brave and strong,\\nThey
+        teach us how to right the wrong.\\n\\nIn joyful bounds, they greet each day,\\nTheir
+        wagging tails, a joyous display,\\nWith eyes that gleam and ears that perk,\\nThey
+        understand us, quirks and work.\\n\\nWith snouts that sniff out hidden trails,\\nThey
+        navigate life's twisting veils,\\nThrough mountain peaks or city streets,\\nTheir
+        sense of wonder never depletes.\\n\\nFrom Chihuahuas small to Great Danes
+        tall,\\nFrom poodles poised to labs that sprawl,\\nEach breed unique, their
+        spirits grand,\\nA testament to nature's loving hand.\\n\\nIn fields they
+        frolic, wild and free,\\nTheir energy a sight to see,\\nAnd yet, with ease,
+        they calm their pace,\\nProviding solace, a warm embrace.\\n\\nIn times of
+        sorrow, hearts that cry,\\nThey comfort us, they're always nigh,\\nTheir solemn
+        presence, a balm so pure,\\nTheir loyal souls, an endless cure.\\n\\nA dog,
+        a muse of unwavering glee,\\nTheir boundless love calls us to be,\\nThe best
+        versions of ourselves we can,\\nGuided by this faithful friend.\\n\\nSo let
+        us honor, let us adore,\\nThe dogs who grace this earthly shore,\\nFor in
+        their essence, we find a key,\\nTo cherish love, unconditionally.\"\n      },\n
+        \     \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\":
+        24,\n    \"completion_tokens\": 324,\n    \"total_tokens\": 348\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 815ab390eb1f15ef-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 13 Oct 2023 21:33:37 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '5506'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89968'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 20ms
+      x-request-id:
+      - 5818c914838bf6b2e077977ec06071db
+    status:
+      code: 200
+      message: OK
+version: 1
