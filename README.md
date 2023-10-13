@@ -2,37 +2,41 @@
 
 ## Getting started
 
-To install dependencies, including `--all-extras` so that OpenAI and other plugins are picked up:
+### Install
 
 ```
-poetry install --all-extras
+pip install --upgrade rosnik
 ```
 
-## Building
+### Configuration
 
-We use Poetry as our package toolchain:
-
-```
-poetry build
-```
-
-## Testing
-
-We use `pytest-recording` to minimize outbound HTTP requests during tests.
-
-To run tests:
+We use environment variables to configure the SDK. 
 
 ```
-poetry run pytest
+# This is required to authenticate against our event ingestion tier
+ROSNIK_API_KEY=
+
+# This is optional and will mark events to the application environment (e.g. development, staging, production).
+# If not supplied, it will go into a default environment.
+ROSNIK_ENVIRONMENT=
 ```
 
+## Integrations
 
-## TODO
-- [ ] Rip HTTP request headers somehow (user agent, response code)
-- [ ] Support streams
-- [x] Support chat completion (OAI)
-- [ ] Support Anthropic
-- [ ] Support Cohere
-- [ ] Support sync mode
-- [ ] Support guidance
-- [ ] Allow for debug logs to be printed
+Please let us know if there are other providers that would be helpful to have automatic instrumentation.
+
+### AI Providers
+
+* OpenAI: we support tracking Completion and ChatCompletion creations
+
+### Web Frameworks
+
+* Flask: we have a Flask extension to automatically setup the SDK and link events to client-side metadata (browser SDK coming soon)
+
+## License
+
+Licensed under the MIT license. See [LICENSE](./LICENSE).
+
+## Interested in learning more?
+
+Send us an email at hello@rosnik.ai!
