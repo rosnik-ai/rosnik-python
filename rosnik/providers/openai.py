@@ -21,7 +21,7 @@ chat_completion_metadata: AIFunctionMetadata = {
 
 
 def response_serializer(payload: 'OpenAIObject') -> ResponseData:
-    return {"response_payload": payload.to_dict_recursive(), "organization": payload.organization, "latency": payload.response_ms}
+    return {"response_payload": payload.to_dict_recursive(), "organization": payload.organization, "response_ms": payload.response_ms}
 
 
 def _patch_completion(openai):

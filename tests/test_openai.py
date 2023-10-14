@@ -25,7 +25,6 @@ def test_completion(openai, event_queue):
         prompt=generate_prompt("Mixed mini poodle"),
         temperature=0.6,
     )
-    import pdb; pdb.set_trace()
     assert event_queue.qsize() == 2
 
 
