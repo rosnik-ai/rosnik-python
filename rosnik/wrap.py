@@ -30,13 +30,11 @@ def get_stack_frames(num, useGetFrame=True):
         return inspect.stack()[:num]
 
 
-# TODO: will need more wrappers.
 def wrap_class_method(metadata: AIFunctionMetadata, response_serializer: Callable):
 
     @wrapt.decorator
     def wrapper(wrapped, instance, args, kwargs):
         logger.debug("Prep for ingest request: %s", kwargs)
-        # TODO: profile this.
         limited_frames = get_stack_frames(5)
         # Flatten into a period separated sequence so we can do function chain search later.
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
