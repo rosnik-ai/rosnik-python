@@ -35,7 +35,8 @@ def _patch_completion(openai):
     openai_attributes["api_version"] = openai.api_version
     completion_metadata["openai_attributes"] = openai_attributes
 
-    openai.Completion.create = wrap_class_method(completion_metadata, response_serializer)(openai.Completion.create)
+    wrap_class_method(openai.Completion, 'create', completion_metadata, response_serializer)
+    
 
 
 def _patch_chat_completion(openai):
@@ -49,9 +50,7 @@ def _patch_chat_completion(openai):
     openai_attributes["api_version"] = openai.api_version
     chat_completion_metadata["openai_attributes"] = openai_attributes
 
-    openai.ChatCompletion.create = wrap_class_method(
-        chat_completion_metadata, response_serializer
-    )(openai.ChatCompletion.create)
+    wrap_class_method(openai.ChatCompletion, 'create', chat_completion_metadata, response_serializer)
 
 
 def _patch_openai():

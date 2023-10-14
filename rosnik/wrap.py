@@ -30,9 +30,9 @@ def get_stack_frames(num, useGetFrame=True):
         return inspect.stack()[:num]
 
 
-def wrap_class_method(metadata: AIFunctionMetadata, response_serializer: Callable):
+def wrap_class_method(klass, method_name: str, metadata: AIFunctionMetadata, response_serializer: Callable):
+    
 
-    @wrapt.decorator
     def wrapper(wrapped, instance, args, kwargs):
         logger.debug("Prep for ingest request: %s", kwargs)
         limited_frames = get_stack_frames(5)
@@ -48,5 +48,5 @@ def wrap_class_method(metadata: AIFunctionMetadata, response_serializer: Callabl
         ai.track_request_finish(result, metadata, calling_functions, request_event, response_serializer)
 
         return result
-
-    return wrapper
+    
+    wrapt.wrap_function_wrapper(klass, method_name, wrapper)
