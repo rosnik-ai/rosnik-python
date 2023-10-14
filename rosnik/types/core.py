@@ -34,8 +34,8 @@ class Event(DataClassJsonMixin):
     event_id: str = field(default_factory=_generate_event_id)
     event_type: str
     journey_id: str = field(default_factory=state.get_journey_id)
-    # Epoch
-    sent_at: int = int(time.time())
+    # Epoch in ms
+    sent_at: int = int(time.time_ns() / 1000000)
     # Epoch unless not set, which will be -1
     occurred_at: Optional[int] = None
     # JSONable user defined context
