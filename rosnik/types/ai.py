@@ -1,16 +1,29 @@
 from dataclasses import dataclass
 from typing import Optional, TypedDict
 
+from dataclasses_json import DataClassJsonMixin
+
 
 from rosnik.types.core import AIEvent
 
 
-class ResponseData(TypedDict):
+@dataclass(kw_only=True, slots=True)
+class ResponseData(DataClassJsonMixin):
     response_payload: dict
     organization: str
     response_ms: int
 
-class OpenAIAttributes(TypedDict):
+@dataclass(kw_only=True, slots=True)
+class ErrorResponseData(DataClassJsonMixin):
+    message: str
+    json_body: Optional[str] = None
+    headers: Optional[dict] = None
+    http_status: Optional[int] = None
+    organization: Optional[str] = None
+    request_id: Optional[str] = None
+
+@dataclass(kw_only=True, slots=True)
+class OpenAIAttributes(DataClassJsonMixin):
     api_base: str
     api_type: str
     api_version: str
@@ -18,7 +31,7 @@ class OpenAIAttributes(TypedDict):
 
 
 @dataclass(kw_only=True, slots=True)
-class AIFunctionMetadata:
+class AIFunctionMetadata(DataClassJsonMixin):
     ai_provider: str
     ai_action: str
     openai_attributes: Optional[OpenAIAttributes] = None
@@ -36,12 +49,16 @@ class AIRequestStart(AIEvent):
 class AIRequestFinish(AIEvent):
     event_type: str = "ai.request.finish"
     # JSONable response payload/body
-    response_payload: dict
+    # null on errors
+    response_payload: Optional[dict] = None
     # This is the Event ID of the ai.request.start
     # event that caused this finish action.
     ai_request_start_event_id: str
     ai_metadata: AIFunctionMetadata
-    response_ms: int
+    # Null on error
+    response_ms: Optional[int] = None
+    # null on success
+    error_data: Optional[ErrorResponseData] = None
 
 
 @dataclass(kw_only=True, slots=True)

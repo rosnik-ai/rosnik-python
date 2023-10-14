@@ -1,7 +1,7 @@
-from typing import Callable, List
+from typing import Callable, List, Optional
 
 from rosnik.events import queue
-from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart, ResponseData
+from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart, ErrorResponseData, ResponseData
 from rosnik.types.core import Metadata
 
 
@@ -13,7 +13,7 @@ def track_request_start(
     ai_model = request_payload["model"]
     # TODO: we should have a serializer:
     # OpenAI calls this "user"
-    user_id = request_payload.get("user", None)
+    user_id = request_payload.get("user")
     ai_provider = metadata["ai_provider"]
     ai_action = metadata["ai_action"]
     event = AIRequestStart(
@@ -28,31 +28,34 @@ def track_request_start(
     queue.enqueue_event(event)
     return event
 
-
+\
 def track_request_finish(
-    response_payload,
+    response_payload: Optional[dict],
     metadata: AIFunctionMetadata,
     function_fingerprint: List[str],
     request_event: AIRequestStart,
-    response_serializer: Callable[['OpenAIObject'], ResponseData]
+    response_serializer: Callable[['OpenAIObject'], ResponseData],
+    error_serializer: Callable[['OpenAIError'], ErrorResponseData],
+    error: Exception = None,
 ):
     # Note: this might be different from the request model,
     # e.g. gpt-3.5-turbo in request and gpt-3.5-turbo-0613 in response.
-    ai_model = response_payload["model"]
+    ai_model = response_payload.get("model") if isinstance(response_payload, dict) else None
     ai_provider = metadata["ai_provider"]
     ai_action = metadata["ai_action"]
     response_data = response_serializer(response_payload)
-    metadata["openai_attributes"]["organization"] = response_data["organization"]
+    metadata["openai_attributes"]["organization"] = response_data.organization if isinstance(response_data, ResponseData) else None
     event = AIRequestFinish(
         ai_model=ai_model,
         ai_provider=ai_provider,
         ai_action=ai_action,
         ai_metadata=metadata,
-        response_payload=response_data["response_payload"],
-        response_ms=response_data["response_ms"],
+        response_payload=response_data.response_payload if isinstance(response_data, ResponseData) else None,
+        response_ms=response_data.response_ms if isinstance(response_data, ResponseData) else None,
         ai_request_start_event_id=request_event.event_id,
         user_id=request_event.user_id,
         _metadata=Metadata(function_fingerprint=function_fingerprint),
+        error_data=error_serializer(error)
     )
     queue.enqueue_event(event)
     return event
