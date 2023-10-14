@@ -65,6 +65,7 @@ def get_device_id():
 def get_user_interaction_id():
     return retrieve(State.USER_INTERACTION_ID)
 
+
 def _reset():
     journey_id_cv.set(None)
     user_interaction_id_cv.set(None)

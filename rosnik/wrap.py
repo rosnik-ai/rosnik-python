@@ -3,7 +3,6 @@ import logging
 import sys
 from typing import Callable
 
-from openai import OpenAIError
 
 from rosnik.events import ai
 from rosnik.types.ai import AIFunctionMetadata
@@ -32,9 +31,13 @@ def get_stack_frames(num, useGetFrame=True):
         return inspect.stack()[:num]
 
 
-def wrap_class_method(klass, method_name: str, metadata: AIFunctionMetadata, response_serializer: Callable, error_serializer: Callable):
-    
-
+def wrap_class_method(
+    klass,
+    method_name: str,
+    metadata: AIFunctionMetadata,
+    response_serializer: Callable,
+    error_serializer: Callable,
+):
     def wrapper(wrapped, instance, args, kwargs):
         logger.debug("Prep for ingest request: %s", kwargs)
         limited_frames = get_stack_frames(5)
@@ -49,10 +52,25 @@ def wrap_class_method(klass, method_name: str, metadata: AIFunctionMetadata, res
         try:
             result = wrapped(*args, **kwargs)
         except Exception as e:
-            ai.track_request_finish(None, metadata, calling_functions, request_event, response_serializer, error_serializer, e)
+            ai.track_request_finish(
+                None,
+                metadata,
+                calling_functions,
+                request_event,
+                response_serializer,
+                error_serializer,
+                e,
+            )
             raise e
 
-        ai.track_request_finish(result, metadata, calling_functions, request_event, response_serializer, error_serializer)
+        ai.track_request_finish(
+            result,
+            metadata,
+            calling_functions,
+            request_event,
+            response_serializer,
+            error_serializer,
+        )
         return result
-    
+
     wrapt.wrap_function_wrapper(klass, method_name, wrapper)

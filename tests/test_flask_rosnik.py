@@ -53,7 +53,8 @@ def test_flask_single(app):
         assert finish_event.device_id == "test-device"
         assert finish_event.user_interaction_id == "test-user-interaction"
         assert queue.event_queue.qsize() == 0
-        
+
+
 @pytest.mark.vcr
 def test_flask_multiple_requests(app):
     with app.test_client() as client:
@@ -98,4 +99,3 @@ def test_flask_multiple_requests(app):
         assert finish_event.device_id == "test-device-2"
         assert finish_event.user_interaction_id == "test-user-interaction-2"
         assert queue.event_queue.qsize() == 0
-        

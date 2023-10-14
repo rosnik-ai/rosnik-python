@@ -29,7 +29,7 @@ class IngestClient:
 
     def send_event(self, event: core.Event):
         logger.debug(
-            f"Sending {event.event_type} event to {_base_url} with event ID {event.event_id} and journey ID {event.journey_id}" # noqa
+            f"Sending {event.event_type} event to {_base_url} with event ID {event.event_id} and journey ID {event.journey_id}"  # noqa
         )
         try:
             response = self._post(_base_url, headers=self.headers, json=event.to_dict())

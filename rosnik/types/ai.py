@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, TypedDict
+from typing import Optional
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -13,6 +13,7 @@ class ResponseData(DataClassJsonMixin):
     organization: str
     response_ms: int
 
+
 @dataclass(kw_only=True, slots=True)
 class ErrorResponseData(DataClassJsonMixin):
     message: str
@@ -22,12 +23,15 @@ class ErrorResponseData(DataClassJsonMixin):
     organization: Optional[str] = None
     request_id: Optional[str] = None
 
+
 @dataclass(kw_only=True, slots=True)
 class OpenAIAttributes(DataClassJsonMixin):
     api_base: str
     api_type: str
     api_version: str
     organization: str
+    # OpenAI tracks response ms
+    response_ms: int
 
 
 @dataclass(kw_only=True, slots=True)
@@ -56,7 +60,8 @@ class AIRequestFinish(AIEvent):
     ai_request_start_event_id: str
     ai_metadata: AIFunctionMetadata
     # Null on error
-    response_ms: Optional[int] = None
+    # Our client-side calculation of duration
+    response_ms: int
     # null on success
     error_data: Optional[ErrorResponseData] = None
 

@@ -43,6 +43,7 @@ def test_chat_completion(openai, event_queue):
     )
     assert event_queue.qsize() == 2
 
+
 @pytest.mark.vcr
 def test_error(openai, event_queue):
     system_prompt = "You are a helpful assistant." * 100000

@@ -22,15 +22,16 @@ chat_completion_metadata: AIFunctionMetadata = {
 }
 
 
-def response_serializer(payload: 'OpenAIObject') -> ResponseData:
+def response_serializer(payload: "OpenAIObject") -> ResponseData:
     if not payload:
         return None
 
     return ResponseData(
         response_payload=payload.to_dict_recursive(),
         organization=payload.organization,
-        response_ms=payload.response_ms
+        response_ms=payload.response_ms,
     )
+
 
 def error_serializer(error: Exception) -> ErrorResponseData:
     if error is None:
@@ -43,10 +44,11 @@ def error_serializer(error: Exception) -> ErrorResponseData:
             headers=error.headers,
             http_status=error.http_status,
             organization=error.organization,
-            request_id=error.request_id
+            request_id=error.request_id,
         )
 
     return ErrorResponseData(message=str(error))
+
 
 def _patch_completion(openai):
     if getattr(openai, f"__{env.NAMESPACE}_patch", False):
@@ -59,8 +61,9 @@ def _patch_completion(openai):
     openai_attributes["api_version"] = openai.api_version
     completion_metadata["openai_attributes"] = openai_attributes
 
-    wrap_class_method(openai.Completion, 'create', completion_metadata, response_serializer, error_serializer)
-    
+    wrap_class_method(
+        openai.Completion, "create", completion_metadata, response_serializer, error_serializer
+    )
 
 
 def _patch_chat_completion(openai):
@@ -74,7 +77,13 @@ def _patch_chat_completion(openai):
     openai_attributes["api_version"] = openai.api_version
     chat_completion_metadata["openai_attributes"] = openai_attributes
 
-    wrap_class_method(openai.ChatCompletion, 'create', chat_completion_metadata, response_serializer, error_serializer)
+    wrap_class_method(
+        openai.ChatCompletion,
+        "create",
+        chat_completion_metadata,
+        response_serializer,
+        error_serializer,
+    )
 
 
 def _patch_openai():
