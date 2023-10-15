@@ -25,7 +25,7 @@ class StaticMetadata:
 
 @dataclass(kw_only=True, slots=True)
 class Metadata(StaticMetadata):
-    function_fingerprint: List[str]
+    function_fingerprint: str
 
 
 @dataclass(kw_only=True, slots=True)
