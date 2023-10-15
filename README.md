@@ -4,7 +4,7 @@
 
 ### Install
 
-```
+```sh
 pip install --upgrade rosnik
 ```
 
@@ -12,7 +12,7 @@ pip install --upgrade rosnik
 
 We use environment variables to configure the SDK. 
 
-```
+```sh
 # This is required to authenticate against our event ingestion tier
 ROSNIK_API_KEY=
 
@@ -26,6 +26,13 @@ ROSNIK_ENVIRONMENT=
 ROSNIK_SYNC_MODE=
 ```
 
+Then in your application code:
+
+```py
+import rosnik
+rosnik.init()
+```
+
 ## Integrations
 
 Please let us know if there are other providers that would be helpful to have automatic instrumentation.
@@ -37,6 +44,14 @@ Please let us know if there are other providers that would be helpful to have au
 ### Web Frameworks
 
 * Flask: we have a Flask extension to automatically setup the SDK and link events to client-side metadata (browser SDK coming soon)
+
+```py
+from rosnik import flask_rosnik
+
+rosnik_extension = flask_rosnik.FlaskRosnik()
+# rosnik.init happens here
+rosnik_extension.init_app(app)
+```
 
 ## License
 
