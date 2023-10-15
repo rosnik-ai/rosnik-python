@@ -29,9 +29,9 @@ class OpenAIAttributes(DataClassJsonMixin):
     api_base: str
     api_type: str
     api_version: str
-    organization: str
+    organization: Optional[str] = None
     # OpenAI tracks response ms
-    response_ms: int
+    response_ms: Optional[int] = None
 
 
 @dataclass(kw_only=True, slots=True)

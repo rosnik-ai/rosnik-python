@@ -1,6 +1,6 @@
 import logging
 
-from rosnik.types.ai import AIFunctionMetadata, ErrorResponseData, ResponseData
+from rosnik.types.ai import AIFunctionMetadata, ErrorResponseData, OpenAIAttributes, ResponseData
 
 from rosnik import env
 from rosnik.wrap import wrap_class_method
@@ -15,11 +15,8 @@ except ImportError:
     logger.warning("openai is not installed")
 
 _OAI = "openai"
-completion_metadata: AIFunctionMetadata = {"ai_provider": _OAI, "ai_action": "completions"}
-chat_completion_metadata: AIFunctionMetadata = {
-    "ai_provider": _OAI,
-    "ai_action": "chat.completions",
-}
+completion_metadata = AIFunctionMetadata(ai_provider=_OAI, ai_action="completions")
+chat_completion_metadata = AIFunctionMetadata(ai_provider=_OAI, ai_action="chat.completions")
 
 
 def response_serializer(payload: "OpenAIObject") -> ResponseData:
@@ -55,11 +52,11 @@ def _patch_completion(openai):
         logger.debug("Not patching. Already patched.")
         return
 
-    openai_attributes = {}
-    openai_attributes["api_base"] = openai.api_base
-    openai_attributes["api_type"] = openai.api_type
-    openai_attributes["api_version"] = openai.api_version
-    completion_metadata["openai_attributes"] = openai_attributes
+    completion_metadata.openai_attributes = OpenAIAttributes(
+        api_base=openai.api_base,
+        api_type=openai.api_type,
+        api_version=openai.api_version
+    )
 
     wrap_class_method(
         openai.Completion, "create", completion_metadata, response_serializer, error_serializer
@@ -71,11 +68,11 @@ def _patch_chat_completion(openai):
         logger.debug("Not patching. Already patched.")
         return
 
-    openai_attributes = {}
-    openai_attributes["api_base"] = openai.api_base
-    openai_attributes["api_type"] = openai.api_type
-    openai_attributes["api_version"] = openai.api_version
-    chat_completion_metadata["openai_attributes"] = openai_attributes
+    chat_completion_metadata.openai_attributes = OpenAIAttributes(
+        api_base=openai.api_base,
+        api_type=openai.api_type,
+        api_version=openai.api_version
+    )
 
     wrap_class_method(
         openai.ChatCompletion,

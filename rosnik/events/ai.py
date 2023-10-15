@@ -25,8 +25,8 @@ def track_request_start(
     # TODO: we should have a serializer:
     # OpenAI calls this "user"
     user_id = request_payload.get("user")
-    ai_provider = metadata["ai_provider"]
-    ai_action = metadata["ai_action"]
+    ai_provider = metadata.ai_provider
+    ai_action = metadata.ai_action
     event = AIRequestStart(
         ai_model=ai_model,
         ai_provider=ai_provider,
@@ -52,11 +52,14 @@ def track_request_finish(
     # Note: this might be different from the request model,
     # e.g. gpt-3.5-turbo in request and gpt-3.5-turbo-0613 in response.
     ai_model = response_payload.get("model") if isinstance(response_payload, dict) else None
-    ai_provider = metadata["ai_provider"]
-    ai_action = metadata["ai_action"]
+    ai_provider = metadata.ai_provider
+    ai_action = metadata.ai_action
     response_data = response_serializer(response_payload)
-    metadata["openai_attributes"]["organization"] = (
+    metadata.openai_attributes.organization = (
         response_data.organization if isinstance(response_data, ResponseData) else None
+    )
+    metadata.openai_attributes.response_ms = (
+        response_data.response_ms if isinstance(response_data, ResponseData) else None
     )
     now = int(time.time_ns() / 1000000)
     event = AIRequestFinish(
