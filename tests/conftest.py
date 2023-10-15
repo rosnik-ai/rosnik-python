@@ -23,7 +23,10 @@ def openai():
 
 
 @pytest.fixture
-def event_queue():
+def event_queue(mocker):
+    # Don't send process the event queue so we can inspect
+    # it in tests.
+    mocker.patch("rosnik.events.queue.EventProcessor")
     yield queue.event_queue
     # Clear queue
     while queue.event_queue.qsize() > 0:

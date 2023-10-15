@@ -12,17 +12,17 @@ import wrapt
 logger = logging.getLogger(__name__)
 
 
-def get_stack_frames(num, useGetFrame=True):
+def get_stack_frames(num, use_get_frame=True):
     """Quickly get stack frames via:
     https://gist.github.com/csm10495/39dde7add5f1b1e73c4e8299f5df1116
     """
     # Not all versions of python have the sys._getframe() method.
     # All should have inspect, though it is really slow
-    if useGetFrame and hasattr(sys, "_getframe"):
+    if use_get_frame and hasattr(sys, "_getframe"):
         frame = sys._getframe(0)
         frames = [frame]
 
-        while frame.f_back is not None and len(frames) <= num:
+        while frame.f_back is not None and len(frames) < num:
             frames.append(frame.f_back)
             frame = frame.f_back
 
