@@ -1,6 +1,7 @@
 import pytest
 import requests
-from rosnik.api import IngestClient, _base_url
+import responses
+from rosnik.api import IngestClient, _base_url, _retry_status_code
 from rosnik.env import API_KEY
 from rosnik.types.core import Event, Metadata
 
@@ -43,3 +44,30 @@ def test_send_event_http_error(mocker, mock_event):
     client.send_event(mock_event)
     mock_logger.assert_called_once_with("Failed to send event: An error occurred")
 
+@pytest.mark.parametrize("status_code", _retry_status_code)
+@responses.activate
+def test_retry_adapter(mocker, status_code):
+    mock_logger = mocker.patch("rosnik.api.logger.warning")
+    mock_event = Event(event_type="test-event", event_id="1", journey_id="j-1", _metadata=Metadata(function_fingerprint=""))
+    test_url = "https://ingest.rosnik.ai/api/v1/events"
+
+    # A counter to track the number of retries
+    retry_count = {"count": 0}
+
+    # A callback to simulate server errors
+    def request_callback(request):
+        retry_count["count"] += 1
+        return (status_code, {}, "Bad Gateway")
+
+    # Setting up the mock response
+    responses.add_callback(
+        responses.POST, test_url,
+        callback=request_callback,
+        content_type='application/json',
+    )
+
+    client = IngestClient()
+    client.send_event(mock_event)
+    assert mock_logger.call_count == 1
+    assert "Failed to send event after 3 attempts:" in mock_logger.call_args_list[0][0][0]
+    assert retry_count["count"] == 4
