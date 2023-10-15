@@ -1,12 +1,18 @@
 import logging
+
 from rosnik import client, headers, state
+
+try:
+    from flask import request
+except ImportError:
+    request = None
 
 logger = logging.getLogger(__name__)
 
-
 def _before_request():
-    # Import this JIT to avoid warning needlessly.
-    from flask import request
+    # Import this JIT to avoid warning / errors for non-Flask environments.
+    if request is None:
+        logger.warning("Could not import flask.request")
 
     journey_id = request.headers.get(headers.JOURNEY_ID_KEY)
     if journey_id is None:
