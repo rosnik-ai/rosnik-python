@@ -28,12 +28,13 @@ def test_chat_completion(openai, event_queue):
     input_text = "What is a dog?"
     openai_._patch_chat_completion(openai)
     assert event_queue.qsize() == 0
-    openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
+    expected_messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": input_text},
-        ],
+        ]
+    openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
     )
     assert event_queue.qsize() == 2
     start_event = event_queue.get()
@@ -45,7 +46,7 @@ def test_chat_completion(openai, event_queue):
     assert start_event.ai_model == "gpt-3.5-turbo"
     assert start_event.ai_provider == "openai"
     assert start_event.ai_action == "chat.completions"
-    assert start_event.request_payload
+    assert start_event.request_payload["messages"] == expected_messages
     assert start_event.ai_metadata
     assert start_event.ai_metadata.ai_provider == "openai"
     assert start_event.ai_metadata.ai_action == "chat.completions"

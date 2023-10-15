@@ -115,6 +115,9 @@ def test_no_headers(app):
         assert res.json == {"success": True}
         
         assert queue.event_queue.qsize() == 2
+        queue.event_queue.get()
+        queue.event_queue.get()
+        assert queue.event_queue.qsize() == 0
 
 
 @pytest.mark.vcr
