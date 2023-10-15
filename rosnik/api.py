@@ -1,4 +1,5 @@
 import logging
+import warnings
 from rosnik import env
 
 from rosnik.types import core
@@ -14,7 +15,7 @@ class IngestClient:
     def __init__(self):
         self.api_key = env.get_api_key()
         if self.api_key is None:
-            logger.warning(f"{env.API_KEY} is not set and an API token was not provided on init")
+            warnings.warn(f"{env.API_KEY} is not set and an API token was not provided on init")
 
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
@@ -35,4 +36,4 @@ class IngestClient:
             response = self._post(_base_url, headers=self.headers, json=event.to_dict())
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            logger.warning("Failed to send event:", e)
+            logger.warning(f"Failed to send event: {e}")

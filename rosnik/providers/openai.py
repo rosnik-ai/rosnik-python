@@ -1,18 +1,19 @@
 import logging
+import warnings
 
 from rosnik.types.ai import AIFunctionMetadata, ErrorResponseData, OpenAIAttributes, ResponseData
 
 from rosnik import env
 from rosnik.wrap import wrap_class_method
 
-logger = logging.getLogger(__name__)
-
 try:
     from openai.openai_object import OpenAIObject
     from openai import OpenAIError
 except ImportError:
     OpenAIObject = dict
-    logger.warning("openai is not installed")
+    warnings.warn("openai is not installed")
+
+logger = logging.getLogger(__name__)
 
 _OAI = "openai"
 completion_metadata = AIFunctionMetadata(ai_provider=_OAI, ai_action="completions")
