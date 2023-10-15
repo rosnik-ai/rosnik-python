@@ -1,5 +1,4 @@
 import logging
-import threading
 
 from rosnik import env
 from rosnik.events import queue
@@ -20,9 +19,5 @@ def init():
         logger.debug("OpenAI is enabled. Patching.")
         openai_._patch_openai()
 
-    if not env.is_sync():
-        logger.debug("Running event processor in separate thread")
-        # Start the background thread
-        thread = threading.Thread(target=queue.process_events, daemon=True)
-        # TODO: handle shutdowns safely
-        thread.start()
+    if env.is_sync():
+        logger.debug("Running in sync mode")
