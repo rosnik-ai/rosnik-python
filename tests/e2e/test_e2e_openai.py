@@ -39,13 +39,4 @@ def test_e2e_chat_completion(mocker, openai, event_queue):
     assert response_event.ai_model == "gpt-3.5-turbo-0613"
     assert response_event.ai_provider == "openai"
     assert response_event.ai_request_start_event_id == request_event.event_id
-
-    # rosnik.track_feedback(
-    #     completion_id=result.id,
-    #     user_id=fake_user_id,
-    #     score=10,
-    #     metadata={"comment": "Great feature!"},
-    # )
-    # assert event_queue.qsize() == 2
-    queue._flush_events(send_events=False)
     assert event_queue.qsize() == 0
