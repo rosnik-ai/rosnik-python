@@ -18,7 +18,10 @@ Names:""".format(
 
 
 @pytest.mark.vcr
-def test_completion(openai, event_queue, ):
+def test_completion(
+    openai,
+    event_queue,
+):
     openai_._patch_completion(openai)
     assert event_queue.qsize() == 0
     openai.Completion.create(
@@ -92,7 +95,7 @@ def test_error_serializer_openai_error():
         message='{"error": "details"}',
         json_body={"error": "details"},
         headers={"request-id": "12345", "openai-organization": "test-org"},
-        http_status=400
+        http_status=400,
     )
     result = openai_.error_serializer(error)
     assert result.message == '{"error": "details"}'

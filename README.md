@@ -19,6 +19,11 @@ ROSNIK_API_KEY=
 # This is optional and will mark events to the application environment (e.g. development, staging, production).
 # If not supplied, it will go into a default environment.
 ROSNIK_ENVIRONMENT=
+
+# Setting this to 1 will send events on the foreground thread.
+# If it's not supplied or set to 0, it will send events on a 
+# background thread.
+ROSNIK_SYNC_MODE=
 ```
 
 ## Integrations

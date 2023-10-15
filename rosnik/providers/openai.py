@@ -49,13 +49,11 @@ def error_serializer(error: Exception) -> ErrorResponseData:
 
 def _patch_completion(openai):
     if getattr(openai, f"__{env.NAMESPACE}_patch", False):
-        logger.debug("Not patching. Already patched.")
+        logger.warning("Not patching. Already patched.")
         return
 
     completion_metadata.openai_attributes = OpenAIAttributes(
-        api_base=openai.api_base,
-        api_type=openai.api_type,
-        api_version=openai.api_version
+        api_base=openai.api_base, api_type=openai.api_type, api_version=openai.api_version
     )
 
     wrap_class_method(
@@ -65,13 +63,11 @@ def _patch_completion(openai):
 
 def _patch_chat_completion(openai):
     if getattr(openai, f"__{env.NAMESPACE}_patch", False):
-        logger.debug("Not patching. Already patched.")
+        logger.warning("Not patching. Already patched.")
         return
 
     chat_completion_metadata.openai_attributes = OpenAIAttributes(
-        api_base=openai.api_base,
-        api_type=openai.api_type,
-        api_version=openai.api_version
+        api_base=openai.api_base, api_type=openai.api_type, api_version=openai.api_version
     )
 
     wrap_class_method(
@@ -87,7 +83,7 @@ def _patch_openai():
     import openai
 
     if getattr(openai, f"__{env.NAMESPACE}_patch", False):
-        logger.debug("Not patching. Already patched.")
+        logger.warning("Not patching. Already patched.")
         return
 
     if getattr(openai, "Completion", None):

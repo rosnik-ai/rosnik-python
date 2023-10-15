@@ -8,6 +8,7 @@ import ulid
 
 from rosnik.types.core import Event
 
+
 def validate_common_attributes(event: Event):
     assert isinstance(ulid.parse(event.event_id), ulid.ULID)
     assert isinstance(ulid.parse(event.journey_id), ulid.ULID)
@@ -29,9 +30,9 @@ def test_chat_completion(openai, event_queue):
     openai_._patch_chat_completion(openai)
     assert event_queue.qsize() == 0
     expected_messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": input_text},
-        ]
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
     openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,

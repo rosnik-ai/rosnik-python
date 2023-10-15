@@ -1,7 +1,6 @@
 import logging
 
 from rosnik import env
-from rosnik.events import queue
 
 logger = logging.getLogger(__name__)
 

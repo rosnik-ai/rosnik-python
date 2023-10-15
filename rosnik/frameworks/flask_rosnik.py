@@ -9,6 +9,7 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+
 def _before_request():
     # Import this JIT to avoid warning / errors for non-Flask environments.
     if request is None:

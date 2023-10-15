@@ -2,7 +2,7 @@ import time
 import os
 import platform
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional
 
 from dataclasses_json import DataClassJsonMixin
 from ulid import monotonic as ulid

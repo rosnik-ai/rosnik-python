@@ -101,19 +101,20 @@ def test_flask_multiple_requests(app):
         assert finish_event.user_interaction_id == "test-user-interaction-2"
         assert queue.event_queue.qsize() == 0
 
+
 @pytest.mark.vcr
 def test_no_headers(app):
     """It should generate a new journey ID"""
     with app.test_client() as client:
         res = client.get("/")
 
-        assert headers.JOURNEY_ID_KEY in res.headers 
+        assert headers.JOURNEY_ID_KEY in res.headers
         assert isinstance(ulid.parse(res.headers.get(headers.JOURNEY_ID_KEY)), ulid.ULID)
-        assert state.retrieve(state.State.USER_INTERACTION_ID) is None  
+        assert state.retrieve(state.State.USER_INTERACTION_ID) is None
         assert state.retrieve(state.State.DEVICE_ID) is None
 
         assert res.json == {"success": True}
-        
+
         assert queue.event_queue.qsize() == 2
         queue.event_queue.get()
         queue.event_queue.get()

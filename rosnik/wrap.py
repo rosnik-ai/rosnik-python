@@ -39,15 +39,11 @@ def wrap_class_method(
     error_serializer: Callable,
 ):
     def wrapper(wrapped, instance, args, kwargs):
-        logger.debug("Prep for ingest request: %s", kwargs)
         limited_frames = get_stack_frames(5)
         # Flatten into a period separated sequence so we can do function chain search later.
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
-        # TODO: support stream:
-        # if stream is True, don't track_request_finish here
-        # instead we need to expose a hook for tracking it
-        # or patch the response object generator and when it ends, we fire.
+        # TODO: support streaming.
         request_event = ai.track_request_start(kwargs, metadata, calling_functions)
         try:
             result = wrapped(*args, **kwargs)
