@@ -18,7 +18,7 @@ def validate_common_attributes(event: Event):
     assert event._metadata.environment is None
     assert event._metadata.runtime == platform.python_implementation()
     assert event._metadata.runtime_version == platform.python_version()
-    assert event._metadata.sdk_version == "0.0.25"
+    assert event._metadata.sdk_version == "0.0.26"
     assert event._metadata.function_fingerprint
     assert len(event._metadata.function_fingerprint.split(".")) == 5
 
