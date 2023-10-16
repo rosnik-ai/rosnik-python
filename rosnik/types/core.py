@@ -39,7 +39,7 @@ class Event(DataClassJsonMixin):
     # Epoch unless not set, which will be -1
     occurred_at: Optional[int] = None
     # JSONable user defined context
-    # TODO: Supplied via either @context or with context({})?
+    # TODO: TBD on how this is provided.
     context: Optional[dict] = None
     # Users could be part of an AI event or a User event
     user_id: Optional[str] = None

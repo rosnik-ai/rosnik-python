@@ -19,11 +19,7 @@ if TYPE_CHECKING:
 def track_request_start(
     request_payload: dict, metadata: AIFunctionMetadata, function_fingerprint: List[str]
 ):
-    # TODO: Technically yes, we can pull this from the payload,
-    # but this feels precarious.
-    ai_model = request_payload["model"]
-    # TODO: we should have a serializer:
-    # OpenAI calls this "user"
+    ai_model = request_payload.get("model")
     user_id = request_payload.get("user")
     ai_provider = metadata.ai_provider
     ai_action = metadata.ai_action
