@@ -2,7 +2,7 @@ import logging
 import warnings
 from urllib3.util import Retry
 
-from rosnik import env
+from rosnik import config
 from rosnik.types import core
 
 import requests
@@ -19,22 +19,22 @@ retry_strategy = Retry(
     total=_NUM_RETRIES,
     backoff_factor=1,
     status_forcelist=_retry_status_code,
-    allowed_methods=['POST']
+    allowed_methods=["POST"],
 )
 adapter = HTTPAdapter(max_retries=retry_strategy)
 
+
 class IngestClient:
     def __init__(self):
-        self.api_key = env.get_api_key()
-        if self.api_key is None:
-            warnings.warn(f"{env.API_KEY} is not set and an API token was not provided on init")
+        self.session = requests.Session()
+        self.session.mount("https://", adapter)
 
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
+    @property
+    def headers(self):
+        return {
+            "Authorization": f"Bearer {config.Config.api_key}",
             "Content-Type": "application/json",
         }
-        self.session = requests.Session()
-        self.session.mount('https://', adapter)
 
     def _post(self, *args, **kwargs):
         # Wait up to 3 seconds before giving up

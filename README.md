@@ -10,7 +10,16 @@ pip install --upgrade rosnik
 
 ### Configuration
 
-We use environment variables to configure the SDK. 
+Then in your application code:
+
+```py
+import rosnik
+rosnik.init(api_key="api-key", environment="development")
+```
+
+#### Environment Variables
+
+Please note that environment variables will override configuration values passed in via initialization.
 
 ```sh
 # This is required to authenticate against our event ingestion tier
@@ -24,13 +33,6 @@ ROSNIK_ENVIRONMENT=
 # If it's not supplied or set to 0, it will send events on a 
 # background thread.
 ROSNIK_SYNC_MODE=
-```
-
-Then in your application code:
-
-```py
-import rosnik
-rosnik.init()
 ```
 
 ## Integrations
@@ -48,7 +50,7 @@ Please let us know if there are other providers that would be helpful to have au
 ```py
 from rosnik import flask_rosnik
 
-rosnik_extension = flask_rosnik.FlaskRosnik()
+rosnik_extension = flask_rosnik.FlaskRosnik(api_key="api-key", environment="development")
 # rosnik.init happens here
 rosnik_extension.init_app(app)
 ```
