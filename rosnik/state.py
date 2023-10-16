@@ -11,7 +11,7 @@ import logging
 from contextvars import ContextVar
 from typing import Optional
 
-from ulid import monotonic as ulid
+import ulid
 
 logger = logging.getLogger(__name__)
 
