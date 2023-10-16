@@ -4,8 +4,7 @@ import sys
 from typing import Callable
 
 
-from rosnik.events import ai
-from rosnik.types.ai import AIFunctionMetadata
+from rosnik.events import queue
 
 import wrapt
 
@@ -34,7 +33,7 @@ def get_stack_frames(num, use_get_frame=True):
 def wrap_class_method(
     klass,
     method_name: str,
-    metadata: AIFunctionMetadata,
+    request_serializer: Callable,
     response_serializer: Callable,
     error_serializer: Callable,
 ):
@@ -44,29 +43,17 @@ def wrap_class_method(
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
         # TODO: support streaming.
-        request_event = ai.track_request_start(kwargs, metadata, calling_functions)
+        request_event = request_serializer(kwargs, calling_functions)
+        queue.enqueue_event(request_event)
         try:
             result = wrapped(*args, **kwargs)
         except Exception as e:
-            ai.track_request_finish(
-                None,
-                metadata,
-                calling_functions,
-                request_event,
-                response_serializer,
-                error_serializer,
-                e,
-            )
+            error_event = error_serializer(e, calling_functions, request_event)
+            queue.enqueue_event(error_event)
             raise e
 
-        ai.track_request_finish(
-            result,
-            metadata,
-            calling_functions,
-            request_event,
-            response_serializer,
-            error_serializer,
-        )
+        request_finish = response_serializer(result, calling_functions, prior_event=request_event)
+        queue.enqueue_event(request_finish)
         return result
 
     wrapt.wrap_function_wrapper(klass, method_name, wrapper)

@@ -1,0 +1,73 @@
+interactions:
+- request:
+    body: '{"messages": [{"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '124'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+      api-key:
+      - abf1a77cb46e41a7be9e1e961c9c4629
+    method: POST
+    uri: https://rosnik.openai.azure.com//openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-05-15
+  response:
+    body:
+      string: '{"id":"chatcmpl-8AR0I0NxIy90FyTEmPmjT4ZQAuMAt","object":"chat.completion","created":1697497774,"model":"gpt-35-turbo","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"A
+        dog is a domesticated mammal that belongs to the Canidae family. They are
+        known for their loyalty, companionship, and diverse roles in society. Dogs
+        come in various breeds, shapes, and sizes, each with unique characteristics
+        and temperaments. They are often kept as pets, working animals, or used in
+        various activities such as herding, hunting, therapy, and search and rescue.
+        Dogs are known for their keen sense of hearing and smell, making them excellent
+        at detecting danger or assisting humans in various tasks."}}],"usage":{"prompt_tokens":22,"completion_tokens":106,"total_tokens":128}}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, must-revalidate
+      Content-Length:
+      - '798'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 16 Oct 2023 23:09:34 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      access-control-allow-origin:
+      - '*'
+      apim-request-id:
+      - fa34f1ab-e1ea-4008-8f3d-8969087c7ab6
+      azureml-model-session:
+      - d677b54a9b2c9-4
+      openai-model:
+      - gpt-35-turbo
+      openai-processing-ms:
+      - '865.8848'
+      x-accel-buffering:
+      - 'no'
+      x-content-type-options:
+      - nosniff
+      x-ms-client-request-id:
+      - fa34f1ab-e1ea-4008-8f3d-8969087c7ab6
+      x-ms-region:
+      - Sweden Central
+      x-request-id:
+      - 54174b97-e4d5-4d5e-8269-3b9fa7feb571
+    status:
+      code: 200
+      message: OK
+version: 1

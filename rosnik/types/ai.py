@@ -8,10 +8,21 @@ from rosnik.types.core import AIEvent
 
 
 @dataclass(kw_only=True, slots=True)
+class OpenAIAttributes(DataClassJsonMixin):
+    api_base: str
+    api_type: str
+    api_version: str
+    organization: Optional[str] = None
+    # OpenAI tracks response ms
+    response_ms: Optional[int] = None
+
+
+@dataclass(kw_only=True, slots=True)
 class ResponseData(DataClassJsonMixin):
     response_payload: dict
     organization: str
     response_ms: int
+    openai_attributes: OpenAIAttributes
 
 
 @dataclass(kw_only=True, slots=True)
@@ -22,16 +33,6 @@ class ErrorResponseData(DataClassJsonMixin):
     http_status: Optional[int] = None
     organization: Optional[str] = None
     request_id: Optional[str] = None
-
-
-@dataclass(kw_only=True, slots=True)
-class OpenAIAttributes(DataClassJsonMixin):
-    api_base: str
-    api_type: str
-    api_version: str
-    organization: Optional[str] = None
-    # OpenAI tracks response ms
-    response_ms: Optional[int] = None
 
 
 @dataclass(kw_only=True, slots=True)
