@@ -16,29 +16,12 @@ if TYPE_CHECKING:
     from openai.error import OpenAIError
 
 
-def track_request_start(
-    request_payload: dict, metadata: AIFunctionMetadata, function_fingerprint: List[str]
-):
-    ai_model = request_payload.get("model")
-    user_id = request_payload.get("user")
-    ai_provider = metadata.ai_provider
-    ai_action = metadata.ai_action
-    event = AIRequestStart(
-        ai_model=ai_model,
-        ai_provider=ai_provider,
-        ai_action=ai_action,
-        ai_metadata=metadata,
-        request_payload=request_payload,
-        user_id=user_id,
-        _metadata=Metadata(function_fingerprint=function_fingerprint),
-    )
-    queue.enqueue_event(event)
-    return event
+def track_request_start(request_start_event: AIRequestStart):
+    queue.enqueue_event(request_start_event)
 
 
 def track_request_finish(
     response_payload: Optional[dict],
-    metadata: AIFunctionMetadata,
     function_fingerprint: List[str],
     request_event: AIRequestStart,
     response_serializer: Callable[["OpenAIObject"], ResponseData],
@@ -47,6 +30,9 @@ def track_request_finish(
 ):
     # Note: this might be different from the request model,
     # e.g. gpt-3.5-turbo in request and gpt-3.5-turbo-0613 in response.
+    import pdb
+
+    pdb.set_trace()
     ai_model = response_payload.get("model") if isinstance(response_payload, dict) else None
     ai_provider = metadata.ai_provider
     ai_action = metadata.ai_action
@@ -57,6 +43,7 @@ def track_request_finish(
     metadata.openai_attributes.response_ms = (
         response_data.response_ms if isinstance(response_data, ResponseData) else None
     )
+    metadata.openai_attributes = response_data.openai_attributes
     now = int(time.time_ns() / 1000000)
     event = AIRequestFinish(
         # Manually set this so that response_ms is aligned

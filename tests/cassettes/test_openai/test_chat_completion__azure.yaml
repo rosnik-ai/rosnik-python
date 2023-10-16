@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"messages": [{"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '124'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+      api-key:
+      - abf1a77cb46e41a7be9e1e961c9c4629
+    method: POST
+    uri: https://rosnik.openai.azure.com//openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-05-15
+  response:
+    body:
+      string: '{"id":"chatcmpl-8APB7bYG3JPEWl9N9Y203GTQz3Llm","object":"chat.completion","created":1697490757,"model":"gpt-35-turbo","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"A
+        dog is a domesticated mammal belonging to the Canidae family. They are known
+        for their loyalty, companionship, and ability to be trained. Dogs come in
+        various breeds and sizes, with a wide range of characteristics and temperaments.
+        They are commonly kept as pets or working animals and are known for their
+        social nature and strong bond with humans."}}],"usage":{"prompt_tokens":22,"completion_tokens":72,"total_tokens":94}}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, must-revalidate
+      Content-Length:
+      - '630'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 16 Oct 2023 21:12:37 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      access-control-allow-origin:
+      - '*'
+      apim-request-id:
+      - 4cb9cacb-5975-4cb0-ad93-9adfbba2fa66
+      azureml-model-session:
+      - d677b54a9b2c9-6
+      openai-model:
+      - gpt-35-turbo
+      openai-processing-ms:
+      - '506.8035'
+      x-accel-buffering:
+      - 'no'
+      x-content-type-options:
+      - nosniff
+      x-ms-client-request-id:
+      - 4cb9cacb-5975-4cb0-ad93-9adfbba2fa66
+      x-ms-region:
+      - Sweden Central
+      x-request-id:
+      - 9fdfac5b-3ddd-4c14-a6eb-fcaa49afe23c
+    status:
+      code: 200
+      message: OK
+version: 1
