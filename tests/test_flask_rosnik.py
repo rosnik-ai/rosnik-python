@@ -2,6 +2,7 @@ import pytest
 from flask import Flask, jsonify
 import ulid
 
+from rosnik import config
 from rosnik import flask_rosnik, headers, state
 from rosnik.events import queue
 
@@ -126,3 +127,10 @@ def test_client_init(mocker, app):
     patch_init = mocker.patch("rosnik.client.init")  # Mock the client initialization
     flask_rosnik.FlaskRosnik(app)
     patch_init.assert_called_once()
+
+@pytest.mark.vcr
+def test_client_init__with_params(app):
+    flask_rosnik.FlaskRosnik(app, api_key="test_key", sync_mode=True, environment="development")
+    assert config.Config.api_key == "test_key"    
+    assert config.Config.sync_mode is True
+    assert config.Config.environment == "development"
