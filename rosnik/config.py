@@ -28,7 +28,7 @@ class _Config:
 
     @property
     def sync_mode(self):
-        return self._sync_mode
+        return bool(self._sync_mode)
     
     @sync_mode.setter
     def sync_mode(self, value):
