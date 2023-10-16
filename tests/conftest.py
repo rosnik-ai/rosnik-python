@@ -23,15 +23,18 @@ def openai():
     for m in mods:
         del sys.modules[m]
 
+
 @pytest.fixture(autouse=True)
 def config_reset():
     yield
     config.Config = config._Config()
 
+
 @pytest.fixture
 def debug_logger(caplog):
     caplog.set_level(logging.DEBUG)
     return caplog
+
 
 @pytest.fixture
 def event_queue(mocker):

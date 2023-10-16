@@ -31,16 +31,18 @@ def test_not_sync_mode(debug_logger):
     messages = [record.message for record in debug_logger.records]
     "OpenAI is enabled. Patching." in messages
 
+
 def test_api_key_sync_mode_and_environment_assignment(mocker):
     mock_api_key = "TEST_API_KEY"
     mock_sync_mode = True
     mock_environment = "TEST_ENVIRONMENT"
-    
+
     rosnik.init(api_key=mock_api_key, sync_mode=mock_sync_mode, environment=mock_environment)
-    
+
     assert rosnik.config.Config.api_key == mock_api_key
     assert rosnik.config.Config.sync_mode == mock_sync_mode
     assert rosnik.config.Config.environment == mock_environment
+
 
 def test_openai_enabled_and_sync_mode(caplog, mocker):
     caplog.set_level(logging.DEBUG)

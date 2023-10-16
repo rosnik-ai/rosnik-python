@@ -8,6 +8,7 @@ openai_enabled = False
 
 try:
     from rosnik.providers import openai as openai_
+
     openai_enabled = True
 except ImportError:
     pass

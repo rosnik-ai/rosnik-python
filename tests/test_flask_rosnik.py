@@ -128,9 +128,10 @@ def test_client_init(mocker, app):
     flask_rosnik.FlaskRosnik(app)
     patch_init.assert_called_once()
 
+
 @pytest.mark.vcr
 def test_client_init__with_params(app):
     flask_rosnik.FlaskRosnik(app, api_key="test_key", sync_mode=True, environment="development")
-    assert config.Config.api_key == "test_key"    
+    assert config.Config.api_key == "test_key"
     assert config.Config.sync_mode is True
     assert config.Config.environment == "development"

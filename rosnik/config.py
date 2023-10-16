@@ -9,7 +9,6 @@ ENVIRONMENT = f"{constants.NAMESPACE}_ENVIRONMENT"
 
 
 class _Config:
-
     def __init__(self, api_key=None, sync_mode=None, environment=None):
         self._api_key = api_key or os.environ.get(API_KEY)
         _sync = sync_mode or os.environ.get(SYNC_MODE)
@@ -19,7 +18,7 @@ class _Config:
     @property
     def api_key(self):
         return self._api_key
-    
+
     @api_key.setter
     def api_key(self, value):
         if self._api_key is not None:
@@ -29,7 +28,7 @@ class _Config:
     @property
     def sync_mode(self):
         return bool(self._sync_mode)
-    
+
     @sync_mode.setter
     def sync_mode(self, value):
         if self._sync_mode is not None:
@@ -39,11 +38,12 @@ class _Config:
     @property
     def environment(self):
         return self._environment
-    
+
     @environment.setter
     def environment(self, value):
         if self._environment is not None:
             return
         self._environment = value
+
 
 Config = _Config()

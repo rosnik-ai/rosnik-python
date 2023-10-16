@@ -5,30 +5,41 @@ from rosnik import config
 from rosnik.api import IngestClient, _base_url, _retry_status_code
 from rosnik.types.core import Event, Metadata
 
+
 @pytest.fixture
 def mock_event():
-    return Event(event_type="test.event", event_id="123456", journey_id="journey_123", _metadata=Metadata(function_fingerprint=""))
+    return Event(
+        event_type="test.event",
+        event_id="123456",
+        journey_id="journey_123",
+        _metadata=Metadata(function_fingerprint=""),
+    )
+
 
 def test_no_api_key_set():
     client = IngestClient(config._Config(api_key=None))
     assert client.api_key is None
+
 
 def test_send_event_successful(mocker, mock_event):
     # Mock API response
     mock_response = mocker.Mock()
     mock_response.raise_for_status.return_value = None
     mocker.patch.object(IngestClient, "_post", return_value=mock_response)
-    
+
     client = IngestClient(config._Config(api_key="fake_api_key"))
     client.send_event(mock_event)
-    IngestClient._post.assert_called_once_with(_base_url, headers=client.headers, json=mock_event.to_dict())
+    IngestClient._post.assert_called_once_with(
+        _base_url, headers=client.headers, json=mock_event.to_dict()
+    )
+
 
 def test_send_event_http_error(mocker, mock_event):
     mock_logger = mocker.patch("rosnik.api.logger.warning")
     # Mock an HTTPError
     mock_response = mocker.Mock()
     mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError("An error occurred")
-    
+
     # Now, mock _post to return this mock_response
     mocker.patch.object(IngestClient, "_post", return_value=mock_response)
 
@@ -36,11 +47,17 @@ def test_send_event_http_error(mocker, mock_event):
     client.send_event(mock_event)
     mock_logger.assert_called_once_with("Failed to send event: An error occurred")
 
+
 @pytest.mark.parametrize("status_code", _retry_status_code)
 @responses.activate
 def test_retry_adapter(mocker, status_code):
     mock_logger = mocker.patch("rosnik.api.logger.warning")
-    mock_event = Event(event_type="test-event", event_id="1", journey_id="j-1", _metadata=Metadata(function_fingerprint=""))
+    mock_event = Event(
+        event_type="test-event",
+        event_id="1",
+        journey_id="j-1",
+        _metadata=Metadata(function_fingerprint=""),
+    )
     test_url = "https://ingest.rosnik.ai/api/v1/events"
 
     # A counter to track the number of retries
@@ -53,9 +70,10 @@ def test_retry_adapter(mocker, status_code):
 
     # Setting up the mock response
     responses.add_callback(
-        responses.POST, test_url,
+        responses.POST,
+        test_url,
         callback=request_callback,
-        content_type='application/json',
+        content_type="application/json",
     )
 
     client = IngestClient(config._Config(api_key="fake_api_key"))
