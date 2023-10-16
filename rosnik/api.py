@@ -25,17 +25,16 @@ adapter = HTTPAdapter(max_retries=retry_strategy)
 
 
 class IngestClient:
-    def __init__(self, config: config._Config):
-        self.api_key = config.api_key
-        if self.api_key is None:
-            warnings.warn("Config.api_key is not set and an API token was not provided on init")
-
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-        }
+    def __init__(self):
         self.session = requests.Session()
         self.session.mount("https://", adapter)
+
+    @property
+    def headers(self):
+        return {
+            "Authorization": f"Bearer {config.Config.api_key}",
+            "Content-Type": "application/json",
+        }
 
     def _post(self, *args, **kwargs):
         # Wait up to 3 seconds before giving up

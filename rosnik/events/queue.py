@@ -30,7 +30,7 @@ class EventProcessor(threading.Thread):
 
 
 event_queue = queue.Queue()
-api_client = api.IngestClient(config.Config)
+api_client = api.IngestClient()
 event_processor = None
 
 
