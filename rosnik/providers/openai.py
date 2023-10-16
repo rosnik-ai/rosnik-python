@@ -9,9 +9,8 @@ from rosnik.wrap import wrap_class_method
 try:
     from openai.openai_object import OpenAIObject
     from openai import OpenAIError
-except ImportError:
-    OpenAIObject = dict
-    warnings.warn("openai is not installed")
+except ImportError as e:
+    raise e
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +80,10 @@ def _patch_chat_completion(openai):
 
 
 def _patch_openai():
-    import openai
+    try:
+        import openai
+    except ImportError as e:
+        raise e
 
     if getattr(openai, f"__{env.NAMESPACE}_patch", False):
         logger.warning("Not patching. Already patched.")

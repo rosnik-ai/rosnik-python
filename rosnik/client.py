@@ -7,8 +7,8 @@ logger = logging.getLogger(__name__)
 openai_enabled = False
 
 try:
-    openai_enabled = True
     from rosnik.providers import openai as openai_
+    openai_enabled = True
 except ImportError:
     pass
 

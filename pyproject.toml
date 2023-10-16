@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rosnik"
-version = "0.0.23"
+version = "0.0.24"
 description = "ROSNIK Python SDK"
 authors = ["Nick DiRienzo <nick@rosnik.ai>"]
 license = "MIT"
@@ -14,6 +14,7 @@ ulid-py = "^1.1.0"
 dataclasses-json = "^0.6.1"
 wrapt = "^1.15.0"
 urllib3 = "^2.0.6"
+requests = "^2.31.0"
 
 [tool.poetry.group.static.dependencies]
 bandit = "^1.7"
