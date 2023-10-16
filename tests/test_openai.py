@@ -1,5 +1,4 @@
 import os
-from openai import OpenAIError
 import pytest
 from rosnik import constants
 
@@ -179,7 +178,9 @@ def test_error_serializer_valid_error():
         error,
         "test_function_fingerprint",
         prior_event,
-        generate_metadata=lambda: AIFunctionMetadata(ai_provider=openai_._OAI, ai_action="completions"),
+        generate_metadata=lambda: AIFunctionMetadata(
+            ai_provider=openai_._OAI, ai_action="completions"
+        ),
     )
 
     assert result.error_data.message == "test exception"

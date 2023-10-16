@@ -12,12 +12,10 @@ from rosnik.types.ai import (
     AIRequestStart,
     ErrorResponseData,
     OpenAIAttributes,
-    ResponseData,
 )
 
 try:
     from openai.openai_object import OpenAIObject
-    from openai import OpenAIError
 except ImportError as e:
     raise e
 

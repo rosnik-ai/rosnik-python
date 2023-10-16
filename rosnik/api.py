@@ -1,5 +1,4 @@
 import logging
-import warnings
 from urllib3.util import Retry
 
 from rosnik import config

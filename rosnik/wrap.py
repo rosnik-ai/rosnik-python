@@ -4,9 +4,7 @@ import sys
 from typing import Callable
 
 
-from rosnik.events import ai
 from rosnik.events import queue
-from rosnik.types.ai import AIFunctionMetadata
 
 import wrapt
 
