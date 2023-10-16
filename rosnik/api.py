@@ -2,7 +2,7 @@ import logging
 import warnings
 from urllib3.util import Retry
 
-from rosnik import env
+from rosnik import config
 from rosnik.types import core
 
 import requests
@@ -24,10 +24,10 @@ retry_strategy = Retry(
 adapter = HTTPAdapter(max_retries=retry_strategy)
 
 class IngestClient:
-    def __init__(self):
-        self.api_key = env.get_api_key()
+    def __init__(self, config: config._Config):
+        self.api_key = config.api_key
         if self.api_key is None:
-            warnings.warn(f"{env.API_KEY} is not set and an API token was not provided on init")
+            warnings.warn(f"Config.api_key is not set and an API token was not provided on init")
 
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",

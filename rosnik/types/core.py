@@ -20,7 +20,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.24"
+    sdk_version: str = "0.0.25"
 
 
 @dataclass(kw_only=True, slots=True)

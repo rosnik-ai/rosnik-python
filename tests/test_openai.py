@@ -1,5 +1,6 @@
 from openai import OpenAIError
 import pytest
+from rosnik import constants
 
 from rosnik.providers import openai as openai_
 
@@ -112,22 +113,19 @@ def test_error_serializer_other_exception():
 
 
 def test_patch_completion_already_patched(mock_openai, mocker):
-    mocker.patch("rosnik.providers.openai.env.NAMESPACE", "test_namespace")
-    setattr(mock_openai, "__test_namespace_patch", True)
+    setattr(mock_openai, f"__test_{constants.NAMESPACE}_patch", True)
     openai_._patch_completion(mock_openai)
     mock_openai.Completion.create.assert_not_called()
 
 
 def test_patch_chat_completion_already_patched(mock_openai, mocker):
-    mocker.patch("rosnik.providers.openai.env.NAMESPACE", "test_namespace")
-    setattr(mock_openai, "__test_namespace_patch", True)
+    setattr(mock_openai, f"__test_{constants.NAMESPACE}_patch", True)
     openai_._patch_chat_completion(mock_openai)
     mock_openai.ChatCompletion.create.assert_not_called()
 
 
 def test_patch_openai_already_patched(mock_openai, mocker):
-    mocker.patch("rosnik.providers.openai.env.NAMESPACE", "test_namespace")
-    setattr(mock_openai, "__test_namespace_patch", True)
+    setattr(mock_openai, f"__test_{constants.NAMESPACE}_patch", True)
     openai_._patch_openai()
     mock_openai.Completion.assert_not_called()
     mock_openai.ChatCompletion.assert_not_called()

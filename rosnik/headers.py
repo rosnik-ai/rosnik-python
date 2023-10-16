@@ -1,5 +1,5 @@
-from rosnik import env
+from rosnik import constants
 
-JOURNEY_ID_KEY = f"X-{env.NAMESPACE}-Journey-Id"
-INTERACTION_ID_KEY = f"X-{env.NAMESPACE}-Interaction-Id"
-DEVICE_ID_KEY = f"X-{env.NAMESPACE}-Device-Id"
+JOURNEY_ID_KEY = f"X-{constants.NAMESPACE}-Journey-Id"
+INTERACTION_ID_KEY = f"X-{constants.NAMESPACE}-Interaction-Id"
+DEVICE_ID_KEY = f"X-{constants.NAMESPACE}-Device-Id"

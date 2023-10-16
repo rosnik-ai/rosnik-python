@@ -1,19 +1,16 @@
 import pytest
 import requests
 import responses
+from rosnik import config
 from rosnik.api import IngestClient, _base_url, _retry_status_code
-from rosnik.env import API_KEY
 from rosnik.types.core import Event, Metadata
 
 @pytest.fixture
 def mock_event():
     return Event(event_type="test.event", event_id="123456", journey_id="journey_123", _metadata=Metadata(function_fingerprint=""))
 
-def test_no_api_key_set(mocker):
-    # Mock env.get_api_key to return None
-    mocker.patch("rosnik.env.get_api_key", return_value=None)
-    
-    client = IngestClient()
+def test_no_api_key_set():
+    client = IngestClient(config._Config(api_key=None))
     assert client.api_key is None
 
 def test_send_event_successful(mocker, mock_event):
@@ -22,10 +19,7 @@ def test_send_event_successful(mocker, mock_event):
     mock_response.raise_for_status.return_value = None
     mocker.patch.object(IngestClient, "_post", return_value=mock_response)
     
-    # Mock env.get_api_key to return a fake API key
-    mocker.patch("rosnik.env.get_api_key", return_value="fake_api_key")
-
-    client = IngestClient()
+    client = IngestClient(config._Config(api_key="fake_api_key"))
     client.send_event(mock_event)
     IngestClient._post.assert_called_once_with(_base_url, headers=client.headers, json=mock_event.to_dict())
 
@@ -37,10 +31,8 @@ def test_send_event_http_error(mocker, mock_event):
     
     # Now, mock _post to return this mock_response
     mocker.patch.object(IngestClient, "_post", return_value=mock_response)
-    # Mock env.get_api_key to return a fake API key
-    mocker.patch("rosnik.env.get_api_key", return_value="fake_api_key")
 
-    client = IngestClient()
+    client = IngestClient(config._Config(api_key="fake_api_key"))
     client.send_event(mock_event)
     mock_logger.assert_called_once_with("Failed to send event: An error occurred")
 
@@ -66,7 +58,7 @@ def test_retry_adapter(mocker, status_code):
         content_type='application/json',
     )
 
-    client = IngestClient()
+    client = IngestClient(config._Config(api_key="fake_api_key"))
     client.send_event(mock_event)
     assert mock_logger.call_count == 1
     assert "Failed to send event after 3 attempts:" in mock_logger.call_args_list[0][0][0]

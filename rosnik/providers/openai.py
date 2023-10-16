@@ -1,10 +1,8 @@
 import logging
-import warnings
 
-from rosnik.types.ai import AIFunctionMetadata, ErrorResponseData, OpenAIAttributes, ResponseData
-
-from rosnik import env
+from rosnik import constants
 from rosnik.wrap import wrap_class_method
+from rosnik.types.ai import AIFunctionMetadata, ErrorResponseData, OpenAIAttributes, ResponseData
 
 try:
     from openai.openai_object import OpenAIObject
@@ -48,7 +46,7 @@ def error_serializer(error: Exception) -> ErrorResponseData:
 
 
 def _patch_completion(openai):
-    if getattr(openai, f"__{env.NAMESPACE}_patch", False):
+    if getattr(openai, f"__{constants.NAMESPACE}_patch", False):
         logger.warning("Not patching. Already patched.")
         return
 
@@ -62,7 +60,7 @@ def _patch_completion(openai):
 
 
 def _patch_chat_completion(openai):
-    if getattr(openai, f"__{env.NAMESPACE}_patch", False):
+    if getattr(openai, f"__{constants.NAMESPACE}_patch", False):
         logger.warning("Not patching. Already patched.")
         return
 
@@ -85,7 +83,7 @@ def _patch_openai():
     except ImportError as e:
         raise e
 
-    if getattr(openai, f"__{env.NAMESPACE}_patch", False):
+    if getattr(openai, f"__{constants.NAMESPACE}_patch", False):
         logger.warning("Not patching. Already patched.")
         return
 
@@ -93,4 +91,4 @@ def _patch_openai():
         _patch_completion(openai)
     if getattr(openai, "ChatCompletion", None):
         _patch_chat_completion(openai)
-    setattr(openai, f"__{env.NAMESPACE}_patch", True)
+    setattr(openai, f"__{constants.NAMESPACE}_patch", True)

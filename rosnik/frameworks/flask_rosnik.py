@@ -34,11 +34,12 @@ def _annotate_response_headers(response):
 
 
 class FlaskRosnik:
-    def __init__(self, app=None):
+    def __init__(self, app=None, api_key=None, sync_mode=None, environment=None):
         if app is not None:
             self.init_app(app)
+
+        client.init(api_key=api_key, sync_mode=sync_mode, environment=environment)
 
     def init_app(self, app):
         app.before_request(_before_request)
         app.after_request(_annotate_response_headers)
-        client.init()

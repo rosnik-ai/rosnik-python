@@ -4,7 +4,7 @@ import queue
 import os
 
 from rosnik import api
-from rosnik import env
+from rosnik import config
 from rosnik.types.core import Event
 
 logger = logging.getLogger(__name__)
@@ -30,12 +30,12 @@ class EventProcessor(threading.Thread):
 
 
 event_queue = queue.Queue()
-api_client = api.IngestClient()
+api_client = api.IngestClient(config.Config)
 event_processor = None
 
 
 def enqueue_event(event: Event):
-    if env.is_sync():
+    if config.Config.sync_mode:
         logger.debug(f"Enqueuing event in sync mode: {event.event_id}")
         api_client.send_event(event)
         return

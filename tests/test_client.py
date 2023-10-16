@@ -20,18 +20,12 @@ def test_openai_not_imported(mocker):
 
 
 def test_sync_mode(mocker):
-    mocker.patch("rosnik.env.is_sync", return_value=True)
     mock_logger = mocker.patch("rosnik.client.logger.debug")
-
-    rosnik.init()
-
+    rosnik.init(sync_mode=True)
     mock_logger.assert_called_with("Running in sync mode")
 
 
 def test_not_sync_mode(mocker):
-    mocker.patch("rosnik.env.is_sync", return_value=False)
     mock_logger = mocker.patch("rosnik.client.logger.debug")
-
     rosnik.init()
-
     mock_logger.assert_called_once_with("OpenAI is enabled. Patching.")
