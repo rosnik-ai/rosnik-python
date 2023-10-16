@@ -95,6 +95,39 @@ def test_chat_completion__azure(openai, event_queue):
 
 
 @pytest.mark.vcr
+def test_chat_completion__azure__engine(openai, event_queue):
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+
+    expected_api_base = "https://rosnik.openai.azure.com/"
+    expected_api_type = "azure"
+    expected_api_version = "2023-05-15"
+    openai.api_key = os.environ.get("AZURE_API_KEY")
+    openai.api_base = expected_api_base
+    openai.api_type = expected_api_type
+    openai.api_version = expected_api_version
+    openai_._patch_chat_completion(openai)
+
+    assert event_queue.qsize() == 0
+    openai.ChatCompletion.create(
+        engine="gpt-35-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": input_text},
+        ],
+    )
+    assert event_queue.qsize() == 2
+    request_start: AIRequestStart = event_queue.get()
+    assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert request_start.ai_metadata.openai_attributes.api_type == expected_api_type
+    assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
+
+    request_finish: AIRequestFinish = event_queue.get()
+    assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert request_finish.ai_metadata.openai_attributes.api_type == expected_api_type
+    assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
+
+@pytest.mark.vcr
 def test_error(openai, event_queue):
     system_prompt = "You are a helpful assistant." * 100000
     input_text = "What is a dog?"
