@@ -4,6 +4,7 @@ on: [push]
 
 env:
     OPENAI_API_KEY: fake-key
+    AZURE_API_KEY: fake-key
 
 jobs:
   build:
