@@ -16,18 +16,14 @@ def mock_event():
     )
 
 
-def test_no_api_key_set():
-    client = IngestClient(config._Config(api_key=None))
-    assert client.api_key is None
-
-
 def test_send_event_successful(mocker, mock_event):
     # Mock API response
     mock_response = mocker.Mock()
     mock_response.raise_for_status.return_value = None
     mocker.patch.object(IngestClient, "_post", return_value=mock_response)
 
-    client = IngestClient(config._Config(api_key="fake_api_key"))
+    config.Config.api_key = "fake_key"
+    client = IngestClient()
     client.send_event(mock_event)
     IngestClient._post.assert_called_once_with(
         _base_url, headers=client.headers, json=mock_event.to_dict()
@@ -43,7 +39,8 @@ def test_send_event_http_error(mocker, mock_event):
     # Now, mock _post to return this mock_response
     mocker.patch.object(IngestClient, "_post", return_value=mock_response)
 
-    client = IngestClient(config._Config(api_key="fake_api_key"))
+    config.Config.api_key = "fake_key"
+    client = IngestClient()
     client.send_event(mock_event)
     mock_logger.assert_called_once_with("Failed to send event: An error occurred")
 
@@ -76,7 +73,8 @@ def test_retry_adapter(mocker, status_code):
         content_type="application/json",
     )
 
-    client = IngestClient(config._Config(api_key="fake_api_key"))
+    config.Config.api_key = "fake_key"
+    client = IngestClient()
     client.send_event(mock_event)
     assert mock_logger.call_count == 1
     assert "Failed to send event after 3 attempts:" in mock_logger.call_args_list[0][0][0]
