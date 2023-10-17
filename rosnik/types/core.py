@@ -20,7 +20,7 @@ def _generate_event_id():
 
 @dataclass(kw_only=True, slots=True)
 class StaticMetadata:
-    environment: Optional[str] = config.Config.environment
+    environment: Optional[str] = field(default_factory=lambda: config.Config.environment)
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
@@ -65,9 +65,8 @@ class Event(DataClassJsonMixin):
             context_env = self.context.pop("environment", None)
             if context_env:
                 self._metadata.environment = context_env
-        except Exception as e:
-            # TODO: pull from function if possible
-            logger.exception("Could not generate context from fn")
+        except Exception:
+            logger.exception(f"Could not generate context from {config.Config.event_context_hook.__name__}")
 
 
 @dataclass(kw_only=True, slots=True)
