@@ -1,14 +1,16 @@
 import functools
 import logging
 import time
-from typing import Callable
+from typing import Callable, Iterator, Union
 
 from rosnik import constants
+from rosnik.events import queue
 from rosnik.types.core import AIEvent, Metadata
 from rosnik.wrap import wrap_class_method
 from rosnik.types.ai import (
     AIFunctionMetadata,
     AIRequestFinish,
+    AIRequestStartStream,
     AIRequestStart,
     ErrorResponseData,
     OpenAIAttributes,
@@ -24,14 +26,12 @@ logger = logging.getLogger(__name__)
 _OAI = "openai"
 
 
-def serializer_with_metadata(
-    serializer: Callable, generate_metadata: Callable[[], AIFunctionMetadata]
-):
+def hook_with_metadata(hook: Callable, generate_metadata: Callable[[], AIFunctionMetadata]):
     """Each provider should be encapsulated into what it knows about the call."""
-    return functools.partial(serializer, generate_metadata=generate_metadata)
+    return functools.partial(hook, generate_metadata=generate_metadata)
 
 
-def request_serializer(
+def request_hook(
     payload: dict,
     function_fingerprint: str,
     prior_event: AIEvent = None,
@@ -66,23 +66,31 @@ def request_serializer(
     )
     user_id = payload.get("user")
 
-    return AIRequestStart(
+    event = AIRequestStart(
         ai_model=ai_model,
         ai_provider=metadata.ai_provider,
         ai_action=metadata.ai_action,
         ai_metadata=metadata,
         request_payload=payload,
         user_id=user_id,
-        _metadata=Metadata(function_fingerprint=function_fingerprint),
+        _metadata=Metadata(
+            function_fingerprint=function_fingerprint, stream=payload.get("stream", False)
+        ),
     )
+    queue.enqueue_event(event)
+    return event
 
 
-def response_serializer(
-    payload: "OpenAIObject",
+def response_hook(
+    payload: Union["OpenAIObject", Iterator],
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
 ) -> AIRequestFinish:
+    """If we're an Iterator, it means we're a streamed response,
+    in which case we're tracking first-byte here.
+    If we're an OpenAIObject, then we can provide additional metadata.
+    """
     if not payload:
         return None
 
@@ -93,8 +101,8 @@ def response_serializer(
     # Reimport to make sure we have the latest values
     import openai
 
-    # For both OpenAI and Azure, `model` contains the model on the response.
-    ai_model = payload.get("model")
+    is_stream_response = isinstance(payload, Iterator)
+
     metadata = generate_metadata()
     metadata.openai_attributes = OpenAIAttributes(
         api_base=openai.api_base,
@@ -104,22 +112,112 @@ def response_serializer(
     )
 
     now = int(time.time_ns() / 1000000)
-    return AIRequestFinish(
-        ai_model=ai_model,
-        ai_provider=metadata.ai_provider,
-        ai_action=metadata.ai_action,
-        ai_metadata=metadata,
-        response_payload=payload,
-        # Explicitly set this so that response_ms is stable.
-        sent_at=now,
-        response_ms=(now - prior_event.sent_at),
-        ai_request_start_event_id=prior_event.event_id,
-        user_id=prior_event.user_id,
-        _metadata=Metadata(function_fingerprint=function_fingerprint),
-    )
+    event_kwargs = {
+        # For both OpenAI and Azure, `model` contains the model on the response.
+        "ai_model": prior_event.ai_model if is_stream_response else payload.get("model"),
+        "ai_provider": metadata.ai_provider,
+        "ai_action": metadata.ai_action,
+        "ai_metadata": metadata,
+        "response_payload": payload,
+        "sent_at": now,
+        "response_ms": (now - prior_event.sent_at),
+        "ai_request_start_event_id": prior_event.event_id,
+        "user_id": prior_event.user_id,
+        "_metadata": Metadata(function_fingerprint=function_fingerprint, stream=is_stream_response),
+    }
+
+    if is_stream_response:
+        # These don't exist. `payload` is a generator.
+        # Make this None
+        event_kwargs.pop("response_payload")
+        event = AIRequestStartStream(**event_kwargs)
+        queue.enqueue_event(event)
+        return event
+
+    event = AIRequestFinish(**event_kwargs)
+    queue.enqueue_event(event)
+    return event
 
 
-def error_serializer(
+def streamed_response_hook(
+    response: Iterator,
+    function_fingerprint: str,
+    prior_event: AIEvent = None,
+    generate_metadata: Callable[[], AIFunctionMetadata] = None,
+):
+    """Wrap the response generator with our own function so that the
+    user can still yield results, and we can automatically
+    figure out the duration of the stream.
+    """
+
+    content_parts = []
+    # Load openai here and use values defined at this point.
+    import openai
+
+    def _stream_hook(line: "OpenAIObject"):
+        """For each chunk, either add it to our content_parts
+        or emit an event because we're done.
+        """
+        if not line:
+            logger.debug("Line not seen on stream.")
+            return
+
+        choices = line.get("choices")
+        if not choices or len(choices) < 1:
+            logger.debug("Missing choices on stream.")
+            return
+
+        content = choices[0].get("delta", {}).get("content")
+        if content:
+            content_parts.append(content)
+
+        finish_reason = choices[0].get("finish_reason")
+        if finish_reason:
+            metadata = generate_metadata()
+            metadata.openai_attributes = OpenAIAttributes(
+                api_base=openai.api_base,
+                api_type=openai.api_type,
+                api_version=openai.api_version,
+                organization=openai.organization,
+            )
+            now = int(time.time_ns() / 1000000)
+            finish_event = AIRequestFinish(
+                ai_model=line.get("model"),
+                ai_provider=metadata.ai_provider,
+                ai_action=metadata.ai_action,
+                ai_metadata=metadata,
+                # Mimic the OpenAI response payload.
+                # Missing `usage`, TODO: what do?
+                response_payload={
+                    "choices": [
+                        {
+                            "finish_reason": finish_reason,
+                            "index": 0,
+                            "message": {"content": "".join(content_parts), "role": "assistant"},
+                        }
+                    ],
+                    "model": line.get("model"),
+                    "created": line.get("created"),
+                    "object": line.get("object"),
+                    "id": line.get("id"),
+                },
+                sent_at=now,
+                response_ms=(now - prior_event.sent_at),
+                ai_request_start_event_id=prior_event.event_id,
+                user_id=prior_event.user_id,
+                _metadata=Metadata(function_fingerprint=function_fingerprint, stream=True),
+            )
+            queue.enqueue_event(finish_event)
+
+    def _stream_response_wrapper(response: Iterator):
+        for line in response:
+            _stream_hook(line)
+            yield line
+
+    return _stream_response_wrapper(response)
+
+
+def error_hook(
     error: Exception,
     function_fingerprint: str,
     prior_event: AIEvent = None,
@@ -143,7 +241,7 @@ def error_serializer(
     )
 
     now = int(time.time_ns() / 1000000)
-    return AIRequestFinish(
+    event = AIRequestFinish(
         ai_model=None,
         ai_provider=metadata.ai_provider,
         ai_action=metadata.ai_action,
@@ -160,6 +258,8 @@ def error_serializer(
         user_id=prior_event.user_id,
         _metadata=Metadata(function_fingerprint=function_fingerprint),
     )
+    queue.enqueue_event(event)
+    return event
 
 
 def _patch_completion(openai):
@@ -170,16 +270,20 @@ def _patch_completion(openai):
     wrap_class_method(
         openai.Completion,
         "create",
-        serializer_with_metadata(
-            request_serializer,
+        hook_with_metadata(
+            request_hook,
             lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions"),
         ),
-        serializer_with_metadata(
-            response_serializer,
+        hook_with_metadata(
+            response_hook,
             lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions"),
         ),
-        serializer_with_metadata(
-            error_serializer, lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions")
+        hook_with_metadata(
+            error_hook, lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions")
+        ),
+        hook_with_metadata(
+            streamed_response_hook,
+            lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions"),
         ),
     )
 
@@ -192,16 +296,20 @@ def _patch_chat_completion(openai):
     wrap_class_method(
         openai.ChatCompletion,
         "create",
-        serializer_with_metadata(
-            request_serializer,
+        hook_with_metadata(
+            request_hook,
             lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="chat.completions"),
         ),
-        serializer_with_metadata(
-            response_serializer,
+        hook_with_metadata(
+            response_hook,
             lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="chat.completions"),
         ),
-        serializer_with_metadata(
-            error_serializer,
+        hook_with_metadata(
+            error_hook,
+            lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="chat.completions"),
+        ),
+        hook_with_metadata(
+            streamed_response_hook,
             lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="chat.completions"),
         ),
     )

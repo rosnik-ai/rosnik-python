@@ -4,8 +4,6 @@ import sys
 from typing import Callable
 
 
-from rosnik.events import queue
-
 import wrapt
 
 logger = logging.getLogger(__name__)
@@ -33,27 +31,30 @@ def get_stack_frames(num, use_get_frame=True):
 def wrap_class_method(
     klass,
     method_name: str,
-    request_serializer: Callable,
-    response_serializer: Callable,
-    error_serializer: Callable,
+    request_hook: Callable,
+    response_hook: Callable,
+    error_hook: Callable,
+    streamed_response_hook: Callable,
 ):
     def wrapper(wrapped, instance, args, kwargs):
         limited_frames = get_stack_frames(5)
         # Flatten into a period separated sequence so we can do function chain search later.
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
-        # TODO: support streaming.
-        request_event = request_serializer(kwargs, calling_functions)
-        queue.enqueue_event(request_event)
+        request_event = request_hook(kwargs, calling_functions)
         try:
             result = wrapped(*args, **kwargs)
         except Exception as e:
-            error_event = error_serializer(e, calling_functions, request_event)
-            queue.enqueue_event(error_event)
+            error_hook(e, calling_functions, request_event)
             raise e
 
-        request_finish = response_serializer(result, calling_functions, prior_event=request_event)
-        queue.enqueue_event(request_finish)
+        response_hook(result, calling_functions, prior_event=request_event)
+
+        # If this is a streamed output, wrap this so we can capture stream duration
+        # and final output.
+        if kwargs.get("stream") is True:
+            return streamed_response_hook(result, calling_functions, prior_event=request_event)
+
         return result
 
     wrapt.wrap_function_wrapper(klass, method_name, wrapper)
