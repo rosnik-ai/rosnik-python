@@ -4,7 +4,7 @@ import pytest
 import rosnik
 from rosnik import config
 from rosnik.providers import openai as openai_
-from rosnik.types.ai import AIRequestFinish, AIRequestStart
+from rosnik.types.ai import AIRequestFinish, AIRequestStart, AIRequestStartStream
 
 import ulid
 
@@ -101,6 +101,49 @@ def test_event_with_context(openai, event_queue):
     start_event: AIRequestStart = event_queue.get()
     assert start_event._metadata.environment == "testing"
     assert start_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "testing"
+    assert finish_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+
+@pytest.mark.vcr
+def test_event_with_context__streaming(openai, event_queue):
+    def _custom_hook():
+        return {
+            "environment": "testing",
+            "test-key": "test-value",
+            "test-key2": "test-value2"
+        }
+
+    rosnik.init(event_context_hook=_custom_hook)
+    # The default environment is not set
+    assert config.Config.environment is None
+    assert config.Config.event_context_hook is _custom_hook
+
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    expected_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
+    resp = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
+        stream=True
+    )
+
+    # Stream
+    [_ for _ in resp]
+
+    assert event_queue.qsize() == 3
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event._metadata.environment == "testing"
+    assert start_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+    start_stream: AIRequestStartStream = event_queue.get()
+    assert start_stream._metadata.environment == "testing"
+    assert start_stream.context == {"test-key": "test-value", "test-key2": "test-value2"}
 
     finish_event: AIRequestFinish = event_queue.get()
     assert finish_event._metadata.environment == "testing"
