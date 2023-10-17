@@ -54,3 +54,13 @@ def test_openai_enabled_and_sync_mode(caplog, mocker):
     messages = [record.message for record in caplog.records]
     "OpenAI is enabled. Patching." in messages
     "Running in sync mode" in messages
+
+def test_client_init__with_params():
+    def _custom_hook():
+        return {}
+
+    rosnik.init(api_key="test_key", sync_mode=True, environment="development", event_context_hook=_custom_hook)
+    assert rosnik.config.Config.api_key == "test_key"
+    assert rosnik.config.Config.sync_mode is True
+    assert rosnik.config.Config.environment == "development"
+    assert rosnik.config.Config.event_context_hook is _custom_hook

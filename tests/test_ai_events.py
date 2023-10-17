@@ -1,8 +1,10 @@
 import platform
 import pytest
 
+import rosnik
+from rosnik import config
 from rosnik.providers import openai as openai_
-from rosnik.types.ai import AIRequestFinish, AIRequestStart
+from rosnik.types.ai import AIRequestFinish, AIRequestStart, AIRequestStartStream
 
 import ulid
 
@@ -18,7 +20,7 @@ def validate_common_attributes(event: Event):
     assert event._metadata.environment is None
     assert event._metadata.runtime == platform.python_implementation()
     assert event._metadata.runtime_version == platform.python_version()
-    assert event._metadata.sdk_version == "0.0.27"
+    assert event._metadata.sdk_version == "0.0.28"
     assert event._metadata.function_fingerprint
     assert len(event._metadata.function_fingerprint.split(".")) == 5
 
@@ -69,3 +71,122 @@ def test_chat_completion(openai, event_queue):
     assert start_event.ai_metadata.openai_attributes.api_type == "open_ai"
     assert start_event.ai_metadata.openai_attributes.api_version is None
     assert finish_event.response_ms == (finish_event.sent_at - start_event.sent_at)
+
+
+@pytest.mark.vcr
+def test_event_with_context(openai, event_queue):
+    def _custom_hook():
+        return {
+            "environment": "testing",
+            "test-key": "test-value",
+            "test-key2": "test-value2"
+        }
+
+    rosnik.init(event_context_hook=_custom_hook)
+    # The default environment is not set
+    assert config.Config.environment is None
+    assert config.Config.event_context_hook is _custom_hook
+
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    expected_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
+    openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
+    )
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event._metadata.environment == "testing"
+    assert start_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "testing"
+    assert finish_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+
+@pytest.mark.vcr
+def test_event_with_context__streaming(openai, event_queue):
+    def _custom_hook():
+        return {
+            "environment": "testing",
+            "test-key": "test-value",
+            "test-key2": "test-value2"
+        }
+
+    rosnik.init(event_context_hook=_custom_hook)
+    # The default environment is not set
+    assert config.Config.environment is None
+    assert config.Config.event_context_hook is _custom_hook
+
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    expected_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
+    resp = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
+        stream=True
+    )
+
+    # Stream
+    [_ for _ in resp]
+
+    assert event_queue.qsize() == 3
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event._metadata.environment == "testing"
+    assert start_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+    start_stream: AIRequestStartStream = event_queue.get()
+    assert start_stream._metadata.environment == "testing"
+    assert start_stream.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "testing"
+    assert finish_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+
+@pytest.mark.vcr
+def test_event_with_error_doesnt_raise(openai, event_queue, caplog):
+    """Check that we don't raise exceptions if a user defined function
+        fails. And if there's a default environment, we should use it.
+    """
+    def _custom_hook():
+        raise Exception("oh no")
+
+    rosnik.init(event_context_hook=_custom_hook, environment="pytest")
+    assert config.Config.environment is "pytest"
+    assert config.Config.event_context_hook is _custom_hook
+
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    expected_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
+    openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
+    )
+
+    start_event: AIRequestStart = event_queue.get()
+    # pytest because context didn't set anything
+    assert start_event._metadata.environment == "pytest"
+    # None because context hook exploded
+    assert start_event.context == None
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "pytest"
+    # None because context hook exploded
+    assert finish_event.context == None
+
+    assert len(caplog.records) == 2
+    for record in caplog.records:
+        assert str(record.exc_info[1]) == "oh no"
+        assert 'Could not generate context from _custom_hook' == record.message
+
+    

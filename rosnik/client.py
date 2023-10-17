@@ -15,10 +15,11 @@ except ImportError:
     pass
 
 
-def init(api_key=None, sync_mode=None, environment=None):
+def init(api_key=None, sync_mode=None, environment=None, event_context_hook=None):
     config.Config.api_key = api_key
     config.Config.sync_mode = sync_mode
     config.Config.environment = environment
+    config.Config.event_context_hook = event_context_hook
 
     if config.Config.api_key is None:
         warnings.warn("`api_key` is not set and an API token was not provided on init")
