@@ -34,7 +34,9 @@ def _annotate_response_headers(response):
 
 
 class FlaskRosnik:
-    def __init__(self, app=None, api_key=None, sync_mode=None, environment=None, event_context_hook=None):
+    def __init__(
+        self, app=None, api_key=None, sync_mode=None, environment=None, event_context_hook=None
+    ):
         self.api_key = api_key
         self.sync_mode = sync_mode
         self.environment = environment
@@ -45,4 +47,9 @@ class FlaskRosnik:
     def init_app(self, app):
         app.before_request(_before_request)
         app.after_request(_annotate_response_headers)
-        client.init(api_key=self.api_key, sync_mode=self.sync_mode, environment=self.environment, event_context_hook=self.event_context_hook)
+        client.init(
+            api_key=self.api_key,
+            sync_mode=self.sync_mode,
+            environment=self.environment,
+            event_context_hook=self.event_context_hook,
+        )

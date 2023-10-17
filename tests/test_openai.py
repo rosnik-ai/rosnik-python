@@ -66,6 +66,7 @@ def test_chat_completion(openai, event_queue):
     assert request_finish.ai_metadata.openai_attributes.api_version is None
     assert request_finish._metadata.stream is False
 
+
 @pytest.mark.vcr
 def test_chat_completion__with_user(openai, event_queue):
     system_prompt = "You are a helpful assistant."
@@ -78,7 +79,7 @@ def test_chat_completion__with_user(openai, event_queue):
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": input_text},
         ],
-        user="test-user"
+        user="test-user",
     )
     assert event_queue.qsize() == 2
     request_start: AIRequestStart = event_queue.get()
@@ -94,7 +95,7 @@ def test_chat_completion__streaming(openai, event_queue):
     You are an aspiring edm artist. 
     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
     Your inspiration is the artist provided by the user.
-    """ # noqa
+    """  # noqa
     input_text = "Daft Punk"
     openai_._patch_chat_completion(openai)
     assert event_queue.qsize() == 0
@@ -296,6 +297,54 @@ def test_error(openai, event_queue):
             ],
         )
     assert event_queue.qsize() == 2
+    assert isinstance(event_queue.get(), AIRequestStart)
+    event: AIRequestFinish = event_queue.get()
+    assert isinstance(event, AIRequestFinish)
+    assert (
+        event.error_data.message
+        == "Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 0 / min. Contact us through our help center at help.openai.com if you continue to have issues."  # noqa
+    )
+    assert event.error_data.json_body == {
+        "error": {
+            "message": "Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 0 / min. Contact us through our help center at help.openai.com if you continue to have issues.",  # noqa
+            "type": "tokens",
+            "param": None,
+            "code": "rate_limit_exceeded",
+        }
+    }
+    assert event.error_data.headers == {
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "8163762d4dc42513-SJC",
+        "Connection": "keep-alive",
+        "Content-Length": "359",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 14 Oct 2023 23:04:30 GMT",
+        "Server": "cloudflare",
+        "alt-svc": 'h3=":443"; ma=86400',
+        "strict-transport-security": "max-age=15724800; includeSubDomains",
+        "vary": "Origin",
+        "x-ratelimit-limit-requests": "3500",
+        "x-ratelimit-limit-tokens": "90000",
+        "x-ratelimit-remaining-requests": "3499",
+        "x-ratelimit-remaining-tokens": "90000",
+        "x-ratelimit-reset-requests": "17ms",
+        "x-ratelimit-reset-tokens": "0s",
+        "x-request-id": "df4093761753468e57c467fd3774f9ad",
+    }
+    # If it's set on the module we will pick that up
+    # as a part of openai_attributes.
+    assert event.error_data.organization is None
+    assert event.error_data.request_id is None
+    assert event.error_data.http_status == 429
+    assert (
+        event.error_data.http_body
+        == '{\n    "error": {\n        "message": "Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 0 / min. Contact us through our help center at help.openai.com if you continue to have issues.",\n        "type": "tokens",\n        "param": null,\n        "code": "rate_limit_exceeded"\n    }\n}\n'  # noqa
+    )
+    assert (
+        event.error_data.user_message
+        == "Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 0 / min. Contact us through our help center at help.openai.com if you continue to have issues."  # noqa
+    )
+    assert event.error_data.code is None
 
 
 @pytest.fixture

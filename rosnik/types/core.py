@@ -1,6 +1,5 @@
 import logging
 import time
-import os
 import platform
 from dataclasses import dataclass, field
 from typing import Callable, Optional
@@ -24,7 +23,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.28"
+    sdk_version: str = "0.0.29"
 
 
 @dataclass(kw_only=True, slots=True)
@@ -32,7 +31,9 @@ class Metadata(StaticMetadata):
     function_fingerprint: str
     stream: bool = False
 
+
 _reserved_words = ["environment"]
+
 
 @dataclass(kw_only=True, slots=True)
 class Event(DataClassJsonMixin):
@@ -66,7 +67,9 @@ class Event(DataClassJsonMixin):
             if context_env:
                 self._metadata.environment = context_env
         except Exception:
-            logger.exception(f"Could not generate context from {config.Config.event_context_hook.__name__}")
+            logger.exception(
+                f"Could not generate context from {config.Config.event_context_hook.__name__}"
+            )
 
 
 @dataclass(kw_only=True, slots=True)

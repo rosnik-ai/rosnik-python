@@ -39,10 +39,7 @@ def app_with_event_context_hook(mocker):
 
     def _request_context():
         host = request.headers.get("host")
-        return {
-            "environment": "testing",
-            "host": host
-        }
+        return {"environment": "testing", "host": host}
 
     @app.get("/")
     def index():
@@ -60,6 +57,7 @@ def app_with_event_context_hook(mocker):
     flask_rosnik.FlaskRosnik(app, event_context_hook=_request_context)
     yield app
     state._reset()
+
 
 # Test case for returned headers
 @pytest.mark.vcr
@@ -163,12 +161,19 @@ def test_client_init__with_params():
         return {}
 
     test_app = Flask(__name__)
-    ext = flask_rosnik.FlaskRosnik(test_app, api_key="test_key", sync_mode=True, environment="development", event_context_hook=_custom_hook)
+    ext = flask_rosnik.FlaskRosnik(
+        test_app,
+        api_key="test_key",
+        sync_mode=True,
+        environment="development",
+        event_context_hook=_custom_hook,
+    )
     ext.init_app(test_app)
     assert config.Config.api_key == "test_key"
     assert config.Config.sync_mode is True
     assert config.Config.environment == "development"
     assert config.Config.event_context_hook is _custom_hook
+
 
 @pytest.mark.vcr
 def test_flask_with_context(app_with_event_context_hook, event_queue):
@@ -184,19 +189,19 @@ def test_flask_with_context(app_with_event_context_hook, event_queue):
         assert headers.JOURNEY_ID_KEY in res.headers
         assert res.headers.get(headers.JOURNEY_ID_KEY) == "test-journey"
         assert event_queue.qsize() == 2
-        
+
         start_event: AIRequestStart = event_queue.get()
         assert start_event.journey_id == "test-journey"
         assert start_event.device_id == "test-device"
         assert start_event.user_interaction_id == "test-user-interaction"
         assert start_event._metadata.environment == "testing"
         assert start_event.context == {"host": "localhost"}
-        
+
         finish_event: AIRequestFinish = event_queue.get()
         assert finish_event.journey_id == "test-journey"
         assert finish_event.device_id == "test-device"
         assert finish_event.user_interaction_id == "test-user-interaction"
         assert finish_event._metadata.environment == "testing"
         assert finish_event.context == {"host": "localhost"}
-        
+
         assert event_queue.qsize() == 0
