@@ -66,6 +66,27 @@ def test_chat_completion(openai, event_queue):
     assert request_finish.ai_metadata.openai_attributes.api_version is None
     assert request_finish._metadata.stream is False
 
+@pytest.mark.vcr
+def test_chat_completion__with_user(openai, event_queue):
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    openai_._patch_chat_completion(openai)
+    assert event_queue.qsize() == 0
+    openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": input_text},
+        ],
+        user="test-user"
+    )
+    assert event_queue.qsize() == 2
+    request_start: AIRequestStart = event_queue.get()
+    assert request_start.user_id == "test-user"
+
+    request_finish: AIRequestFinish = event_queue.get()
+    assert request_finish.user_id == "test-user"
+
 
 @pytest.mark.vcr
 def test_chat_completion__streaming(openai, event_queue):
