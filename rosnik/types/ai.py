@@ -33,6 +33,9 @@ class ErrorResponseData(DataClassJsonMixin):
     http_status: Optional[int] = None
     organization: Optional[str] = None
     request_id: Optional[str] = None
+    http_body: Optional[str] = None
+    user_message: Optional[str] = None
+    code: Optional[str] = None
 
 
 @dataclass(kw_only=True, slots=True)
