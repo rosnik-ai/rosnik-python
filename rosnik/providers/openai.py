@@ -158,13 +158,13 @@ def streamed_response_hook(
         """For each chunk, either add it to our content_parts
         or emit an event because we're done.
         """
-        # TODO: what do we do here
         if not line:
+            logger.debug("Line not seen on stream.")
             return
 
         choices = line.get("choices")
         if not choices or len(choices) < 1:
-            # TODO: And here
+            logger.debug("Missing choices on stream.")
             return
 
         content = choices[0].get("delta", {}).get("content")
