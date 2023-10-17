@@ -10,7 +10,7 @@ from rosnik.wrap import wrap_class_method
 from rosnik.types.ai import (
     AIFunctionMetadata,
     AIRequestFinish,
-    AIRequestFirstChunk,
+    AIRequestStartStream,
     AIRequestStart,
     ErrorResponseData,
     OpenAIAttributes,
@@ -26,9 +26,7 @@ logger = logging.getLogger(__name__)
 _OAI = "openai"
 
 
-def hook_with_metadata(
-    hook: Callable, generate_metadata: Callable[[], AIFunctionMetadata]
-):
+def hook_with_metadata(hook: Callable, generate_metadata: Callable[[], AIFunctionMetadata]):
     """Each provider should be encapsulated into what it knows about the call."""
     return functools.partial(hook, generate_metadata=generate_metadata)
 
@@ -75,7 +73,7 @@ def request_hook(
         ai_metadata=metadata,
         request_payload=payload,
         user_id=user_id,
-        _metadata=Metadata(function_fingerprint=function_fingerprint),
+        _metadata=Metadata(function_fingerprint=function_fingerprint, stream=payload.get("stream", False)),
     )
     queue.enqueue_event(event)
     return event
@@ -114,23 +112,23 @@ def response_hook(
     now = int(time.time_ns() / 1000000)
     event_kwargs = {
         # For both OpenAI and Azure, `model` contains the model on the response.
-        'ai_model': prior_event.ai_model if is_stream_response else payload.get("model"),
-        'ai_provider': metadata.ai_provider,
-        'ai_action': metadata.ai_action,
-        'ai_metadata': metadata,
-        'response_payload': payload,
-        'sent_at': now,
-        'response_ms': (now - prior_event.sent_at),
-        'ai_request_start_event_id': prior_event.event_id,
-        'user_id': prior_event.user_id,
-        '_metadata': Metadata(function_fingerprint=function_fingerprint),
+        "ai_model": prior_event.ai_model if is_stream_response else payload.get("model"),
+        "ai_provider": metadata.ai_provider,
+        "ai_action": metadata.ai_action,
+        "ai_metadata": metadata,
+        "response_payload": payload,
+        "sent_at": now,
+        "response_ms": (now - prior_event.sent_at),
+        "ai_request_start_event_id": prior_event.event_id,
+        "user_id": prior_event.user_id,
+        "_metadata": Metadata(function_fingerprint=function_fingerprint, stream=is_stream_response),
     }
 
     if is_stream_response:
         # These don't exist. `payload` is a generator.
         # Make this None
         event_kwargs.pop("response_payload")
-        event = AIRequestFirstChunk(**event_kwargs)
+        event = AIRequestStartStream(**event_kwargs)
         queue.enqueue_event(event)
         return event
 
@@ -189,7 +187,6 @@ def streamed_response_hook(
                 # Mimic the OpenAI response payload.
                 # Missing `usage`, TODO: what do?
                 response_payload={
-                    "streamed_response": True,
                     "choices": [
                         {
                             "finish_reason": finish_reason,
@@ -206,13 +203,9 @@ def streamed_response_hook(
                 response_ms=(now - prior_event.sent_at),
                 ai_request_start_event_id=prior_event.event_id,
                 user_id=prior_event.user_id,
-                _metadata=Metadata(function_fingerprint=function_fingerprint),
+                _metadata=Metadata(function_fingerprint=function_fingerprint, stream=True),
             )
             queue.enqueue_event(finish_event)
-
-        # TODO: and here
-        if not isinstance(content, str):
-            return
 
     def _stream_response_wrapper(response: Iterator):
         for line in response:
@@ -287,8 +280,9 @@ def _patch_completion(openai):
             error_hook, lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions")
         ),
         hook_with_metadata(
-            streamed_response_hook, lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions")
-        )
+            streamed_response_hook,
+            lambda: AIFunctionMetadata(ai_provider=_OAI, ai_action="completions"),
+        ),
     )
 
 

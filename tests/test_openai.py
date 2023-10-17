@@ -3,7 +3,7 @@ import pytest
 from rosnik import constants
 
 from rosnik.providers import openai as openai_
-from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestFirstChunk, AIRequestStart
+from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStartStream, AIRequestStart
 from rosnik.types.core import Metadata
 
 
@@ -53,11 +53,13 @@ def test_chat_completion(openai, event_queue):
     assert request_start.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
     assert request_start.ai_metadata.openai_attributes.api_type == "open_ai"
     assert request_start.ai_metadata.openai_attributes.api_version is None
+    assert request_start._metadata.stream is False
 
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
     assert request_finish.ai_metadata.openai_attributes.api_type == "open_ai"
     assert request_finish.ai_metadata.openai_attributes.api_version is None
+    assert request_finish._metadata.stream is False
 
 
 @pytest.mark.vcr
@@ -90,8 +92,9 @@ def test_chat_completion__streaming(openai, event_queue):
     assert request_start.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
     assert request_start.ai_metadata.openai_attributes.api_type == "open_ai"
     assert request_start.ai_metadata.openai_attributes.api_version is None
+    assert request_start._metadata.stream is True
 
-    first_chunk_event: AIRequestFirstChunk = event_queue.get()
+    first_chunk_event: AIRequestStartStream = event_queue.get()
     assert first_chunk_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
     assert first_chunk_event.ai_metadata.openai_attributes.api_type == "open_ai"
     assert first_chunk_event.ai_metadata.openai_attributes.api_version is None
@@ -101,6 +104,7 @@ def test_chat_completion__streaming(openai, event_queue):
     assert first_chunk_event.ai_provider == openai_._OAI
     assert first_chunk_event.ai_action == "chat.completions"
     assert first_chunk_event.response_payload is None
+    assert first_chunk_event._metadata.stream is True
 
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
@@ -112,7 +116,7 @@ def test_chat_completion__streaming(openai, event_queue):
     assert request_finish.ai_model == "gpt-3.5-turbo-0613"
     assert request_finish.ai_provider == openai_._OAI
     assert request_finish.ai_action == "chat.completions"
-    assert request_finish.response_payload["streamed_response"] is True
+    assert request_finish._metadata.stream is True
     streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
     assert streamed_completion == expected_completion
 
@@ -184,13 +188,14 @@ def test_chat_completion__azure__engine(openai, event_queue):
     assert request_finish.ai_metadata.openai_attributes.api_type == expected_api_type
     assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
 
+
 @pytest.mark.vcr
 def test_chat_completion__streaming__azure(openai, event_queue):
     system_prompt = """
     You are an aspiring edm artist. 
     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
     Your inspiration is the artist provided by the user.
-    """
+    """ #noqa
     input_text = "Daft Punk"
     expected_api_base = "https://rosnik.openai.azure.com/"
     expected_api_type = "azure"
@@ -221,8 +226,9 @@ def test_chat_completion__streaming__azure(openai, event_queue):
     assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
     assert request_start.ai_metadata.openai_attributes.api_type == expected_api_type
     assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
+    assert request_start._metadata.stream is True
 
-    first_chunk_event: AIRequestFirstChunk = event_queue.get()
+    first_chunk_event: AIRequestStartStream = event_queue.get()
     assert first_chunk_event.ai_metadata.openai_attributes.api_base == expected_api_base
     assert first_chunk_event.ai_metadata.openai_attributes.api_type == expected_api_type
     assert first_chunk_event.ai_metadata.openai_attributes.api_version == expected_api_version
@@ -232,6 +238,7 @@ def test_chat_completion__streaming__azure(openai, event_queue):
     assert first_chunk_event.ai_provider == openai_._OAI
     assert first_chunk_event.ai_action == "chat.completions"
     assert first_chunk_event.response_payload is None
+    assert first_chunk_event._metadata.stream is True
 
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
@@ -243,9 +250,10 @@ def test_chat_completion__streaming__azure(openai, event_queue):
     assert request_finish.ai_model == "gpt-35-turbo"
     assert request_finish.ai_provider == openai_._OAI
     assert request_finish.ai_action == "chat.completions"
-    assert request_finish.response_payload["streamed_response"] is True
+    assert request_finish._metadata.stream is True
     streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
     assert streamed_completion == expected_completion
+
 
 @pytest.mark.vcr
 def test_error(openai, event_queue):

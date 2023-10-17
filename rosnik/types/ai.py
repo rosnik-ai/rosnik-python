@@ -66,11 +66,11 @@ class AIRequestFinish(AIEvent):
     # null on success
     error_data: Optional[ErrorResponseData] = None
 
+
 @dataclass(kw_only=True, slots=True)
-class AIRequestFirstChunk(AIRequestFinish):
-    """One-off event used to track first-byte time.
-    """
-    event_type: str = "ai.request.first_chunk"
+class AIRequestStartStream(AIRequestFinish):
+    """One-off event used to track first-byte time."""
+    event_type: str = "ai.request.start.stream"
 
 
 @dataclass(kw_only=True, slots=True)

@@ -26,6 +26,7 @@ class StaticMetadata:
 @dataclass(kw_only=True, slots=True)
 class Metadata(StaticMetadata):
     function_fingerprint: str
+    stream: bool = False
 
 
 @dataclass(kw_only=True, slots=True)

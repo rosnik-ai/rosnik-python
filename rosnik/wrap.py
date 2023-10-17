@@ -4,7 +4,6 @@ import sys
 from typing import Callable
 
 
-from rosnik.events import queue
 
 import wrapt
 
