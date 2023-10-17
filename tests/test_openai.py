@@ -3,7 +3,12 @@ import pytest
 from rosnik import constants
 
 from rosnik.providers import openai as openai_
-from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStartStream, AIRequestStart
+from rosnik.types.ai import (
+    AIFunctionMetadata,
+    AIRequestFinish,
+    AIRequestStartStream,
+    AIRequestStart,
+)
 from rosnik.types.core import Metadata
 
 
@@ -68,7 +73,7 @@ def test_chat_completion__streaming(openai, event_queue):
     You are an aspiring edm artist. 
     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
     Your inspiration is the artist provided by the user.
-    """
+    """ # noqa
     input_text = "Daft Punk"
     openai_._patch_chat_completion(openai)
     assert event_queue.qsize() == 0
@@ -195,7 +200,7 @@ def test_chat_completion__streaming__azure(openai, event_queue):
     You are an aspiring edm artist. 
     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
     Your inspiration is the artist provided by the user.
-    """ #noqa
+    """  # noqa
     input_text = "Daft Punk"
     expected_api_base = "https://rosnik.openai.azure.com/"
     expected_api_type = "azure"

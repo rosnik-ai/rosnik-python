@@ -4,7 +4,6 @@ import sys
 from typing import Callable
 
 
-
 import wrapt
 
 logger = logging.getLogger(__name__)

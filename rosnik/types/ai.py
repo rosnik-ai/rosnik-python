@@ -70,6 +70,7 @@ class AIRequestFinish(AIEvent):
 @dataclass(kw_only=True, slots=True)
 class AIRequestStartStream(AIRequestFinish):
     """One-off event used to track first-byte time."""
+
     event_type: str = "ai.request.start.stream"
 
 

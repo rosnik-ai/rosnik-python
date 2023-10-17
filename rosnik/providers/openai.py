@@ -73,7 +73,9 @@ def request_hook(
         ai_metadata=metadata,
         request_payload=payload,
         user_id=user_id,
-        _metadata=Metadata(function_fingerprint=function_fingerprint, stream=payload.get("stream", False)),
+        _metadata=Metadata(
+            function_fingerprint=function_fingerprint, stream=payload.get("stream", False)
+        ),
     )
     queue.enqueue_event(event)
     return event
