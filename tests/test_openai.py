@@ -3,7 +3,7 @@ import pytest
 from rosnik import constants
 
 from rosnik.providers import openai as openai_
-from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestStart
+from rosnik.types.ai import AIFunctionMetadata, AIRequestFinish, AIRequestFirstChunk, AIRequestStart
 from rosnik.types.core import Metadata
 
 
@@ -58,6 +58,63 @@ def test_chat_completion(openai, event_queue):
     assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
     assert request_finish.ai_metadata.openai_attributes.api_type == "open_ai"
     assert request_finish.ai_metadata.openai_attributes.api_version is None
+
+
+@pytest.mark.vcr
+def test_chat_completion__streaming(openai, event_queue):
+    system_prompt = """
+    You are an aspiring edm artist. 
+    Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
+    Your inspiration is the artist provided by the user.
+    """
+    input_text = "Daft Punk"
+    openai_._patch_chat_completion(openai)
+    assert event_queue.qsize() == 0
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": input_text},
+        ],
+        stream=True,
+    )
+
+    expected_completion = ""
+    for line in response:
+        s = line["choices"][0].get("delta", {}).get("content")
+        if isinstance(s, str):
+            expected_completion += s
+
+    assert event_queue.qsize() == 3
+    request_start: AIRequestStart = event_queue.get()
+    assert request_start.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
+    assert request_start.ai_metadata.openai_attributes.api_type == "open_ai"
+    assert request_start.ai_metadata.openai_attributes.api_version is None
+
+    first_chunk_event: AIRequestFirstChunk = event_queue.get()
+    assert first_chunk_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
+    assert first_chunk_event.ai_metadata.openai_attributes.api_type == "open_ai"
+    assert first_chunk_event.ai_metadata.openai_attributes.api_version is None
+    assert first_chunk_event.response_ms == first_chunk_event.sent_at - request_start.sent_at
+    assert first_chunk_event.ai_request_start_event_id == request_start.event_id
+    assert first_chunk_event.ai_model == request_start.ai_model
+    assert first_chunk_event.ai_provider == openai_._OAI
+    assert first_chunk_event.ai_action == "chat.completions"
+    assert first_chunk_event.response_payload is None
+
+    request_finish: AIRequestFinish = event_queue.get()
+    assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
+    assert request_finish.ai_metadata.openai_attributes.api_type == "open_ai"
+    assert request_finish.ai_metadata.openai_attributes.api_version is None
+    assert request_finish.response_ms == request_finish.sent_at - request_start.sent_at
+    assert request_finish.ai_request_start_event_id == request_start.event_id
+    # Iterations know the more specific model.
+    assert request_finish.ai_model == "gpt-3.5-turbo-0613"
+    assert request_finish.ai_provider == openai_._OAI
+    assert request_finish.ai_action == "chat.completions"
+    assert request_finish.response_payload["streamed_response"] is True
+    streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
+    assert streamed_completion == expected_completion
 
 
 @pytest.mark.vcr
@@ -127,6 +184,7 @@ def test_chat_completion__azure__engine(openai, event_queue):
     assert request_finish.ai_metadata.openai_attributes.api_type == expected_api_type
     assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
 
+
 @pytest.mark.vcr
 def test_error(openai, event_queue):
     system_prompt = "You are a helpful assistant." * 100000
@@ -156,8 +214,8 @@ def mock_openai_object(mocker):
     return openai_obj
 
 
-def test_request_serializer_valid_payload():
-    result = openai_.request_serializer(
+def test_request_hook_valid_payload():
+    result = openai_.request_hook(
         {"model": "test_model"},
         "test_function_fingerprint",
         generate_metadata=lambda: AIFunctionMetadata(
@@ -170,7 +228,7 @@ def test_request_serializer_valid_payload():
     assert result.ai_action == "completions"
 
 
-def test_response_serializer_valid_payload(mock_openai_object):
+def test_response_hook_valid_payload(mock_openai_object):
     prior_event = AIRequestStart(
         ai_model="test_model",
         ai_provider=openai_._OAI,
@@ -181,7 +239,7 @@ def test_response_serializer_valid_payload(mock_openai_object):
         _metadata=Metadata(function_fingerprint="test_function_fingerprint"),
     )
 
-    result = openai_.response_serializer(
+    result = openai_.response_hook(
         mock_openai_object,
         "test_function_fingerprint",
         prior_event,
@@ -195,7 +253,7 @@ def test_response_serializer_valid_payload(mock_openai_object):
     assert result.ai_action == "completions"
 
 
-def test_error_serializer_valid_error():
+def test_error_hook_valid_error():
     prior_event = AIRequestStart(
         ai_model="test_model",
         ai_provider=openai_._OAI,
@@ -207,7 +265,7 @@ def test_error_serializer_valid_error():
     )
 
     error = Exception("test exception")
-    result = openai_.error_serializer(
+    result = openai_.error_hook(
         error,
         "test_function_fingerprint",
         prior_event,

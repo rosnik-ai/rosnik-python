@@ -45,7 +45,7 @@ class AIFunctionMetadata(DataClassJsonMixin):
 @dataclass(kw_only=True, slots=True)
 class AIRequestStart(AIEvent):
     event_type: str = "ai.request.start"
-    # JSONable request payload
+    # JSONable request payload / kwargs sent through the SDK
     request_payload: dict
     ai_metadata: AIFunctionMetadata
 
@@ -65,6 +65,12 @@ class AIRequestFinish(AIEvent):
     response_ms: int
     # null on success
     error_data: Optional[ErrorResponseData] = None
+
+@dataclass(kw_only=True, slots=True)
+class AIRequestFirstChunk(AIRequestFinish):
+    """One-off event used to track first-byte time.
+    """
+    event_type: str = "ai.request.first_chunk"
 
 
 @dataclass(kw_only=True, slots=True)
