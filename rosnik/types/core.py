@@ -1,13 +1,17 @@
+import logging
 import time
 import os
 import platform
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Callable, Optional
 
 from dataclasses_json import DataClassJsonMixin
 import ulid
 
+from rosnik import config
 from rosnik import state
+
+logger = logging.getLogger(__name__)
 
 
 def _generate_event_id():
@@ -16,7 +20,7 @@ def _generate_event_id():
 
 @dataclass(kw_only=True, slots=True)
 class StaticMetadata:
-    environment: Optional[str] = os.environ.get("ROSNIK_ENVIRONMENT", None)
+    environment: Optional[str] = config.Config.environment
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
@@ -28,6 +32,7 @@ class Metadata(StaticMetadata):
     function_fingerprint: str
     stream: bool = False
 
+_reserved_words = ["environment"]
 
 @dataclass(kw_only=True, slots=True)
 class Event(DataClassJsonMixin):
@@ -40,7 +45,6 @@ class Event(DataClassJsonMixin):
     # Epoch unless not set, which will be -1
     occurred_at: Optional[int] = None
     # JSONable user defined context
-    # TODO: TBD on how this is provided.
     context: Optional[dict] = None
     # Users could be part of an AI event or a User event
     user_id: Optional[str] = None
@@ -51,6 +55,19 @@ class Event(DataClassJsonMixin):
     # event ID for this event. If it's unset then something else
     # we're not tracking caused this action.
     user_interaction_id: Optional[str] = field(default_factory=state.get_user_interaction_id)
+
+    def __post_init__(self):
+        if not isinstance(config.Config.event_context_hook, Callable):
+            return
+
+        try:
+            self.context = config.Config.event_context_hook()
+            context_env = self.context.pop("environment", None)
+            if context_env:
+                self._metadata.environment = context_env
+        except Exception as e:
+            # TODO: pull from function if possible
+            logger.exception("Could not generate context from fn")
 
 
 @dataclass(kw_only=True, slots=True)

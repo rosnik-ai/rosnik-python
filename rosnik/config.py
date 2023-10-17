@@ -9,11 +9,12 @@ ENVIRONMENT = f"{constants.NAMESPACE}_ENVIRONMENT"
 
 
 class _Config:
-    def __init__(self, api_key=None, sync_mode=None, environment=None):
+    def __init__(self, api_key=None, sync_mode=None, environment=None, event_context_hook=None):
         self._api_key = api_key or os.environ.get(API_KEY)
         _sync = sync_mode or os.environ.get(SYNC_MODE)
         self._sync_mode = _sync and _sync != "0"
         self._environment = environment or os.environ.get(ENVIRONMENT)
+        self._event_context_hook = event_context_hook
 
     @property
     def api_key(self):
@@ -44,6 +45,16 @@ class _Config:
         if self._environment is not None:
             return
         self._environment = value
+
+    @property
+    def event_context_hook(self):
+        return self._event_context_hook
+
+    @event_context_hook.setter
+    def event_context_hook(self, value):
+        if self._event_context_hook is not None:
+            return
+        self._event_context_hook = value
 
 
 Config = _Config()

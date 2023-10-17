@@ -69,3 +69,11 @@ def test_chat_completion(openai, event_queue):
     assert start_event.ai_metadata.openai_attributes.api_type == "open_ai"
     assert start_event.ai_metadata.openai_attributes.api_version is None
     assert finish_event.response_ms == (finish_event.sent_at - start_event.sent_at)
+
+
+def test_event_with_context():
+    def _custom_hook():
+        return {
+            "environment": "testing",
+            
+        }
