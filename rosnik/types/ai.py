@@ -51,6 +51,11 @@ class AIRequestStart(AIEvent):
     # JSONable request payload / kwargs sent through the SDK
     request_payload: dict
     ai_metadata: AIFunctionMetadata
+    ai_request_start_event_id: Optional[str] = None
+
+    def __post_init__(self):
+        AIEvent.__post_init__(self)
+        self.ai_request_start_event_id = self.event_id
 
 
 @dataclass(kw_only=True, slots=True)
