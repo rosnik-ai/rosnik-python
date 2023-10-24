@@ -36,8 +36,8 @@ def wrap_class_method(
     error_hook: Callable,
     streamed_response_hook: Callable,
 ):
-    def wrapper(wrapped, instance, args, kwargs):
-        limited_frames = get_stack_frames(5)
+    def rosnik_wrapper(wrapped, instance, args, kwargs):
+        limited_frames = get_stack_frames(10)
         # Flatten into a period separated sequence so we can do function chain search later.
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
@@ -57,4 +57,4 @@ def wrap_class_method(
 
         return result
 
-    wrapt.wrap_function_wrapper(klass, method_name, wrapper)
+    wrapt.wrap_function_wrapper(klass, method_name, rosnik_wrapper)

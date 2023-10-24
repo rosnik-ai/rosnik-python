@@ -23,7 +23,7 @@ def validate_common_attributes(event: Event):
     assert event._metadata.runtime_version == platform.python_version()
     assert event._metadata.sdk_version == "0.0.30"
     assert event._metadata.function_fingerprint
-    assert len(event._metadata.function_fingerprint.split(".")) == 5
+    assert len(event._metadata.function_fingerprint.split(".")) == 10
 
 
 @pytest.mark.vcr
