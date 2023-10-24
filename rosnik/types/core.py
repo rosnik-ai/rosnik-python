@@ -23,7 +23,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.29"
+    sdk_version: str = "0.0.30"
 
 
 @dataclass(kw_only=True, slots=True)
@@ -42,7 +42,7 @@ class Event(DataClassJsonMixin):
     event_type: str
     journey_id: str = field(default_factory=state.get_journey_id)
     # Epoch in ms
-    sent_at: int = int(time.time_ns() / 1000000)
+    sent_at: int = field(default_factory=lambda: int(time.time_ns() / 1000000))
     # Epoch unless not set, which will be -1
     occurred_at: Optional[int] = None
     # JSONable user defined context

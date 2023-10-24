@@ -1,3 +1,4 @@
+import time
 import platform
 import pytest
 
@@ -14,19 +15,19 @@ from rosnik.types.core import Event
 def validate_common_attributes(event: Event):
     assert isinstance(ulid.parse(event.event_id), ulid.ULID)
     assert isinstance(ulid.parse(event.journey_id), ulid.ULID)
-    assert event.sent_at
+    assert event.sent_at == (int(time.time_ns() / 1000000))
     assert event.device_id is None
     assert event._metadata
     assert event._metadata.environment is None
     assert event._metadata.runtime == platform.python_implementation()
     assert event._metadata.runtime_version == platform.python_version()
-    assert event._metadata.sdk_version == "0.0.29"
+    assert event._metadata.sdk_version == "0.0.30"
     assert event._metadata.function_fingerprint
     assert len(event._metadata.function_fingerprint.split(".")) == 5
 
 
 @pytest.mark.vcr
-def test_chat_completion(openai, event_queue):
+def test_chat_completion(openai, event_queue, freezer):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
     openai_._patch_chat_completion(openai)
@@ -57,6 +58,7 @@ def test_chat_completion(openai, event_queue):
     assert start_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
     assert start_event.ai_metadata.openai_attributes.api_type == "open_ai"
     assert start_event.ai_metadata.openai_attributes.api_version is None
+    assert start_event.ai_request_start_event_id == start_event.event_id
 
     assert isinstance(finish_event, AIRequestFinish)
     validate_common_attributes(finish_event)
