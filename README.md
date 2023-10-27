@@ -69,7 +69,7 @@ Django:
 
 MIDDLEWARE = [
     # ...other middleware
-    'rosnik.frameworks.django.rosnik_middleware'
+    'rosnik.django.rosnik_middleware'
 ]
 
 # The middleware pulls from settings on init.
