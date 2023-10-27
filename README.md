@@ -52,7 +52,7 @@ Please let us know if there are other providers that would be helpful to have au
 
 ### Web Frameworks
 
-* Flask: we have a Flask extension to automatically setup the SDK and link events to client-side metadata (browser SDK coming soon)
+Flask:
 
 ```py
 from rosnik import flask_rosnik
@@ -60,6 +60,21 @@ from rosnik import flask_rosnik
 rosnik_extension = flask_rosnik.FlaskRosnik(api_key="api-key", environment="development")
 # rosnik.init happens here
 rosnik_extension.init_app(app)
+```
+
+Django: 
+
+```py
+# settings.py
+
+MIDDLEWARE = [
+    # ...other middleware
+    'rosnik.frameworks.django.rosnik_middleware'
+]
+
+# The middleware pulls from settings on init.
+ROSNIK_API_KEY="api-key"
+ROSNIK_ENVIRONMENT="development"
 ```
 
 ## License
