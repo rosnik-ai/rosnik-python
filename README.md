@@ -1,6 +1,6 @@
 # rosnik-python
 
-[![Build Status](https://github.com/rosnik-ai/rosnik-python/actions/workflows/test.yaml/badge.svg)](https://github.com/rosnik-ai/rosnik-python/actions/workflows/ci.yaml)
+[![Build Status](https://github.com/rosnik-ai/rosnik-python/actions/workflows/test.yaml/badge.svg)](https://github.com/rosnik-ai/rosnik-python/actions/workflows/test.yaml)
 [![PyPi page link -- version](https://img.shields.io/pypi/v/rosnik.svg)](https://pypi.python.org/pypi/rosnik)
 ![Python version](https://img.shields.io/badge/python-3.10-blue)
 ![Python version](https://img.shields.io/badge/python-3.11-blue)
