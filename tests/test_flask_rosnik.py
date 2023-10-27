@@ -4,14 +4,12 @@ import ulid
 
 from rosnik import config
 from rosnik import flask_rosnik, headers, state
-from rosnik.events import queue
 from rosnik.types.ai import AIRequestFinish, AIRequestStart
 
 
 # Initialize your extension
 @pytest.fixture
 def app(mocker):
-    mocker.patch("rosnik.events.queue.EventProcessor")
     app = Flask(__name__)
 
     @app.get("/")
@@ -34,7 +32,6 @@ def app(mocker):
 
 @pytest.fixture
 def app_with_event_context_hook(mocker):
-    mocker.patch("rosnik.events.queue.EventProcessor")
     app = Flask(__name__)
 
     def _request_context():
@@ -61,7 +58,7 @@ def app_with_event_context_hook(mocker):
 
 # Test case for returned headers
 @pytest.mark.vcr
-def test_flask_single(app):
+def test_flask_single(app, event_queue):
     with app.test_client() as client:
         res = client.get(
             "/",
@@ -73,20 +70,20 @@ def test_flask_single(app):
         )
         assert headers.JOURNEY_ID_KEY in res.headers
         assert res.headers.get(headers.JOURNEY_ID_KEY) == "test-journey"
-        assert queue.event_queue.qsize() == 2
-        start_event = queue.event_queue.get()
+        assert event_queue.qsize() == 2
+        start_event = event_queue.get()
         assert start_event.journey_id == "test-journey"
         assert start_event.device_id == "test-device"
         assert start_event.user_interaction_id == "test-user-interaction"
-        finish_event = queue.event_queue.get()
+        finish_event = event_queue.get()
         assert finish_event.journey_id == "test-journey"
         assert finish_event.device_id == "test-device"
         assert finish_event.user_interaction_id == "test-user-interaction"
-        assert queue.event_queue.qsize() == 0
+        assert event_queue.qsize() == 0
 
 
 @pytest.mark.vcr
-def test_flask_multiple_requests(app):
+def test_flask_multiple_requests(app, event_queue):
     with app.test_client() as client:
         res = client.get(
             "/",
@@ -98,16 +95,16 @@ def test_flask_multiple_requests(app):
         )
         assert headers.JOURNEY_ID_KEY in res.headers
         assert res.headers.get(headers.JOURNEY_ID_KEY) == "test-journey"
-        assert queue.event_queue.qsize() == 2
-        start_event = queue.event_queue.get()
+        assert event_queue.qsize() == 2
+        start_event = event_queue.get()
         assert start_event.journey_id == "test-journey"
         assert start_event.device_id == "test-device"
         assert start_event.user_interaction_id == "test-user-interaction"
-        finish_event = queue.event_queue.get()
+        finish_event = event_queue.get()
         assert finish_event.journey_id == "test-journey"
         assert finish_event.device_id == "test-device"
         assert finish_event.user_interaction_id == "test-user-interaction"
-        assert queue.event_queue.qsize() == 0
+        assert event_queue.qsize() == 0
 
         res = client.get(
             "/",
@@ -119,20 +116,20 @@ def test_flask_multiple_requests(app):
         )
         assert headers.JOURNEY_ID_KEY in res.headers
         assert res.headers.get(headers.JOURNEY_ID_KEY) == "test-journey-2"
-        assert queue.event_queue.qsize() == 2
-        start_event = queue.event_queue.get()
+        assert event_queue.qsize() == 2
+        start_event = event_queue.get()
         assert start_event.journey_id == "test-journey-2"
         assert start_event.device_id == "test-device-2"
         assert start_event.user_interaction_id == "test-user-interaction-2"
-        finish_event = queue.event_queue.get()
+        finish_event = event_queue.get()
         assert finish_event.journey_id == "test-journey-2"
         assert finish_event.device_id == "test-device-2"
         assert finish_event.user_interaction_id == "test-user-interaction-2"
-        assert queue.event_queue.qsize() == 0
+        assert event_queue.qsize() == 0
 
 
 @pytest.mark.vcr
-def test_no_headers(app):
+def test_no_headers(app, event_queue):
     """It should generate a new journey ID"""
     with app.test_client() as client:
         res = client.get("/")
@@ -144,10 +141,10 @@ def test_no_headers(app):
 
         assert res.json == {"success": True}
 
-        assert queue.event_queue.qsize() == 2
-        queue.event_queue.get()
-        queue.event_queue.get()
-        assert queue.event_queue.qsize() == 0
+        assert event_queue.qsize() == 2
+        event_queue.get()
+        event_queue.get()
+        assert event_queue.qsize() == 0
 
 
 def test_client_init(mocker, app):
