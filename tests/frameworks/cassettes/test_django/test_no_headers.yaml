@@ -1,0 +1,205 @@
+interactions:
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a world class poet."}, {"role": "user", "content": "Write a poem about dogs."}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '159'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-8EANB8JBbbxs4ep68kmmV5tah8e8s\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1698387157,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"In the realm of loyalty and boundless
+        grace,\\nWhere love's truest colors gently embrace,\\nThere dwells a creature,
+        both humble and wise,\\nWith eyes that mirror the infinite skies.\\n\\nOh,
+        dogs! Divine beings in furry disguise,\\nWhose presence invokes an eternal
+        sunrise,\\nWith hearts that beat to the rhythm of love,\\nThey're guardians
+        sent from the heavens above.\\n\\nThrough rugged trails and paths unexplored,\\nThey
+        stand beside us, forever adored.\\nTheir paws leave imprints upon our souls,\\nAs
+        their spirits guide us towards our goals.\\n\\nIn their eyes, an ocean of
+        unspoken words,\\nA language understood by the spirits and birds,\\nThey offer
+        solace in moments of despair,\\nAnd in their presence, we find refuge and
+        care.\\n\\nWith unconditional love, they ask no return,\\nTheir devotion's
+        flame eternally burns,\\nThrough wagging tails and joyful dances,\\nThey teach
+        us life's simplest, truest chances.\\n\\nOh, how they teach us to live in
+        the now,\\nTo cherish the present, to learn to bow,\\nTo embrace every day
+        with boundless glee,\\nAs they frolic and play, forever carefree.\\n\\nTheir
+        empathy knows no earthly bounds,\\nThey soothe our sorrows without making
+        a sound,\\nWith gentle licks, they kiss away our tears,\\nAnd remind us that
+        life's joys outweigh our fears.\\n\\nIn fields of green, they bound with delight,\\nIn
+        moonlit nights, they protect us from fright,\\nTheir presence a beacon of
+        love's gentle art,\\nThey mend broken pieces, heal every heart.\\n\\nSo, let
+        us honor these angels divine,\\nWhose love, like a symphony, gracefully chimes,\\nFor
+        in the realm of loyalty and boundless grace,\\nDogs bless our world with their
+        heavenly embrace.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n
+        \ ],\n  \"usage\": {\n    \"prompt_tokens\": 24,\n    \"completion_tokens\":
+        355,\n    \"total_tokens\": 379\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 81c8c9d45bbd2289-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Oct 2023 06:12:47 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '10266'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89968'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 20ms
+      x-request-id:
+      - 645246887e4a8ea278a35af3a2032267
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a world class poet."}, {"role": "user", "content": "Write a poem about dogs."}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '159'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-8EANMTXbnCBf7JR0AWbspS8hC2bXe\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1698387168,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"Where would we be without our faithful
+        friends,\\nWith floppy ears and wagging tails on wagging ends?\\nTheir spirit
+        pure and loyal hearts so true,\\nDogs, our companions, we owe so much to you.\\n\\nWith
+        noses keen and senses so acute,\\nThey guide us through darkness, they bear
+        no fruit.\\nThrough thick and thin, they stand by our side,\\nTheir love unwavering,
+        like an eternal tide.\\n\\nIn fields of green, they bound with glee,\\nChasing
+        dreams and setting spirits free.\\nTheir playful energy, a joy to behold,\\nAs
+        they fetch and frolic, like stories untold.\\n\\nWith eyes so deep, they see
+        through our soul,\\nNo secrets hidden, they make us whole.\\nThey heal our
+        wounds, both seen and unseen,\\nTheir comforting presence, a forever serene.\\n\\nFrom
+        tiny pups, so innocent and small,\\nTo wise old dogs, who've seen it all,\\nThey
+        teach us patience, forgiveness too,\\nAnd remind us to love, in all that we
+        do.\\n\\nThey come in breeds, each unique and rare,\\nFrom gentle giants to
+        pups with fluff and care.\\nTheir barks and howls, a symphony of delight,\\nJoining
+        in chorus, through day and night.\\n\\nSo, let us cherish our furry friends,\\nTheir
+        loyalty a bond that never ends.\\nFor they teach us lessons, simple and true,\\nTo
+        be faithful, kind, and love without a cue.\\n\\nIn this canine world, where
+        laughter resounds,\\nWe find comfort in the paws that surround.\\nFor dogs,
+        our companions, forever we'll keep,\\nIn our hearts, our poems, and memories
+        so deep.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\":
+        {\n    \"prompt_tokens\": 24,\n    \"completion_tokens\": 328,\n    \"total_tokens\":
+        352\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 81c8ca173ae197f4-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Oct 2023 06:12:56 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '7923'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89968'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 20ms
+      x-request-id:
+      - 28bd723eeb103d85ec00975038ca65ee
+    status:
+      code: 200
+      message: OK
+version: 1

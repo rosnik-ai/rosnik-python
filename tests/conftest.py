@@ -36,7 +36,7 @@ def debug_logger(caplog):
     return caplog
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def event_queue(mocker):
     # Don't send process the event queue so we can inspect
     # it in tests.
