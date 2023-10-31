@@ -47,9 +47,9 @@ def test_middleware_headers(request_factory, event_queue):
     request = request_factory.get(
         "/",
         **{
-            headers.JOURNEY_ID_KEY: "test-journey",
-            headers.DEVICE_ID_KEY: "test-device",
-            headers.INTERACTION_ID_KEY: "test-user-interaction",
+            "HTTP_X_ROSNIK_JOURNEY_ID": "test-journey",
+            "HTTP_X_ROSNIK_DEVICE_ID": "test-device",
+            "HTTP_X_ROSNIK_INTERACTION_ID": "test-user-interaction",
         }
     )
     response = mock_view(request)
