@@ -5,6 +5,9 @@ try:
 except ImportError:
     settings = None
 
+def _to_django_header(key):
+    """Converts our header key to a Django header key."""
+    return f'HTTP_{key.replace("-", "_").upper()}'
 
 def rosnik_middleware(get_response):
     # Initialize our SDK at the start using Django settings.
@@ -17,15 +20,15 @@ def rosnik_middleware(get_response):
 
     def middleware(request):
         """Each request is considered a distinct Journey, unless a Journey ID is supplied."""
-        journey_id = request.META.get(headers.JOURNEY_ID_KEY)
+        journey_id = request.META.get(_to_django_header(headers.JOURNEY_ID_KEY))
         if journey_id is None:
             journey_id = state.create_journey_id()
         state.store(state.State.JOURNEY_ID, journey_id)
 
-        interaction_id = request.META.get(headers.INTERACTION_ID_KEY)
+        interaction_id = request.META.get(_to_django_header(headers.INTERACTION_ID_KEY))
         state.store(state.State.USER_INTERACTION_ID, interaction_id)
 
-        device_id = request.META.get(headers.DEVICE_ID_KEY)
+        device_id = request.META.get(_to_django_header(headers.DEVICE_ID_KEY))
         state.store(state.State.DEVICE_ID, device_id)
 
         response = get_response(request)
