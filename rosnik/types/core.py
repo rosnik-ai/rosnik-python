@@ -72,14 +72,27 @@ class Event(DataClassJsonMixin):
         # Make this a callable so we can call it later if needed.
         event_hook = config.Config.event_context_hook
         if not isinstance(event_hook, Callable):
+
             def event_hook():
                 return {}
 
         try:
             global_context = event_hook()
-            context_env = global_context.pop("environment", None)
-            if context_env:
-                self._metadata.environment = context_env
+            # Following the same precedence as below, pull environment if set.
+            # Event-level context takes precedence over stored context, which takes precedence
+            # over global context. If none of them have an environment, then we don't set it.
+            env = global_context.pop("environment", None)
+            if env:
+                self._metadata.environment = env
+
+            env = stored_context.pop("environment", None)
+            if env:
+                self._metadata.environment = env
+
+            if self.context is not None:
+                env = self.context.pop("environment", None)
+                if env:
+                    self._metadata.environment = env
 
             # Merge everything together with this event's specific context taking precedence,
             # then the stored context, then the global context.
