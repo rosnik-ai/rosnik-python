@@ -23,7 +23,7 @@ class StaticMetadata:
     runtime: str = platform.python_implementation()
     runtime_version: str = platform.python_version()
     # TODO: how to sync pyproject version to this
-    sdk_version: str = "0.0.34"
+    sdk_version: str = "0.0.35"
 
 
 @dataclass(kw_only=True, slots=True)
@@ -58,14 +58,45 @@ class Event(DataClassJsonMixin):
     user_interaction_id: Optional[str] = field(default_factory=state.get_user_interaction_id)
 
     def __post_init__(self):
-        if not isinstance(config.Config.event_context_hook, Callable):
+        """We have two different contexts:
+        1. Hook-level context which request-level / global
+        2. Event-level context which is per-event / via a context manager
+        Here we merge them together.
+        """
+        stored_context = state.get_context()
+
+        # If both contexts are empty, we don't need to do anything.
+        if not isinstance(config.Config.event_context_hook, Callable) and not stored_context:
             return
 
+        # Make this a callable so we can call it later if needed.
+        event_hook = config.Config.event_context_hook
+        if not isinstance(event_hook, Callable):
+
+            def event_hook():
+                return {}
+
         try:
-            self.context = config.Config.event_context_hook()
-            context_env = self.context.pop("environment", None)
-            if context_env:
-                self._metadata.environment = context_env
+            global_context = event_hook()
+            # Following the same precedence as below, pull environment if set.
+            # Event-level context takes precedence over stored context, which takes precedence
+            # over global context. If none of them have an environment, then we don't set it.
+            env = global_context.pop("environment", None)
+            if env:
+                self._metadata.environment = env
+
+            env = stored_context.pop("environment", None)
+            if env:
+                self._metadata.environment = env
+
+            if self.context is not None:
+                env = self.context.pop("environment", None)
+                if env:
+                    self._metadata.environment = env
+
+            # Merge everything together with this event's specific context taking precedence,
+            # then the stored context, then the global context.
+            self.context = {**global_context, **stored_context, **(self.context or {})}
         except Exception:
             logger.exception(
                 f"Could not generate context from {config.Config.event_context_hook.__name__}"

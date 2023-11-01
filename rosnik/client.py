@@ -1,7 +1,8 @@
 import logging
 import warnings
+from contextlib import contextmanager
 
-from rosnik import config
+from rosnik import config, state
 
 logger = logging.getLogger(__name__)
 
@@ -32,3 +33,11 @@ def init(api_key=None, sync_mode=None, environment=None, event_context_hook=None
 
     if config.Config.sync_mode:
         logger.debug("Running in sync mode")
+
+
+@contextmanager
+def context(prompt_label: str = None, **kwargs):
+    """Set context for the events sent within this context manager."""
+    token = state.store(state.State.CONTEXT_ID, {"prompt_label": prompt_label, **kwargs})
+    yield
+    state.reset_context(token)
