@@ -1,0 +1,347 @@
+interactions:
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '150'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-8GEnKyyz2Tycf6sHsZB1aKCxtifFk\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1698880810,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal of the
+        Canidae family, commonly kept as a pet or used for various purposes such as
+        hunting, herding, guarding, or assisting people with disabilities. They are
+        known for their loyalty, companionship, and variety of breeds with different
+        sizes, appearances, and temperaments.\"\n      },\n      \"finish_reason\":
+        \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\":
+        64,\n    \"total_tokens\": 86\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 81f7dde89c8b9685-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 23:20:11 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '1442'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89971'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 19ms
+      x-request-id:
+      - c7ef27443d8c469f3e73d6292a96c006
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '150'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-8GEnNOIjItrklm7xPMUXGxL8cNwiM\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1698880813,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated animal that
+        belongs to the Canidae family, which also includes wolves, foxes, and other
+        animals. They are known for their loyalty, companionship, and diverse breeds.
+        Dogs are popular pets and are often trained to perform tasks such as guarding,
+        herding, and assisting people with various needs. They come in different shapes,
+        sizes, and colors, and have a well-developed sense of smell, hearing, and
+        vision.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\":
+        {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\": 93,\n    \"total_tokens\":
+        115\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 81f7ddf29bb8176b-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 23:20:14 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '1850'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89970'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 19ms
+      x-request-id:
+      - 251fc270ef402649ab3845c6d1bb345d
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '150'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-8GEnPmmDAdLAhB1h7ONaZE8IvMEyh\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1698880815,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal that
+        belongs to the Canidae family. They are known for their loyalty, companionship,
+        and their ability to be trained for various purposes such as hunting, herding,
+        and assisting people with disabilities. Dogs come in various shapes, sizes,
+        and breeds, each with its own unique characteristics and temperaments. They
+        are often kept as pets and are known for their strong bond with humans.\"\n
+        \     },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n
+        \   \"prompt_tokens\": 22,\n    \"completion_tokens\": 86,\n    \"total_tokens\":
+        108\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 81f7de05dcf096ad-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 23:20:17 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '2338'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89970'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 19ms
+      x-request-id:
+      - ff70bf6e58ccc7df8dcbb53d655c52d9
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
+      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '150'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - OpenAI/v1 PythonBindings/0.27.10
+      X-OpenAI-Client-User-Agent:
+      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
+        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
+        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
+        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: "{\n  \"id\": \"chatcmpl-8GEnSJKtOnqyFkPo9z4yt8yhm7IP0\",\n  \"object\":
+        \"chat.completion\",\n  \"created\": 1698880818,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+        \"assistant\",\n        \"content\": \"A dog is a domesticated mammal belonging
+        to the Canidae family. They are commonly kept as pets and are known for their
+        loyalty, companionship, and ability to be trained. Dogs come in various breeds,
+        shapes, and sizes, and have been bred for different purposes such as working
+        dogs, hunting dogs, and companion dogs. They are known for their strong sense
+        of smell, hearing, and their ability to form deep bonds with humans.\"\n      },\n
+        \     \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\":
+        22,\n    \"completion_tokens\": 90,\n    \"total_tokens\": 112\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 81f7de156e64689a-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 23:20:19 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '2131'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89971'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 19ms
+      x-request-id:
+      - c0266b6ca08582cb0311d517ded29023
+    status:
+      code: 200
+      message: OK
+version: 1

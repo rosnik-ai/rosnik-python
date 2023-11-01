@@ -5,9 +5,11 @@ try:
 except ImportError:
     settings = None
 
+
 def _to_django_header(key):
     """Converts our header key to a Django header key."""
     return f'HTTP_{key.replace("-", "_").upper()}'
+
 
 def rosnik_middleware(get_response):
     # Initialize our SDK at the start using Django settings.

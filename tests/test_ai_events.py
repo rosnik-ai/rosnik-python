@@ -21,9 +21,10 @@ def validate_common_attributes(event: Event):
     assert event._metadata.environment is None
     assert event._metadata.runtime == platform.python_implementation()
     assert event._metadata.runtime_version == platform.python_version()
-    assert event._metadata.sdk_version == "0.0.34"
+    assert event._metadata.sdk_version == "0.0.35"
     assert event._metadata.function_fingerprint
     assert len(event._metadata.function_fingerprint.split(".")) == 10
+    assert event.context is None
 
 
 @pytest.mark.vcr
@@ -181,3 +182,141 @@ def test_event_with_error_doesnt_raise(openai, event_queue, caplog):
     for record in caplog.records:
         assert str(record.exc_info[1]) == "oh no"
         assert "Could not generate context from _custom_hook" == record.message
+
+
+@pytest.mark.vcr
+def test_event_with_context_manager(openai, event_queue):
+    def _custom_hook():
+        return {"environment": "testing", "test-key": "test-value", "test-key2": "test-value2"}
+
+    rosnik.init(event_context_hook=_custom_hook)
+    # The default environment is not set
+    assert config.Config.environment is None
+    assert config.Config.event_context_hook is _custom_hook
+
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    expected_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
+    # This has prompt metadata
+    with rosnik.context(prompt_label="test-label"):
+        openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=expected_messages,
+        )
+        openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=expected_messages,
+        )
+    # This doesn't
+    openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
+    )
+
+    assert event_queue.qsize() == 6
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event._metadata.environment == "testing"
+    assert start_event.context == {
+        "test-key": "test-value",
+        "test-key2": "test-value2",
+        "prompt_label": "test-label",
+    }
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "testing"
+    assert finish_event.context == {
+        "test-key": "test-value",
+        "test-key2": "test-value2",
+        "prompt_label": "test-label",
+    }
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event._metadata.environment == "testing"
+    assert start_event.context == {
+        "test-key": "test-value",
+        "test-key2": "test-value2",
+        "prompt_label": "test-label",
+    }
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "testing"
+    assert finish_event.context == {
+        "test-key": "test-value",
+        "test-key2": "test-value2",
+        "prompt_label": "test-label",
+    }
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event._metadata.environment == "testing"
+    assert start_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event._metadata.environment == "testing"
+    assert finish_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
+
+
+@pytest.mark.vcr
+def test_event_with_context_manager__stacked(openai, event_queue):
+    rosnik.init()
+
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
+    expected_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": input_text},
+    ]
+
+    # This has event-level context
+    with rosnik.context(prompt_label="test-label"):
+        openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=expected_messages,
+        )
+
+        with rosnik.context(prompt_label="test-label2"):
+            openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=expected_messages,
+            )
+
+        # This should have "test-label" context
+        openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=expected_messages,
+        )
+
+    # This should have no context
+    openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=expected_messages,
+    )
+
+    assert event_queue.qsize() == 8
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event.context == {"prompt_label": "test-label"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event.context == {"prompt_label": "test-label"}
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event.context == {"prompt_label": "test-label2"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event.context == {"prompt_label": "test-label2"}
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event.context == {"prompt_label": "test-label"}
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event.context == {"prompt_label": "test-label"}
+
+    start_event: AIRequestStart = event_queue.get()
+    assert start_event.context is None
+
+    finish_event: AIRequestFinish = event_queue.get()
+    assert finish_event.context is None
