@@ -36,8 +36,8 @@ def init(api_key=None, sync_mode=None, environment=None, event_context_hook=None
 
 
 @contextmanager
-def context(prompt_label: str = None, **kwargs):
+def context(prompt_name: str = None, **kwargs):
     """Set context for the events sent within this context manager."""
-    token = state.store(state.State.CONTEXT_ID, {"prompt_label": prompt_label, **kwargs})
+    token = state.store(state.State.CONTEXT_ID, {"prompt_name": prompt_name, **kwargs})
     yield
     state.reset_context(token)
