@@ -21,7 +21,7 @@ def validate_common_attributes(event: Event):
     assert event._metadata.environment is None
     assert event._metadata.runtime == platform.python_implementation()
     assert event._metadata.runtime_version == platform.python_version()
-    assert event._metadata.sdk_version == "0.0.35"
+    assert event._metadata.sdk_version == "0.0.36"
     assert event._metadata.function_fingerprint
     assert len(event._metadata.function_fingerprint.split(".")) == 10
     assert event.context is None
@@ -201,7 +201,7 @@ def test_event_with_context_manager(openai, event_queue):
         {"role": "user", "content": input_text},
     ]
     # This has prompt metadata
-    with rosnik.context(prompt_label="test-label"):
+    with rosnik.context(prompt_name="test-label"):
         openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=expected_messages,
@@ -223,7 +223,7 @@ def test_event_with_context_manager(openai, event_queue):
     assert start_event.context == {
         "test-key": "test-value",
         "test-key2": "test-value2",
-        "prompt_label": "test-label",
+        "prompt_name": "test-label",
     }
 
     finish_event: AIRequestFinish = event_queue.get()
@@ -231,7 +231,7 @@ def test_event_with_context_manager(openai, event_queue):
     assert finish_event.context == {
         "test-key": "test-value",
         "test-key2": "test-value2",
-        "prompt_label": "test-label",
+        "prompt_name": "test-label",
     }
 
     start_event: AIRequestStart = event_queue.get()
@@ -239,7 +239,7 @@ def test_event_with_context_manager(openai, event_queue):
     assert start_event.context == {
         "test-key": "test-value",
         "test-key2": "test-value2",
-        "prompt_label": "test-label",
+        "prompt_name": "test-label",
     }
 
     finish_event: AIRequestFinish = event_queue.get()
@@ -247,7 +247,7 @@ def test_event_with_context_manager(openai, event_queue):
     assert finish_event.context == {
         "test-key": "test-value",
         "test-key2": "test-value2",
-        "prompt_label": "test-label",
+        "prompt_name": "test-label",
     }
 
     start_event: AIRequestStart = event_queue.get()
@@ -271,13 +271,13 @@ def test_event_with_context_manager__stacked(openai, event_queue):
     ]
 
     # This has event-level context
-    with rosnik.context(prompt_label="test-label"):
+    with rosnik.context(prompt_name="test-label"):
         openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=expected_messages,
         )
 
-        with rosnik.context(prompt_label="test-label2"):
+        with rosnik.context(prompt_name="test-label2"):
             openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=expected_messages,
@@ -298,22 +298,22 @@ def test_event_with_context_manager__stacked(openai, event_queue):
     assert event_queue.qsize() == 8
 
     start_event: AIRequestStart = event_queue.get()
-    assert start_event.context == {"prompt_label": "test-label"}
+    assert start_event.context == {"prompt_name": "test-label"}
 
     finish_event: AIRequestFinish = event_queue.get()
-    assert finish_event.context == {"prompt_label": "test-label"}
+    assert finish_event.context == {"prompt_name": "test-label"}
 
     start_event: AIRequestStart = event_queue.get()
-    assert start_event.context == {"prompt_label": "test-label2"}
+    assert start_event.context == {"prompt_name": "test-label2"}
 
     finish_event: AIRequestFinish = event_queue.get()
-    assert finish_event.context == {"prompt_label": "test-label2"}
+    assert finish_event.context == {"prompt_name": "test-label2"}
 
     start_event: AIRequestStart = event_queue.get()
-    assert start_event.context == {"prompt_label": "test-label"}
+    assert start_event.context == {"prompt_name": "test-label"}
 
     finish_event: AIRequestFinish = event_queue.get()
-    assert finish_event.context == {"prompt_label": "test-label"}
+    assert finish_event.context == {"prompt_name": "test-label"}
 
     start_event: AIRequestStart = event_queue.get()
     assert start_event.context is None
