@@ -1,4 +1,3 @@
-import os
 import pytest
 from rosnik import constants
 
@@ -6,7 +5,6 @@ from rosnik.providers import openai_v1 as openai_
 from rosnik.types.ai import (
     AIFunctionMetadata,
     AIRequestFinish,
-    AIRequestStartStream,
     AIRequestStart,
 )
 from rosnik.types.core import Metadata
@@ -24,15 +22,19 @@ Names:""".format(
         animal.capitalize()
     )
 
+
 @pytest.fixture(autouse=True)
 def skip_pre_v1():
     import openai
+
     if openai.__version__[0] == "0":
         pytest.skip("Skipping tests for OpenAI SDK v1")
 
+
 @pytest.fixture
 def openai_client(openai):
-    return openai.OpenAI()
+    return openai.OpenAI(api_key="test-key")
+
 
 @pytest.fixture
 def openai_chat_completions_class(openai_client):
@@ -41,9 +43,11 @@ def openai_chat_completions_class(openai_client):
     yield cls
     cls.create = original_create
 
+
 @pytest.fixture
 def openai_completions_class(openai_client):
     return openai_client.completions.__class__
+
 
 @pytest.mark.vcr
 def test_completion(
@@ -124,7 +128,7 @@ def test_chat_completion__with_user(openai_client, openai_chat_completions_class
 # @pytest.mark.vcr
 # def test_chat_completion__streaming(openai_client, openai_chat_completions_class, event_queue):
 #     system_prompt = """
-#     You are an aspiring edm artist. 
+#     You are an aspiring edm artist.
 #     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
 #     Your inspiration is the artist provided by the user.
 #     """  # noqa
@@ -140,44 +144,44 @@ def test_chat_completion__with_user(openai_client, openai_chat_completions_class
 #         stream=True,
 #     )
 
-    # expected_completion = ""
-    # for line in response:
-    #     s = line["choices"][0].get("delta", {}).get("content")
-    #     if isinstance(s, str):
-    #         expected_completion += s
+# expected_completion = ""
+# for line in response:
+#     s = line["choices"][0].get("delta", {}).get("content")
+#     if isinstance(s, str):
+#         expected_completion += s
 
-    # assert event_queue.qsize() == 3
-    # request_start: AIRequestStart = event_queue.get()
-    # assert request_start.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
-    # assert request_start.ai_metadata.openai_attributes.api_type == "open_ai"
-    # assert request_start.ai_metadata.openai_attributes.api_version is None
-    # assert request_start._metadata.stream is True
+# assert event_queue.qsize() == 3
+# request_start: AIRequestStart = event_queue.get()
+# assert request_start.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
+# assert request_start.ai_metadata.openai_attributes.api_type == "open_ai"
+# assert request_start.ai_metadata.openai_attributes.api_version is None
+# assert request_start._metadata.stream is True
 
-    # first_chunk_event: AIRequestStartStream = event_queue.get()
-    # assert first_chunk_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
-    # assert first_chunk_event.ai_metadata.openai_attributes.api_type == "open_ai"
-    # assert first_chunk_event.ai_metadata.openai_attributes.api_version is None
-    # assert first_chunk_event.response_ms == first_chunk_event.sent_at - request_start.sent_at
-    # assert first_chunk_event.ai_request_start_event_id == request_start.event_id
-    # assert first_chunk_event.ai_model == request_start.ai_model
-    # assert first_chunk_event.ai_provider == openai_._OAI
-    # assert first_chunk_event.ai_action == "chat.completions"
-    # assert first_chunk_event.response_payload is None
-    # assert first_chunk_event._metadata.stream is True
+# first_chunk_event: AIRequestStartStream = event_queue.get()
+# assert first_chunk_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
+# assert first_chunk_event.ai_metadata.openai_attributes.api_type == "open_ai"
+# assert first_chunk_event.ai_metadata.openai_attributes.api_version is None
+# assert first_chunk_event.response_ms == first_chunk_event.sent_at - request_start.sent_at
+# assert first_chunk_event.ai_request_start_event_id == request_start.event_id
+# assert first_chunk_event.ai_model == request_start.ai_model
+# assert first_chunk_event.ai_provider == openai_._OAI
+# assert first_chunk_event.ai_action == "chat.completions"
+# assert first_chunk_event.response_payload is None
+# assert first_chunk_event._metadata.stream is True
 
-    # request_finish: AIRequestFinish = event_queue.get()
-    # assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
-    # assert request_finish.ai_metadata.openai_attributes.api_type == "open_ai"
-    # assert request_finish.ai_metadata.openai_attributes.api_version is None
-    # assert request_finish.response_ms == request_finish.sent_at - request_start.sent_at
-    # assert request_finish.ai_request_start_event_id == request_start.event_id
-    # # Iterations know the more specific model.
-    # assert request_finish.ai_model == "gpt-3.5-turbo-0613"
-    # assert request_finish.ai_provider == openai_._OAI
-    # assert request_finish.ai_action == "chat.completions"
-    # assert request_finish._metadata.stream is True
-    # streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
-    # assert streamed_completion == expected_completion
+# request_finish: AIRequestFinish = event_queue.get()
+# assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
+# assert request_finish.ai_metadata.openai_attributes.api_type == "open_ai"
+# assert request_finish.ai_metadata.openai_attributes.api_version is None
+# assert request_finish.response_ms == request_finish.sent_at - request_start.sent_at
+# assert request_finish.ai_request_start_event_id == request_start.event_id
+# # Iterations know the more specific model.
+# assert request_finish.ai_model == "gpt-3.5-turbo-0613"
+# assert request_finish.ai_provider == openai_._OAI
+# assert request_finish.ai_action == "chat.completions"
+# assert request_finish._metadata.stream is True
+# streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
+# assert streamed_completion == expected_completion
 
 
 # @pytest.mark.vcr
@@ -251,7 +255,7 @@ def test_chat_completion__with_user(openai_client, openai_chat_completions_class
 # @pytest.mark.vcr
 # def test_chat_completion__streaming__azure(openai, event_queue):
 #     system_prompt = """
-#     You are an aspiring edm artist. 
+#     You are an aspiring edm artist.
 #     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
 #     Your inspiration is the artist provided by the user.
 #     """  # noqa
@@ -336,8 +340,33 @@ def test_error(openai, openai_client, openai_chat_completions_class, event_queue
         event.error_data.message
         == "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 1 / min. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"  # noqa
     )
-    assert event.error_data.json_body == {'error': {'code': 'rate_limit_exceeded', 'message': 'Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 1 / min. Visit https://platform.openai.com/account/rate-limits to learn more.', 'param': None, 'type': 'tokens'}}
-    assert event.error_data.headers == {'cf-cache-status': 'DYNAMIC', 'cf-ray': '8220890f4fde237a-SJC', 'connection': 'keep-alive', 'content-length': '342', 'content-type': 'application/json; charset=utf-8', 'date': 'Mon, 06 Nov 2023 21:47:32 GMT', 'server': 'cloudflare', 'alt-svc': 'h3=":443"; ma=86400', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'vary': 'Origin', 'x-ratelimit-limit-requests': '3500', 'x-ratelimit-limit-tokens': '90000', 'x-ratelimit-remaining-requests': '3499', 'x-ratelimit-remaining-tokens': '89999', 'x-ratelimit-reset-requests': '17ms', 'x-ratelimit-reset-tokens': '0s', 'x-request-id': '22294aa187021e2d4d2f75c2419b3364'}
+    assert event.error_data.json_body == {
+        "error": {
+            "code": "rate_limit_exceeded",
+            "message": "Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 1 / min. Visit https://platform.openai.com/account/rate-limits to learn more.",
+            "param": None,
+            "type": "tokens",
+        }
+    }
+    assert event.error_data.headers == {
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "8220890f4fde237a-SJC",
+        "connection": "keep-alive",
+        "content-length": "342",
+        "content-type": "application/json; charset=utf-8",
+        "date": "Mon, 06 Nov 2023 21:47:32 GMT",
+        "server": "cloudflare",
+        "alt-svc": 'h3=":443"; ma=86400',
+        "strict-transport-security": "max-age=15724800; includeSubDomains",
+        "vary": "Origin",
+        "x-ratelimit-limit-requests": "3500",
+        "x-ratelimit-limit-tokens": "90000",
+        "x-ratelimit-remaining-requests": "3499",
+        "x-ratelimit-remaining-tokens": "89999",
+        "x-ratelimit-reset-requests": "17ms",
+        "x-ratelimit-reset-tokens": "0s",
+        "x-request-id": "22294aa187021e2d4d2f75c2419b3364",
+    }
     # If it's set on the module we will pick that up
     # as a part of openai_attributes.
     assert event.error_data.organization is None
@@ -354,95 +383,98 @@ def test_error(openai, openai_client, openai_chat_completions_class, event_queue
     assert event.error_data.code is None
 
 
-# @pytest.fixture
-# def mock_openai(mocker):
-#     return mocker.Mock()
+@pytest.fixture
+def mock_openai(mocker):
+    return mocker.Mock()
 
 
-# @pytest.fixture
-# def mock_openai_object(mocker):
-#     openai_obj = mocker.Mock()
-#     openai_obj.get.return_value = "model_value"
-#     return openai_obj
+@pytest.fixture
+def mock_openai_object(mocker):
+    openai_obj = mocker.Mock()
+    openai_obj.get.return_value = "model_value"
+    return openai_obj
 
 
-# def test_request_hook_valid_payload():
-#     result = openai_.request_hook(
-#         {"model": "test_model"},
-#         "test_function_fingerprint",
-#         generate_metadata=lambda: AIFunctionMetadata(
-#             ai_provider=openai_._OAI, ai_action="completions"
-#         ),
-#     )
+def test_request_hook_valid_payload(mocker):
+    result = openai_.request_hook(
+        {"model": "test_model"},
+        "test_function_fingerprint",
+        generate_metadata=lambda: AIFunctionMetadata(
+            ai_provider=openai_._OAI, ai_action="completions"
+        ),
+        instance=mocker.Mock()
+    )
 
-#     assert result.ai_model == "test_model"
-#     assert result.ai_provider == openai_._OAI
-#     assert result.ai_action == "completions"
-
-
-# def test_response_hook_valid_payload(mock_openai_object):
-#     prior_event = AIRequestStart(
-#         ai_model="test_model",
-#         ai_provider=openai_._OAI,
-#         ai_action="completions",
-#         ai_metadata=AIFunctionMetadata(ai_provider=openai_._OAI, ai_action="completions"),
-#         request_payload={"model": "test_model"},
-#         user_id="test_user",
-#         _metadata=Metadata(function_fingerprint="test_function_fingerprint"),
-#     )
-
-#     result = openai_.response_hook(
-#         mock_openai_object,
-#         "test_function_fingerprint",
-#         prior_event,
-#         generate_metadata=lambda: AIFunctionMetadata(
-#             ai_provider=openai_._OAI, ai_action="completions"
-#         ),
-#     )
-
-#     assert result.ai_model == "model_value"
-#     assert result.ai_provider == openai_._OAI
-#     assert result.ai_action == "completions"
+    assert result.ai_model == "test_model"
+    assert result.ai_provider == openai_._OAI
+    assert result.ai_action == "completions"
 
 
-# def test_error_hook_valid_error():
-#     prior_event = AIRequestStart(
-#         ai_model="test_model",
-#         ai_provider=openai_._OAI,
-#         ai_action="completions",
-#         ai_metadata=AIFunctionMetadata(ai_provider=openai_._OAI, ai_action="completions"),
-#         request_payload={"model": "test_model"},
-#         user_id="test_user",
-#         _metadata=Metadata(function_fingerprint="test_function_fingerprint"),
-#     )
+def test_response_hook_valid_payload(mock_openai_object, mocker, openai_client):
+    prior_event = AIRequestStart(
+        ai_model="test_model",
+        ai_provider=openai_._OAI,
+        ai_action="completions",
+        ai_metadata=AIFunctionMetadata(ai_provider=openai_._OAI, ai_action="completions"),
+        request_payload={"model": "test_model"},
+        user_id="test_user",
+        _metadata=Metadata(function_fingerprint="test_function_fingerprint"),
+    )
 
-#     error = Exception("test exception")
-#     result = openai_.error_hook(
-#         error,
-#         "test_function_fingerprint",
-#         prior_event,
-#         generate_metadata=lambda: AIFunctionMetadata(
-#             ai_provider=openai_._OAI, ai_action="completions"
-#         ),
-#     )
+    result = openai_.response_hook(
+        mock_openai_object,
+        "test_function_fingerprint",
+        prior_event,
+        generate_metadata=lambda: AIFunctionMetadata(
+            ai_provider=openai_._OAI, ai_action="completions"
+        ),
+        instance=mocker.Mock(_client=openai_client)
+    )
 
-#     assert result.error_data.message == "test exception"
-
-
-# def test_patch_completion_already_patched(mock_openai):
-#     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
-#     openai_._patch_completion(mock_openai)
-#     mock_openai.Completion.create.assert_not_called()
+    assert result.ai_model == "model_value"
+    assert result.ai_provider == openai_._OAI
+    assert result.ai_action == "completions"
 
 
-# def test_patch_chat_completion_already_patched(mock_openai):
-#     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
-#     openai_._patch_chat_completion(mock_openai)
-#     mock_openai.ChatCompletion.create.assert_not_called()
+def test_error_hook_valid_error(mocker):
+    prior_event = AIRequestStart(
+        ai_model="test_model",
+        ai_provider=openai_._OAI,
+        ai_action="completions",
+        ai_metadata=AIFunctionMetadata(ai_provider=openai_._OAI, ai_action="completions"),
+        request_payload={"model": "test_model"},
+        user_id="test_user",
+        _metadata=Metadata(function_fingerprint="test_function_fingerprint"),
+    )
+
+    error = Exception("test exception")
+    result = openai_.error_hook(
+        error,
+        "test_function_fingerprint",
+        prior_event,
+        generate_metadata=lambda: AIFunctionMetadata(
+            ai_provider=openai_._OAI, ai_action="completions"
+        ),
+        instance=mocker.Mock()
+    )
+
+    assert result.error_data.message == "test exception"
 
 
-# def test_patch_openai_already_patched(mock_openai):
-#     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
-#     openai_._patch_openai()
-#     mock_openai.Completion.assert_not_called()
-#     mock_openai.ChatCompletion.assert_not_called()
+def test_patch_completion_already_patched(mock_openai):
+    setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
+    openai_._patch_completion(mock_openai)
+    mock_openai.Completion.create.assert_not_called()
+
+
+def test_patch_chat_completion_already_patched(mock_openai):
+    setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
+    openai_._patch_chat_completion(mock_openai)
+    mock_openai.ChatCompletion.create.assert_not_called()
+
+
+def test_patch_openai_already_patched(mock_openai):
+    setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
+    openai_._patch_openai_v1()
+    mock_openai.Completion.assert_not_called()
+    mock_openai.ChatCompletion.assert_not_called()

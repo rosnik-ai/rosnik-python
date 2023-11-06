@@ -36,6 +36,7 @@ def hook_with_metadata(hook: Callable, generate_metadata: Callable[[], AIFunctio
     """Each provider should be encapsulated into what it knows about the call."""
     return functools.partial(hook, generate_metadata=generate_metadata)
 
+
 def _populate_metadata(metadata: AIFunctionMetadata, instance: object):
     api_type = instance._client.__class__.__name__.lower()
     # Remove the `async` prefix if it exists
@@ -46,7 +47,7 @@ def _populate_metadata(metadata: AIFunctionMetadata, instance: object):
         api_base=str(instance._client.base_url),
         api_type=api_type,
         api_version=getattr(instance._client, "api_version", None),
-        organization=instance._client.organization
+        organization=instance._client.organization,
     )
     return metadata
 
@@ -56,7 +57,7 @@ def request_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
-    instance: object = None
+    instance: object = None,
 ) -> AIRequestStart:
     """`payload` is a dictionary of the `kwargs` provided to `create`.
 
@@ -93,7 +94,7 @@ def response_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
-    instance: object = None
+    instance: object = None,
 ) -> AIRequestFinish:
     """If we're an Iterator, it means we're a streamed response,
     in which case we're tracking first-byte here.
@@ -143,7 +144,7 @@ def streamed_response_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
-    instance: object = None
+    instance: object = None,
 ):
     """Wrap the response generator with our own function so that the
     user can still yield results, and we can automatically
@@ -152,7 +153,6 @@ def streamed_response_hook(
 
     content_parts = []
     # Load openai here and use values defined at this point.
-    import openai
 
     def _stream_hook(line: "OpenAIObject"):
         """For each chunk, either add it to our content_parts
@@ -216,7 +216,7 @@ def error_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
-    instance: object = None
+    instance: object = None,
 ) -> AIRequestFinish:
     if error is None:
         return None

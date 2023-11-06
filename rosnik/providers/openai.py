@@ -321,7 +321,7 @@ def _patch_openai():
         import openai
     except ImportError as e:
         raise e
-    
+
     # We have a separate implementation for v1.
     if openai.__version__[0] == "1":
         logger.debug("Skipping pre-v1 OpenAI instrumentation because v1+ is installed.")

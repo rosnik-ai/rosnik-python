@@ -53,7 +53,9 @@ def wrap_class_method(
         # If this is a streamed output, wrap this so we can capture stream duration
         # and final output.
         if kwargs.get("stream") is True:
-            return streamed_response_hook(result, calling_functions, prior_event=request_event, instance=instance)
+            return streamed_response_hook(
+                result, calling_functions, prior_event=request_event, instance=instance
+            )
 
         return result
 
