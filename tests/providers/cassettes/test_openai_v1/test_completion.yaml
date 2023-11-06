@@ -1,0 +1,100 @@
+interactions:
+- request:
+    body: '{"model": "text-davinci-003", "prompt": "Suggest three names for an animal
+      that is a superhero.\n\nAnimal: Cat\nNames: Captain Sharpclaw, Agent Fluffball,
+      The Incredible Feline\nAnimal: Dog\nNames: Ruff the Protector, Wonder Canine,
+      Sir Barks-a-Lot\nAnimal: Mixed mini poodle\nNames:", "temperature": 0.6}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '305'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
+    method: POST
+    uri: https://api.openai.com/v1/completions
+  response:
+    content: "{\n  \"warning\": \"This model version is deprecated. Migrate before
+      January 4, 2024 to avoid disruption of service. Learn more https://platform.openai.com/docs/deprecations\",\n
+      \ \"id\": \"cmpl-8I1NacAjnZAeRVcc5SdsadC5ob8mt\",\n  \"object\": \"text_completion\",\n
+      \ \"created\": 1699305898,\n  \"model\": \"text-davinci-003\",\n  \"choices\":
+      [\n    {\n      \"text\": \" Mighty Mini, Captain Cuddles, Sir Fluffington\",\n
+      \     \"index\": 0,\n      \"logprobs\": null,\n      \"finish_reason\": \"stop\"\n
+      \   }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 64,\n    \"completion_tokens\":
+      12,\n    \"total_tokens\": 76\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 82206805d9e767f4-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Nov 2023 21:24:58 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - text-davinci-003
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '519'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3000'
+      x-ratelimit-limit-tokens:
+      - '250000'
+      x-ratelimit-limit-tokens_usage_based:
+      - '250000'
+      x-ratelimit-remaining-requests:
+      - '2999'
+      x-ratelimit-remaining-tokens:
+      - '249983'
+      x-ratelimit-remaining-tokens_usage_based:
+      - '249983'
+      x-ratelimit-reset-requests:
+      - 20ms
+      x-ratelimit-reset-tokens:
+      - 3ms
+      x-ratelimit-reset-tokens_usage_based:
+      - 3ms
+      x-request-id:
+      - 2f574eb883bf5bde5286a341009e664b
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

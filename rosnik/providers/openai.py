@@ -1,3 +1,4 @@
+"""Patches OpenAI's SDK prior to v1."""
 import functools
 import logging
 import time
@@ -16,10 +17,6 @@ from rosnik.types.ai import (
     OpenAIAttributes,
 )
 
-try:
-    from openai.openai_object import OpenAIObject
-except ImportError as e:
-    raise e
 
 logger = logging.getLogger(__name__)
 
@@ -324,6 +321,11 @@ def _patch_openai():
         import openai
     except ImportError as e:
         raise e
+    
+    # We have a separate implementation for v1.
+    if openai.__version__[0] == "1":
+        logger.debug("Skipping pre-v1 OpenAI instrumentation because v1+ is installed.")
+        return
 
     if getattr(openai, f"__{constants.NAMESPACE}_patch", False):
         logger.warning("Not patching. Already patched.")

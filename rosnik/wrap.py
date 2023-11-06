@@ -41,19 +41,19 @@ def wrap_class_method(
         # Flatten into a period separated sequence so we can do function chain search later.
         calling_functions = ".".join([frame.f_code.co_name for frame in limited_frames])
 
-        request_event = request_hook(kwargs, calling_functions)
+        request_event = request_hook(kwargs, calling_functions, instance=instance)
         try:
             result = wrapped(*args, **kwargs)
         except Exception as e:
-            error_hook(e, calling_functions, request_event)
+            error_hook(e, calling_functions, request_event, instance=instance)
             raise e
 
-        response_hook(result, calling_functions, prior_event=request_event)
+        response_hook(result, calling_functions, prior_event=request_event, instance=instance)
 
         # If this is a streamed output, wrap this so we can capture stream duration
         # and final output.
         if kwargs.get("stream") is True:
-            return streamed_response_hook(result, calling_functions, prior_event=request_event)
+            return streamed_response_hook(result, calling_functions, prior_event=request_event, instance=instance)
 
         return result
 

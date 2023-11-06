@@ -24,6 +24,11 @@ Names:""".format(
         animal.capitalize()
     )
 
+@pytest.fixture(autouse=True)
+def skip_pre_v1():
+    import openai
+    if openai.__version__[0] == "1":
+        pytest.skip("Skipping tests for OpenAI SDK pre-v1")
 
 @pytest.mark.vcr
 def test_completion(
