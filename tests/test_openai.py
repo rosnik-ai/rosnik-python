@@ -13,6 +13,10 @@ from rosnik.types.core import Metadata
 
 pytestmark = pytest.mark.openai_pre_v1
 
+@pytest.fixture(autouse=True)
+def config_openai(openai):
+    openai.api_key = os.environ.get("OPENAI_API_KEY", "test-key")
+
 
 def generate_prompt(animal):
     return """Suggest three names for an animal that is a superhero.
@@ -158,7 +162,7 @@ def test_chat_completion__azure(openai, event_queue):
     expected_api_base = "https://rosnik.openai.azure.com/"
     expected_api_type = "azure"
     expected_api_version = "2023-05-15"
-    openai.api_key = os.environ.get("AZURE_API_KEY")
+    openai.api_key = os.environ.get("AZURE_API_KEY", "test-key")
     openai.api_base = expected_api_base
     openai.api_type = expected_api_type
     openai.api_version = expected_api_version
@@ -192,7 +196,7 @@ def test_chat_completion__azure__engine(openai, event_queue):
     expected_api_base = "https://rosnik.openai.azure.com/"
     expected_api_type = "azure"
     expected_api_version = "2023-05-15"
-    openai.api_key = os.environ.get("AZURE_API_KEY")
+    openai.api_key = os.environ.get("AZURE_API_KEY", "test-key")
     openai.api_base = expected_api_base
     openai.api_type = expected_api_type
     openai.api_version = expected_api_version
@@ -229,7 +233,7 @@ def test_chat_completion__streaming__azure(openai, event_queue):
     expected_api_base = "https://rosnik.openai.azure.com/"
     expected_api_type = "azure"
     expected_api_version = "2023-05-15"
-    openai.api_key = os.environ.get("AZURE_API_KEY")
+    openai.api_key = os.environ.get("AZURE_API_KEY", "test-key")
     openai.api_base = expected_api_base
     openai.api_type = expected_api_type
     openai.api_version = expected_api_version

@@ -33,6 +33,7 @@ def request_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance = None
 ) -> AIRequestStart:
     """`payload` is a dictionary of the `kwargs` provided to `create`.
 
@@ -83,6 +84,7 @@ def response_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance = None
 ) -> AIRequestFinish:
     """If we're an Iterator, it means we're a streamed response,
     in which case we're tracking first-byte here.
@@ -141,6 +143,7 @@ def streamed_response_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance = None
 ):
     """Wrap the response generator with our own function so that the
     user can still yield results, and we can automatically
@@ -219,6 +222,7 @@ def error_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance = None
 ) -> AIRequestFinish:
     if error is None:
         return None
