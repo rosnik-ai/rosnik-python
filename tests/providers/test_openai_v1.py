@@ -9,6 +9,12 @@ from rosnik.types.ai import (
 )
 from rosnik.types.core import Metadata
 
+try:
+    from openai.types.completion import Completion
+except ImportError:
+    # Tests are skipped if on a lower version of OpenAI
+    pass
+
 
 def generate_prompt(animal):
     return """Suggest three names for an animal that is a superhero.
@@ -383,18 +389,6 @@ def test_error(openai, openai_client, openai_chat_completions_class, event_queue
     assert event.error_data.code is None
 
 
-@pytest.fixture
-def mock_openai(mocker):
-    return mocker.Mock()
-
-
-@pytest.fixture
-def mock_openai_object(mocker):
-    openai_obj = mocker.Mock()
-    openai_obj.get.return_value = "model_value"
-    return openai_obj
-
-
 def test_request_hook_valid_payload(mocker):
     result = openai_.request_hook(
         {"model": "test_model"},
@@ -410,7 +404,7 @@ def test_request_hook_valid_payload(mocker):
     assert result.ai_action == "completions"
 
 
-def test_response_hook_valid_payload(mock_openai_object, mocker, openai_client):
+def test_response_hook_valid_payload(mocker, openai_client):
     prior_event = AIRequestStart(
         ai_model="test_model",
         ai_provider=openai_._OAI,
@@ -421,8 +415,15 @@ def test_response_hook_valid_payload(mock_openai_object, mocker, openai_client):
         _metadata=Metadata(function_fingerprint="test_function_fingerprint"),
     )
 
+    completions_response = Completion(
+        id="test_id",
+        object="test_object",
+        created=123,
+        model="model_value",
+        choices=[],
+    )
     result = openai_.response_hook(
-        mock_openai_object,
+        completions_response,
         "test_function_fingerprint",
         prior_event,
         generate_metadata=lambda: AIFunctionMetadata(
@@ -460,21 +461,24 @@ def test_error_hook_valid_error(mocker):
 
     assert result.error_data.message == "test exception"
 
+@pytest.fixture
+def mock_openai(mocker):
+    return mocker.Mock()
 
 def test_patch_completion_already_patched(mock_openai):
     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
     openai_._patch_completion(mock_openai)
-    mock_openai.Completion.create.assert_not_called()
+    mock_openai.completion.assert_not_called()
 
 
 def test_patch_chat_completion_already_patched(mock_openai):
     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
     openai_._patch_chat_completion(mock_openai)
-    mock_openai.ChatCompletion.create.assert_not_called()
+    mock_openai.chat.completion.assert_not_called()
 
 
 def test_patch_openai_already_patched(mock_openai):
     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
     openai_._patch_openai_v1()
-    mock_openai.Completion.assert_not_called()
-    mock_openai.ChatCompletion.assert_not_called()
+    mock_openai.completion.assert_not_called()
+    mock_openai.chat.completion.assert_not_called()
