@@ -154,7 +154,7 @@ def streamed_response_hook(
     content_parts = []
     # Load openai here and use values defined at this point.
 
-    def _stream_hook(line: "OpenAIObject"):
+    def _stream_hook(line: "BaseModel"):
         """For each chunk, either add it to our content_parts
         or emit an event because we're done.
         """
@@ -162,21 +162,20 @@ def streamed_response_hook(
             logger.debug("Line not seen on stream.")
             return
 
-        choices = line.get("choices")
-        if not choices or len(choices) < 1:
+        if not line.choices or len(line.choices) < 1:
             logger.debug("Missing choices on stream.")
             return
 
-        content = choices[0].get("delta", {}).get("content")
+        content = line.choices[0].delta.content
         if content:
             content_parts.append(content)
 
-        finish_reason = choices[0].get("finish_reason")
+        finish_reason = line.choices[0].finish_reason
         if finish_reason:
             metadata = _populate_metadata(generate_metadata(), instance)
             now = int(time.time_ns() / 1000000)
             finish_event = AIRequestFinish(
-                ai_model=line.get("model"),
+                ai_model=line.model,
                 ai_provider=metadata.ai_provider,
                 ai_action=metadata.ai_action,
                 ai_metadata=metadata,
@@ -190,10 +189,10 @@ def streamed_response_hook(
                             "message": {"content": "".join(content_parts), "role": "assistant"},
                         }
                     ],
-                    "model": line.get("model"),
-                    "created": line.get("created"),
-                    "object": line.get("object"),
-                    "id": line.get("id"),
+                    "model": line.model,
+                    "created": line.created,
+                    "object": line.object,
+                    "id": line.id,
                 },
                 sent_at=now,
                 response_ms=(now - prior_event.sent_at),
