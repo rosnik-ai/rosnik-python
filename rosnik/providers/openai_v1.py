@@ -319,19 +319,11 @@ def patch():
         from openai import OpenAI
         from openai.resources.chat import completions as chat_completions
         from openai.resources import completions
-    except ImportError:
-        OpenAI = None
-
-    # Skip patching if OpenAI prior to v1 (or if not installed)
-    if not OpenAI:
-        return
-
-    # if getattr(OpenAI, f"__{constants.NAMESPACE}_patch", False):
-    #     logger.warning("Not patching. Already patched.")
-    #     return
+    except ImportError as e:
+        raise e
 
     if getattr(completions, "Completions", None):
         _patch_completion(completions.Completions)
     if getattr(chat_completions, "Completions", None):
         _patch_chat_completion(chat_completions.Completions)
-    setattr(OpenAI, f"__{constants.NAMESPACE}_patch", True)
+
