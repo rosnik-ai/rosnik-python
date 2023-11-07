@@ -40,22 +40,22 @@ def skip_pre_v1():
 
 
 @pytest.fixture
-def openai_client(openai):
-    return openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "test-key"))
+def azure_openai_client(openai):
+    expected_api_base = "https://rosnik.openai.azure.com"
+    expected_api_version = "2023-05-15"
+    return openai.AzureOpenAI(
+        api_key=os.environ.get("AZURE_API_KEY", "test-key"),
+        azure_endpoint=expected_api_base,
+        api_version=expected_api_version,
+    )
 
 
 @pytest.fixture
-def openai_chat_completions_class(openai_client):
-    cls = openai_client.chat.completions.__class__
+def azure_openai_chat_completions_class(azure_openai_client):
+    cls = azure_openai_client.chat.completions.__class__
     original_create = cls.create
     yield cls
     cls.create = original_create
-
-
-@pytest.fixture
-def openai_completions_class(openai_client):
-    return openai_client.completions.__class__
-
 
 @pytest.mark.vcr
 def test_completion(
@@ -132,8 +132,8 @@ def test_chat_completion__with_user(openai_client, openai_chat_completions_class
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.user_id == "test-user"
 
-# Skip the test if running in CI since we don't have
-# a way to mock the streaming response right now.
+# Skip the test if running in CI since there seems
+# to be an issue with pytest-recording and streaming.
 @pytest.mark.skipif(os.environ.get("CI") == "true", reason="CI doesn't support streaming")
 def test_chat_completion__streaming(openai_client, openai_chat_completions_class, event_queue):
     system_prompt = """
@@ -193,138 +193,98 @@ def test_chat_completion__streaming(openai_client, openai_chat_completions_class
     assert streamed_completion == expected_completion
 
 
-# @pytest.mark.vcr
-# def test_chat_completion__azure(openai, event_queue):
-#     system_prompt = "You are a helpful assistant."
-#     input_text = "What is a dog?"
+@pytest.mark.vcr
+@pytest.mark.openai_azure
+def test_chat_completion__azure(azure_openai_client, azure_openai_chat_completions_class, event_queue):
+    system_prompt = "You are a helpful assistant."
+    input_text = "What is a dog?"
 
-#     expected_api_base = "https://rosnik.openai.azure.com/"
-#     expected_api_type = "azure"
-#     expected_api_version = "2023-05-15"
-#     openai.api_key = os.environ.get("AZURE_API_KEY")
-#     openai.api_base = expected_api_base
-#     openai.api_type = expected_api_type
-#     openai.api_version = expected_api_version
-#     openai_._patch_chat_completion(openai)
+    openai_._patch_chat_completion(azure_openai_chat_completions_class)
 
-#     assert event_queue.qsize() == 0
-#     openai.ChatCompletion.create(
-#         deployment_id="gpt-35-turbo",
-#         messages=[
-#             {"role": "system", "content": system_prompt},
-#             {"role": "user", "content": input_text},
-#         ],
-#     )
-#     assert event_queue.qsize() == 2
-#     request_start: AIRequestStart = event_queue.get()
-#     assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert request_start.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
+    assert event_queue.qsize() == 0
+    azure_openai_client.chat.completions.create(
+        model="gpt-35-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": input_text},
+        ],
+    )
 
-#     request_finish: AIRequestFinish = event_queue.get()
-#     assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert request_finish.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
+    expected_api_base = "https://rosnik.openai.azure.com/openai/"
+    expected_api_version = "2023-05-15"
+    assert event_queue.qsize() == 2
+    request_start: AIRequestStart = event_queue.get()
+    assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert request_start.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
+
+    request_finish: AIRequestFinish = event_queue.get()
+    assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert request_finish.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
 
 
-# @pytest.mark.vcr
-# def test_chat_completion__azure__engine(openai, event_queue):
-#     system_prompt = "You are a helpful assistant."
-#     input_text = "What is a dog?"
+@pytest.mark.skipif(os.environ.get("CI") == "true", reason="CI doesn't support streaming")
+@pytest.mark.openai_azure
+def test_chat_completion__streaming__azure(azure_openai_client, azure_openai_chat_completions_class, event_queue):
+    system_prompt = """
+    You are an aspiring edm artist.
+    Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
+    Your inspiration is the artist provided by the user.
+    """  # noqa
+    input_text = "Daft Punk"
 
-#     expected_api_base = "https://rosnik.openai.azure.com/"
-#     expected_api_type = "azure"
-#     expected_api_version = "2023-05-15"
-#     openai.api_key = os.environ.get("AZURE_API_KEY")
-#     openai.api_base = expected_api_base
-#     openai.api_type = expected_api_type
-#     openai.api_version = expected_api_version
-#     openai_._patch_chat_completion(openai)
+    openai_._patch_chat_completion(azure_openai_chat_completions_class)
+    assert event_queue.qsize() == 0
+    response = azure_openai_client.chat.completions.create(
+        model="gpt-35-turbo",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": input_text},
+        ],
+        stream=True,
+    )
 
-#     assert event_queue.qsize() == 0
-#     openai.ChatCompletion.create(
-#         engine="gpt-35-turbo",
-#         messages=[
-#             {"role": "system", "content": system_prompt},
-#             {"role": "user", "content": input_text},
-#         ],
-#     )
-#     assert event_queue.qsize() == 2
-#     request_start: AIRequestStart = event_queue.get()
-#     assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert request_start.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
+    expected_completion = ""
+    for line in response:
+        s = line.choices[0].delta.content
+        if isinstance(s, str):
+            expected_completion += s
 
-#     request_finish: AIRequestFinish = event_queue.get()
-#     assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert request_finish.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
+    expected_api_base = "https://rosnik.openai.azure.com/openai/"
+    expected_api_version = "2023-05-15"
+    assert event_queue.qsize() == 3
+    request_start: AIRequestStart = event_queue.get()
+    assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert request_start.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
+    assert request_start._metadata.stream is True
 
+    first_chunk_event: AIRequestStartStream = event_queue.get()
+    assert first_chunk_event.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert first_chunk_event.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert first_chunk_event.ai_metadata.openai_attributes.api_version == expected_api_version
+    assert first_chunk_event.response_ms == first_chunk_event.sent_at - request_start.sent_at
+    assert first_chunk_event.ai_request_start_event_id == request_start.event_id
+    assert first_chunk_event.ai_model == request_start.ai_model
+    assert first_chunk_event.ai_provider == openai_._OAI
+    assert first_chunk_event.ai_action == "chat.completions"
+    assert first_chunk_event.response_payload is None
+    assert first_chunk_event._metadata.stream is True
 
-# @pytest.mark.vcr
-# def test_chat_completion__streaming__azure(openai, event_queue):
-#     system_prompt = """
-#     You are an aspiring edm artist.
-#     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
-#     Your inspiration is the artist provided by the user.
-#     """  # noqa
-#     input_text = "Daft Punk"
-#     expected_api_base = "https://rosnik.openai.azure.com/"
-#     expected_api_type = "azure"
-#     expected_api_version = "2023-05-15"
-#     openai.api_key = os.environ.get("AZURE_API_KEY")
-#     openai.api_base = expected_api_base
-#     openai.api_type = expected_api_type
-#     openai.api_version = expected_api_version
-#     openai_._patch_chat_completion(openai)
-#     assert event_queue.qsize() == 0
-#     response = openai.ChatCompletion.create(
-#         deployment_id="gpt-35-turbo",
-#         messages=[
-#             {"role": "system", "content": system_prompt},
-#             {"role": "user", "content": input_text},
-#         ],
-#         stream=True,
-#     )
-
-#     expected_completion = ""
-#     for line in response:
-#         s = line["choices"][0].get("delta", {}).get("content")
-#         if isinstance(s, str):
-#             expected_completion += s
-
-#     assert event_queue.qsize() == 3
-#     request_start: AIRequestStart = event_queue.get()
-#     assert request_start.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert request_start.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert request_start.ai_metadata.openai_attributes.api_version == expected_api_version
-#     assert request_start._metadata.stream is True
-
-#     first_chunk_event: AIRequestStartStream = event_queue.get()
-#     assert first_chunk_event.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert first_chunk_event.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert first_chunk_event.ai_metadata.openai_attributes.api_version == expected_api_version
-#     assert first_chunk_event.response_ms == first_chunk_event.sent_at - request_start.sent_at
-#     assert first_chunk_event.ai_request_start_event_id == request_start.event_id
-#     assert first_chunk_event.ai_model == request_start.ai_model
-#     assert first_chunk_event.ai_provider == openai_._OAI
-#     assert first_chunk_event.ai_action == "chat.completions"
-#     assert first_chunk_event.response_payload is None
-#     assert first_chunk_event._metadata.stream is True
-
-#     request_finish: AIRequestFinish = event_queue.get()
-#     assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
-#     assert request_finish.ai_metadata.openai_attributes.api_type == expected_api_type
-#     assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
-#     assert request_finish.response_ms == request_finish.sent_at - request_start.sent_at
-#     assert request_finish.ai_request_start_event_id == request_start.event_id
-#     # Iterations know the more specific model.
-#     assert request_finish.ai_model == "gpt-35-turbo"
-#     assert request_finish.ai_provider == openai_._OAI
-#     assert request_finish.ai_action == "chat.completions"
-#     assert request_finish._metadata.stream is True
-#     streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
-#     assert streamed_completion == expected_completion
+    request_finish: AIRequestFinish = event_queue.get()
+    assert request_finish.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert request_finish.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert request_finish.ai_metadata.openai_attributes.api_version == expected_api_version
+    assert request_finish.response_ms == request_finish.sent_at - request_start.sent_at
+    assert request_finish.ai_request_start_event_id == request_start.event_id
+    # Iterations know the more specific model.
+    assert request_finish.ai_model == "gpt-35-turbo"
+    assert request_finish.ai_provider == openai_._OAI
+    assert request_finish.ai_action == "chat.completions"
+    assert request_finish._metadata.stream is True
+    streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
+    assert streamed_completion == expected_completion
 
 
 @pytest.mark.vcr
@@ -482,18 +442,6 @@ def test_patch_chat_completion_already_patched(mock_openai):
 
 def test_patch_openai_already_patched(mock_openai):
     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
-    openai_._patch_openai_v1()
+    openai_.patch()
     mock_openai.completions.assert_not_called()
     mock_openai.chat.completions.assert_not_called()
-
-def test_streaming(openai_client):
-    resp = openai_client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "What is a dog?"},
-        ],
-        stream=True
-    )
-    for r in resp:
-        print(r)

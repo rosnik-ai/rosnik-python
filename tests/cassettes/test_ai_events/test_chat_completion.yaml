@@ -1,47 +1,54 @@
 interactions:
 - request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    body: '{"messages": [{"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "What is a dog?"}], "model": "gpt-3.5-turbo"}'
     headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '150'
-      Content-Type:
+      accept:
       - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.10
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
-        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
-        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
-        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '150'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
     method: POST
     uri: https://api.openai.com/v1/chat/completions
   response:
-    body:
-      string: "{\n  \"id\": \"chatcmpl-89qhh92KGtiFDzt3z6i7jKd83iUtD\",\n  \"object\":
-        \"chat.completion\",\n  \"created\": 1697358237,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
-        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
-        \"assistant\",\n        \"content\": \"A dog is a domesticated animal that
-        is commonly kept as a pet. They are a member of the Canidae family and are
-        known for their loyalty and companionship. Dogs come in various breeds, sizes,
-        and colors, and they have been bred for different purposes over centuries.
-        They are known for their keen senses, agility, and social behavior. Dogs are
-        often trained for various tasks such as hunting, herding, guiding individuals
-        with disabilities, and providing assistance to law enforcement agencies.\"\n
-        \     },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n
-        \   \"prompt_tokens\": 22,\n    \"completion_tokens\": 98,\n    \"total_tokens\":
-        120\n  }\n}\n"
+    content: "{\n  \"id\": \"chatcmpl-8I9vPvm97kPK3YO76TCBlbL2gH2D9\",\n  \"object\":
+      \"chat.completion\",\n  \"created\": 1699338747,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+      \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+      \"assistant\",\n        \"content\": \"A dog is a domesticated mammal belonging
+      to the canine family. They are highly regarded as loyal companions to humans,
+      known for their friendly and playful nature. Dogs come in a variety of breeds,
+      sizes, and colors, each with their own unique characteristics and traits. They
+      have been domesticated for thousands of years and are often kept as pets, working
+      animals, or used in various roles such as therapy dogs, service dogs, or search
+      and rescue dogs.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n
+      \ \"usage\": {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\": 92,\n
+      \   \"total_tokens\": 114\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 8166a9b5783a2338-SJC
+      - 82238a02999717d2-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -51,7 +58,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 15 Oct 2023 08:23:59 GMT
+      - Tue, 07 Nov 2023 06:32:30 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -65,7 +72,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '2606'
+      - '2536'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -83,8 +90,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 19ms
       x-request-id:
-      - 45eea1abcafaf0c75467e3055252b920
-    status:
-      code: 200
-      message: OK
+      - e597967a5faeaa99fddcf4684e65af98
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1

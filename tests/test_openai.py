@@ -11,6 +11,8 @@ from rosnik.types.ai import (
 )
 from rosnik.types.core import Metadata
 
+pytestmark = pytest.mark.openai_pre_v1
+
 
 def generate_prompt(animal):
     return """Suggest three names for an animal that is a superhero.
@@ -24,13 +26,6 @@ Names:""".format(
         animal.capitalize()
     )
 
-
-@pytest.fixture(autouse=True)
-def skip_pre_v1():
-    import openai
-
-    if openai.__version__[0] == "1":
-        pytest.skip("Skipping tests for OpenAI SDK pre-v1")
 
 
 @pytest.mark.vcr

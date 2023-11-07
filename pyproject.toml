@@ -48,3 +48,10 @@ line-length = 100
 
 [tool.ruff]
 line-length = 100
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-m 'not openai_pre_v1 and not openai_azure'"
+testpaths = [
+    "tests",
+]

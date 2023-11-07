@@ -12,7 +12,7 @@ def test_init(mocker, debug_logger):
 
 
 def test_openai_not_imported(debug_logger, mocker):
-    mocker.patch("rosnik.client.openai_enabled", False)
+    mocker.patch("rosnik.providers.openai._patch_openai", side_effect=ImportError)
 
     rosnik.init()
 

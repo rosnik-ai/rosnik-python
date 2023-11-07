@@ -3,17 +3,11 @@ import warnings
 from contextlib import contextmanager
 
 from rosnik import config, state
+from rosnik.providers import openai as openai_
+from rosnik.providers import openai_v1 as openai_v1_
+
 
 logger = logging.getLogger(__name__)
-
-openai_enabled = False
-
-try:
-    from rosnik.providers import openai as openai_
-
-    openai_enabled = True
-except ImportError:
-    pass
 
 
 def init(api_key=None, sync_mode=None, environment=None, event_context_hook=None):
@@ -25,10 +19,16 @@ def init(api_key=None, sync_mode=None, environment=None, event_context_hook=None
     if config.Config.api_key is None:
         warnings.warn("`api_key` is not set and an API token was not provided on init")
 
-    if openai_enabled:
-        logger.debug("OpenAI is enabled. Patching.")
+    try:
+        logger.debug("OpenAI pre-v1 is enabled. Patching.")
         openai_._patch_openai()
-    else:
+    except ImportError:
+        logger.debug("Skipping OpenAI instrumentation.")
+    
+    try:
+        logger.debug("OpenAI v1 is enabled. Patching.")
+        openai_v1_.patch()
+    except ImportError:
         logger.debug("Skipping OpenAI instrumentation.")
 
     if config.Config.sync_mode:

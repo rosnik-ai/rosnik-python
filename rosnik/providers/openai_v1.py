@@ -44,9 +44,10 @@ def _populate_metadata(metadata: AIFunctionMetadata, instance: object):
         api_type = api_type[5:]
 
     metadata.openai_attributes = OpenAIAttributes(
+        # Azure deployment ID is covered under base_url as well.
         api_base=str(instance._client.base_url),
         api_type=api_type,
-        api_version=getattr(instance._client, "api_version", None),
+        api_version=instance._client._custom_query.get("api-version"),
         organization=instance._client.organization,
     )
     return metadata
@@ -312,7 +313,7 @@ def _patch_chat_completion(completions_class):
     setattr(completions_class, f"__{constants.NAMESPACE}_patch", True)
 
 
-def _patch_openai_v1():
+def patch():
     try:
         from openai import OpenAI
         from openai.resources.chat import completions as chat_completions

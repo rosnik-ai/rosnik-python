@@ -9,14 +9,12 @@ from rosnik.types.ai import AIRequestFinish, AIRequestStart
 
 # Initialize your extension
 @pytest.fixture
-def app(mocker):
+def app(openai_client):
     app = Flask(__name__)
 
     @app.get("/")
     def index():
-        import openai
-
-        openai.ChatCompletion.create(
+        openai_client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a world class poet."},
@@ -31,7 +29,7 @@ def app(mocker):
 
 
 @pytest.fixture
-def app_with_event_context_hook(mocker):
+def app_with_event_context_hook(openai_client):
     app = Flask(__name__)
 
     def _request_context():
@@ -40,9 +38,7 @@ def app_with_event_context_hook(mocker):
 
     @app.get("/")
     def index():
-        import openai
-
-        openai.ChatCompletion.create(
+        openai_client.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a world class poet."},

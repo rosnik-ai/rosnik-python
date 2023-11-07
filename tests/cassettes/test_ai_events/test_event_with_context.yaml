@@ -1,46 +1,55 @@
 interactions:
 - request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a helpful assistant."}, {"role": "user", "content": "What is a dog?"}]}'
+    body: '{"messages": [{"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "What is a dog?"}], "model": "gpt-3.5-turbo"}'
     headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '150'
-      Content-Type:
+      accept:
       - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.10
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
-        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
-        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
-        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '150'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
     method: POST
     uri: https://api.openai.com/v1/chat/completions
   response:
-    body:
-      string: "{\n  \"id\": \"chatcmpl-8AlI9M1QF5m7IzN57FNVy4WgEWnup\",\n  \"object\":
-        \"chat.completion\",\n  \"created\": 1697575761,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
-        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
-        \"assistant\",\n        \"content\": \"A dog is a domesticated animal that
-        belongs to the Canidae family. It is often referred to as man's best friend
-        due to its close association with humans throughout history. Dogs come in
-        various breeds, sizes, and shapes, and have been bred for different purposes,
-        including companionship, working, and assisting humans, such as service dogs
-        and therapy dogs. They are known for their loyalty, intelligence, and ability
-        to form strong bonds with their human counterparts.\"\n      },\n      \"finish_reason\":
-        \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 22,\n    \"completion_tokens\":
-        93,\n    \"total_tokens\": 115\n  }\n}\n"
+    content: "{\n  \"id\": \"chatcmpl-8I9wtJj1MqrE3BFEcUFTmoAFW4FkS\",\n  \"object\":
+      \"chat.completion\",\n  \"created\": 1699338839,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+      \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+      \"assistant\",\n        \"content\": \"A dog is a domesticated carnivorous mammal
+      that is part of the Canidae family, along with wolves, foxes, and other related
+      species. Dogs have been selectively bred for thousands of years for various
+      purposes, including companionship, herding, hunting, and guarding. They come
+      in a wide range of sizes, shapes, and breeds, each with its own unique characteristics
+      and traits. Dogs are known for their loyalty, intelligence, and ability to form
+      strong bonds with humans. They are highly social animals that thrive in the
+      company of others and are often referred to as \\\"man's best friend.\\\"\"\n
+      \     },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\":
+      22,\n    \"completion_tokens\": 122,\n    \"total_tokens\": 144\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 817b6858fe6e642c-SJC
+      - 82238c424b97232c-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -50,7 +59,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 17 Oct 2023 20:49:24 GMT
+      - Tue, 07 Nov 2023 06:34:02 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -64,7 +73,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '3256'
+      - '3059'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -82,8 +91,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 19ms
       x-request-id:
-      - c2f9d45875915cbe4c16d0bea5a0ae6c
-    status:
-      code: 200
-      message: OK
+      - e4dc6d456ad530aab6204bd84052ed79
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1
