@@ -12,11 +12,8 @@ from rosnik.types.ai import (
 )
 from rosnik.types.core import Metadata
 
-try:
-    from openai.types.completion import Completion
-except ImportError:
-    # Tests are skipped if on a lower version of OpenAI
-    pass
+from openai.types.completion import Completion
+from openai.types.completion_choice import CompletionChoice
 
 
 def generate_prompt(animal):
@@ -30,14 +27,6 @@ Animal: {}
 Names:""".format(
         animal.capitalize()
     )
-
-
-@pytest.fixture(autouse=True)
-def skip_pre_v1():
-    import openai
-
-    if openai.__version__[0] == "0":
-        pytest.skip("Skipping tests for OpenAI SDK v1")
 
 
 @pytest.fixture
@@ -397,11 +386,12 @@ def test_response_hook_valid_payload(mocker, openai_client):
 
     completions_response = Completion(
         id="test_id",
-        object="test_object",
+        object="text_completion",
         created=123,
         model="model_value",
         choices=[],
     )
+
     result = openai_.response_hook(
         completions_response,
         "test_function_fingerprint",
