@@ -1,10 +1,11 @@
+import os
 import time
 import platform
 import pytest
 
 import rosnik
 from rosnik import config
-from rosnik.providers import openai as openai_
+from rosnik.providers import openai_v1 as openai_
 from rosnik.types.ai import AIRequestFinish, AIRequestStart, AIRequestStartStream
 
 import ulid
@@ -21,23 +22,23 @@ def validate_common_attributes(event: Event):
     assert event._metadata.environment is None
     assert event._metadata.runtime == platform.python_implementation()
     assert event._metadata.runtime_version == platform.python_version()
-    assert event._metadata.sdk_version == "0.0.36"
+    assert event._metadata.sdk_version == "0.0.37"
     assert event._metadata.function_fingerprint
     assert len(event._metadata.function_fingerprint.split(".")) == 10
     assert event.context is None
 
 
 @pytest.mark.vcr
-def test_chat_completion(openai, event_queue, freezer):
+def test_chat_completion(openai_client, openai_chat_completions_class, event_queue, freezer):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
-    openai_._patch_chat_completion(openai)
+    openai_._patch_chat_completion(openai_chat_completions_class)
     assert event_queue.qsize() == 0
     expected_messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": input_text},
     ]
-    openai.ChatCompletion.create(
+    openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,
     )
@@ -56,8 +57,8 @@ def test_chat_completion(openai, event_queue, freezer):
     assert start_event.ai_metadata.ai_provider == "openai"
     assert start_event.ai_metadata.ai_action == "chat.completions"
     assert start_event.ai_metadata.openai_attributes is not None
-    assert start_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
-    assert start_event.ai_metadata.openai_attributes.api_type == "open_ai"
+    assert start_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
+    assert start_event.ai_metadata.openai_attributes.api_type == "openai"
     assert start_event.ai_metadata.openai_attributes.api_version is None
     assert start_event.ai_request_start_event_id == start_event.event_id
 
@@ -70,14 +71,14 @@ def test_chat_completion(openai, event_queue, freezer):
     assert finish_event.ai_metadata.ai_provider == "openai"
     assert finish_event.ai_metadata.ai_action == "chat.completions"
     assert finish_event.ai_metadata.openai_attributes is not None
-    assert start_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1"
-    assert start_event.ai_metadata.openai_attributes.api_type == "open_ai"
+    assert start_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
+    assert start_event.ai_metadata.openai_attributes.api_type == "openai"
     assert start_event.ai_metadata.openai_attributes.api_version is None
     assert finish_event.response_ms == (finish_event.sent_at - start_event.sent_at)
 
 
 @pytest.mark.vcr
-def test_event_with_context(openai, event_queue):
+def test_event_with_context(openai_client, event_queue):
     def _custom_hook():
         return {"environment": "testing", "test-key": "test-value", "test-key2": "test-value2"}
 
@@ -92,7 +93,7 @@ def test_event_with_context(openai, event_queue):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": input_text},
     ]
-    openai.ChatCompletion.create(
+    openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,
     )
@@ -106,8 +107,8 @@ def test_event_with_context(openai, event_queue):
     assert finish_event.context == {"test-key": "test-value", "test-key2": "test-value2"}
 
 
-@pytest.mark.vcr
-def test_event_with_context__streaming(openai, event_queue):
+@pytest.mark.skipif(os.environ.get("CI") == "true", reason="CI doesn't support streaming")
+def test_event_with_context__streaming(openai_client, event_queue):
     def _custom_hook():
         return {"environment": "testing", "test-key": "test-value", "test-key2": "test-value2"}
 
@@ -122,7 +123,7 @@ def test_event_with_context__streaming(openai, event_queue):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": input_text},
     ]
-    resp = openai.ChatCompletion.create(
+    resp = openai_client.chat.completions.create(
         model="gpt-3.5-turbo", messages=expected_messages, stream=True
     )
 
@@ -144,7 +145,7 @@ def test_event_with_context__streaming(openai, event_queue):
 
 
 @pytest.mark.vcr
-def test_event_with_error_doesnt_raise(openai, event_queue, caplog):
+def test_event_with_error_doesnt_raise(openai_client, event_queue, caplog):
     """Check that we don't raise exceptions if a user defined function
     fails. And if there's a default environment, we should use it.
     """
@@ -162,7 +163,7 @@ def test_event_with_error_doesnt_raise(openai, event_queue, caplog):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": input_text},
     ]
-    openai.ChatCompletion.create(
+    openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,
     )
@@ -185,7 +186,7 @@ def test_event_with_error_doesnt_raise(openai, event_queue, caplog):
 
 
 @pytest.mark.vcr
-def test_event_with_context_manager(openai, event_queue):
+def test_event_with_context_manager(openai_client, event_queue):
     def _custom_hook():
         return {"environment": "testing", "test-key": "test-value", "test-key2": "test-value2"}
 
@@ -202,16 +203,16 @@ def test_event_with_context_manager(openai, event_queue):
     ]
     # This has prompt metadata
     with rosnik.context(prompt_name="test-label"):
-        openai.ChatCompletion.create(
+        openai_client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=expected_messages,
         )
-        openai.ChatCompletion.create(
+        openai_client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=expected_messages,
         )
     # This doesn't
-    openai.ChatCompletion.create(
+    openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,
     )
@@ -260,7 +261,7 @@ def test_event_with_context_manager(openai, event_queue):
 
 
 @pytest.mark.vcr
-def test_event_with_context_manager__stacked(openai, event_queue):
+def test_event_with_context_manager__stacked(openai_client, event_queue):
     rosnik.init()
 
     system_prompt = "You are a helpful assistant."
@@ -272,25 +273,25 @@ def test_event_with_context_manager__stacked(openai, event_queue):
 
     # This has event-level context
     with rosnik.context(prompt_name="test-label"):
-        openai.ChatCompletion.create(
+        openai_client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=expected_messages,
         )
 
         with rosnik.context(prompt_name="test-label2"):
-            openai.ChatCompletion.create(
+            openai_client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=expected_messages,
             )
 
         # This should have "test-label" context
-        openai.ChatCompletion.create(
+        openai_client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=expected_messages,
         )
 
     # This should have no context
-    openai.ChatCompletion.create(
+    openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=expected_messages,
     )

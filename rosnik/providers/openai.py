@@ -1,3 +1,4 @@
+"""Patches OpenAI's SDK prior to v1."""
 import functools
 import logging
 import time
@@ -16,10 +17,6 @@ from rosnik.types.ai import (
     OpenAIAttributes,
 )
 
-try:
-    from openai.openai_object import OpenAIObject
-except ImportError as e:
-    raise e
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +33,7 @@ def request_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance=None,
 ) -> AIRequestStart:
     """`payload` is a dictionary of the `kwargs` provided to `create`.
 
@@ -86,6 +84,7 @@ def response_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance=None,
 ) -> AIRequestFinish:
     """If we're an Iterator, it means we're a streamed response,
     in which case we're tracking first-byte here.
@@ -144,6 +143,7 @@ def streamed_response_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance=None,
 ):
     """Wrap the response generator with our own function so that the
     user can still yield results, and we can automatically
@@ -222,6 +222,7 @@ def error_hook(
     function_fingerprint: str,
     prior_event: AIEvent = None,
     generate_metadata: Callable[[], AIFunctionMetadata] = None,
+    instance=None,
 ) -> AIRequestFinish:
     if error is None:
         return None
@@ -324,6 +325,11 @@ def _patch_openai():
         import openai
     except ImportError as e:
         raise e
+
+    # We have a separate implementation for v1.
+    if openai.__version__[0] == "1":
+        logger.debug("Skipping pre-v1 OpenAI instrumentation because v1+ is installed.")
+        return
 
     if getattr(openai, f"__{constants.NAMESPACE}_patch", False):
         logger.warning("Not patching. Already patched.")

@@ -1,0 +1,73 @@
+interactions:
+- request:
+    body: '{"messages": [{"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "What is a dog?"}], "model": "gpt-35-turbo"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      api-key:
+      - abf1a77cb46e41a7be9e1e961c9c4629
+      connection:
+      - keep-alive
+      content-length:
+      - '149'
+      content-type:
+      - application/json
+      host:
+      - rosnik.openai.azure.com
+      user-agent:
+      - AzureOpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
+    method: POST
+    uri: https://rosnik.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-05-15
+  response:
+    content: '{"id":"chatcmpl-8I8NvXs6lnZsuzdBmNU2g7O0OFhGk","object":"chat.completion","created":1699332827,"model":"gpt-35-turbo","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"A
+      dog is a domesticated mammal that belongs to the Canidae family. They are commonly
+      referred to as man''s best friend because of their loyal and affectionate nature.
+      Dogs come in various shapes, sizes, and breeds, each with its own distinct characteristics
+      and traits. They are often kept as pets and are known for their companionship,
+      ability to be trained, and their roles as working animals in fields such as
+      search and rescue, therapy, and law enforcement."}}],"usage":{"prompt_tokens":22,"completion_tokens":95,"total_tokens":117}}
+
+      '
+    headers:
+      Cache-Control:
+      - no-cache, must-revalidate
+      Content-Length:
+      - '741'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Nov 2023 04:53:47 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      access-control-allow-origin:
+      - '*'
+      apim-request-id:
+      - 38fb7b87-42a7-48ff-abaa-582ca6de213b
+      x-accel-buffering:
+      - 'no'
+      x-content-type-options:
+      - nosniff
+      x-ms-client-request-id:
+      - 38fb7b87-42a7-48ff-abaa-582ca6de213b
+      x-ms-region:
+      - Sweden Central
+      x-request-id:
+      - 7ff7db88-0c83-4709-8dae-7168ea949383
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

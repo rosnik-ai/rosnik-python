@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 import pytest
@@ -22,6 +23,27 @@ def openai():
     mods = list(k for k in sys.modules.keys() if k.startswith("openai"))
     for m in mods:
         del sys.modules[m]
+
+
+@pytest.fixture
+def openai_client(openai):
+    return openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "test-key"))
+
+
+@pytest.fixture
+def openai_chat_completions_class(openai_client):
+    cls = openai_client.chat.completions.__class__
+    original_create = cls.create
+    yield cls
+    cls.create = original_create
+
+
+@pytest.fixture
+def openai_completions_class(openai_client):
+    cls = openai_client.completions.__class__
+    original_create = cls.create
+    yield cls
+    cls.create = original_create
 
 
 @pytest.fixture(autouse=True)

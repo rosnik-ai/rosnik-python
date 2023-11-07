@@ -1,56 +1,72 @@
 interactions:
 - request:
-    body: '{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You
-      are a world class poet."}, {"role": "user", "content": "Write a poem about dogs."}]}'
+    body: '{"messages": [{"role": "system", "content": "You are a world class poet."},
+      {"role": "user", "content": "Write a poem about dogs."}], "model": "gpt-3.5-turbo"}'
     headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '159'
-      Content-Type:
+      accept:
       - application/json
-      User-Agent:
-      - OpenAI/v1 PythonBindings/0.27.10
-      X-OpenAI-Client-User-Agent:
-      - '{"bindings_version": "0.27.10", "httplib": "requests", "lang": "python",
-        "lang_version": "3.10.11", "platform": "macOS-14.0-x86_64-i386-64bit", "publisher":
-        "openai", "uname": "Darwin 23.0.0 Darwin Kernel Version 23.0.0: Fri Sep 15
-        14:42:42 PDT 2023; root:xnu-10002.1.13~1/RELEASE_X86_64 x86_64 i386"}'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '159'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
     method: POST
     uri: https://api.openai.com/v1/chat/completions
   response:
-    body:
-      string: "{\n  \"id\": \"chatcmpl-8EAN4ep3XVj1kBB4LpoFDC0naZRQO\",\n  \"object\":
-        \"chat.completion\",\n  \"created\": 1698387150,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
-        \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
-        \"assistant\",\n        \"content\": \"In the realms of loyalty and love,\\nWhere
-        spirits soar on wings above,\\nThere lies a creature, pure and true,\\nA companion,
-        faithful through and through.\\n\\nOh, how their wagging tails do sway,\\nIn
-        joyful rhythm, come what may,\\nTheir eyes reflect a world untamed,\\nA universe
-        where love's proclaimed.\\n\\nWith paws that dance on endless trails,\\nThey
-        chase the wind, their spirits unquelled,\\nTheir barks are songs, harmonies
-        rare,\\nA melody that fills the air.\\n\\nThrough sunlit days and moonlit
-        nights,\\nThey guide us through life's darkest plight,\\nTheir presence brings
-        a tender peace,\\nTheir boundless love will never cease.\\n\\nThey teach us
-        what it means to be,\\nA blend of joy and jubilee,\\nIn every tail wag and
-        wet nose touch,\\nThey whisper secrets: love so much.\\n\\nThey guard our
-        homes with souls of gold,\\nTheir valor stories never told,\\nEyes ablaze
-        with passion bright,\\nIn their embrace, we find respite.\\n\\nOh, dogs, you
-        touch our very core,\\nWith your presence, love we adore,\\nIn fields of green
-        or streets of gray,\\nYou make this world a brighter place.\\n\\nSo let us
-        honor and bestow,\\nUpon our faithful friends, we owe,\\nGratitude for the
-        love they share,\\nFor they, dear dogs, are beyond compare.\"\n      },\n
-        \     \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\":
-        24,\n    \"completion_tokens\": 270,\n    \"total_tokens\": 294\n  }\n}\n"
+    content: "{\n  \"id\": \"chatcmpl-8IADkM7LbcxWxJuLyUsEvG4IEbe07\",\n  \"object\":
+      \"chat.completion\",\n  \"created\": 1699339884,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+      \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+      \"assistant\",\n        \"content\": \"In the realm of loyalty and glee,\\nWhere
+      boundless joy roams wild and free,\\nAn ode I write to creatures pure,\\nTo
+      beings whose love is ever secure.\\n\\nIn canines, a celestial fusion resides,\\nA
+      symphony of love on every stride,\\nWith tails wagging to nature's tune,\\nThey're
+      blessings disguised, under the moon.\\n\\nOh, valiant hounds of noble grace,\\nWith
+      eyes that shine like stars in space,\\nThrough meadows green, they frolic and
+      roam,\\nTheir spirit a testament to love's sweet home.\\n\\nFrom lanky legs
+      to tails curled tight,\\nEach breed, a masterpiece of delight,\\nFrom tiny pups
+      with paws so small,\\nTo gentle giants, towering tall.\\n\\nThey teach us lessons
+      with each wag,\\nOf compassion, forgiveness, never a drag,\\nThey listen when
+      no one else can,\\nA comforting presence, a true loyal friend.\\n\\nIn darkest
+      hours, they bring us light,\\nThrough laughter and tears, day and night,\\nAs
+      guardians and guides, their hearts sincere,\\nUnfathomable depth, no boundaries
+      near.\\n\\nWith ears that hear our every sigh,\\nThey console us, without asking
+      why,\\nIn their embrace, we find reprieve,\\nA sanctuary of solace, pure and
+      naive.\\n\\nIn search and rescue, their skills are honed,\\nUnwavering devotion,
+      their duty, condoned,\\nWith wet noses and souls so keen,\\nThey retrieve hope
+      from the unseen.\\n\\nIn playgrounds, they unite, paw in paw,\\nA chorus of
+      barks, hearty and raw,\\nIn leaps and bounds, they chase their dreams,\\nIn
+      their spirited play, love brightly gleams.\\n\\nOh, dogs, delightful souls of
+      mirth,\\nYour presence, a treasure on this earth,\\nMay we always learn from
+      your boundless hearts,\\nAnd cherish the love your spirit imparts.\\n\\nSo,
+      let us celebrate these creatures true,\\nWith poems and songs, in praise we
+      strew,\\nFor in their presence, we find delight,\\nIn their eyes, we glimpse
+      love's resplendent light.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n
+      \ ],\n  \"usage\": {\n    \"prompt_tokens\": 24,\n    \"completion_tokens\":
+      408,\n    \"total_tokens\": 432\n  }\n}\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 81c8c9a6ce546444-SJC
+      - 8223a5c4aa8117e6-SJC
       Cache-Control:
       - no-cache, must-revalidate
       Connection:
@@ -60,7 +76,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 27 Oct 2023 06:12:37 GMT
+      - Tue, 07 Nov 2023 06:51:33 GMT
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -74,7 +90,7 @@ interactions:
       openai-organization:
       - user-owo4fzpozfbbclosr06eubzj
       openai-processing-ms:
-      - '6820'
+      - '9061'
       openai-version:
       - '2020-10-01'
       strict-transport-security:
@@ -92,8 +108,7 @@ interactions:
       x-ratelimit-reset-tokens:
       - 20ms
       x-request-id:
-      - fd21a631783e45255992412a80a4dd1f
-    status:
-      code: 200
-      message: OK
+      - 2e25886b60154b4a66643b497d2cd2fe
+    http_version: HTTP/1.1
+    status_code: 200
 version: 1

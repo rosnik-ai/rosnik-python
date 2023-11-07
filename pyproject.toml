@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rosnik"
-version = "0.0.36"
+version = "0.0.37"
 description = "ROSNIK Python SDK"
 authors = ["Nick DiRienzo <nick@rosnik.ai>"]
 license = "MIT"
@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-openai = {version = "^0.27.6", optional = true}
+openai = {version = "^1", optional = true}
 flask = {version = "^3", optional = true}
 django = {version = "^4", optional = true}
 ulid-py = "^1.1.0"
@@ -48,3 +48,14 @@ line-length = 100
 
 [tool.ruff]
 line-length = 100
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-m 'not openai_pre_v1'"
+testpaths = [
+    "tests",
+]
+markers = [
+    "openai_pre_v1: mark test to run only if OpenAI SDK version is less than 1.0",
+    "openai_azure: mark test to run only if using OpenAI Azure",
+]
