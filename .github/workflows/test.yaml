@@ -36,3 +36,5 @@ jobs:
         run: python -m poetry install --all-extras
       - name: Run tests
         run : python -m poetry run pytest
+      - name: Run pre-v1 test
+        run: python -m poetry add openai==0.28.1 && python -m poetry run pytest -m openai_pre_v1
