@@ -12,8 +12,11 @@ from rosnik.types.ai import (
 )
 from rosnik.types.core import Metadata
 
-from openai.types.completion import Completion
-from openai.types.completion_choice import CompletionChoice
+try:
+    from openai.types.completion import Completion
+except ImportError:
+    # We still test pre-v1 so this isn't guaranteed to be installed.
+    pass
 
 
 def generate_prompt(animal):
