@@ -368,6 +368,7 @@ def test_error(openai, openai_client, openai_chat_completions_class, event_queue
     assert event.error_data.code is None
     assert json.dumps(event.to_dict())
 
+
 def test_request_hook_valid_payload(mocker):
     result = openai_.request_hook(
         {"model": "test_model"},
