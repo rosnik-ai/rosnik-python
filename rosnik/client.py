@@ -24,7 +24,7 @@ def init(api_key=None, sync_mode=None, environment=None, event_context_hook=None
         openai_._patch_openai()
     except ImportError:
         logger.debug("Skipping OpenAI instrumentation.")
-    
+
     try:
         logger.debug("OpenAI v1 is enabled. Patching.")
         openai_v1_.patch()

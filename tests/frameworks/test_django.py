@@ -1,6 +1,5 @@
 import pytest
 
-import openai
 import django
 from django.http import HttpResponse
 from django.test import RequestFactory
@@ -22,19 +21,19 @@ django.setup()
 
 
 # Mock a view for testing
-def mock_view(request):
-    openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a world class poet."},
-            {"role": "user", "content": "Write a poem about dogs."},
-        ],
-    )
-    return HttpResponse({"success": True})
+@pytest.fixture
+def mock_view_creator(openai_client):
+    def mock_view(request):
+        openai_client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a world class poet."},
+                {"role": "user", "content": "Write a poem about dogs."},
+            ],
+        )
+        return HttpResponse({"success": True})
 
-
-# Mock middleware wrapped view
-mock_view = rosnik_middleware(mock_view)
+    return rosnik_middleware(mock_view)
 
 
 @pytest.fixture
@@ -43,7 +42,7 @@ def request_factory():
 
 
 @pytest.mark.vcr
-def test_middleware_headers(request_factory, event_queue):
+def test_middleware_headers(request_factory, event_queue, mock_view_creator):
     request = request_factory.get(
         "/",
         **{
@@ -52,7 +51,7 @@ def test_middleware_headers(request_factory, event_queue):
             "HTTP_X_ROSNIK_INTERACTION_ID": "test-user-interaction",
         }
     )
-    response = mock_view(request)
+    response = mock_view_creator(request)
     assert headers.JOURNEY_ID_KEY in response.headers
     assert response.headers[headers.JOURNEY_ID_KEY] == "test-journey"
     assert event_queue.qsize() == 2
@@ -68,10 +67,10 @@ def test_middleware_headers(request_factory, event_queue):
 
 
 @pytest.mark.vcr
-def test_no_headers(request_factory, event_queue):
+def test_no_headers(request_factory, event_queue, mock_view_creator):
     """We should generate new journey IDs for each request."""
     request = request_factory.get("/")
-    response = mock_view(request)
+    response = mock_view_creator(request)
 
     assert headers.JOURNEY_ID_KEY in response.headers
     assert event_queue.qsize() == 2
@@ -81,7 +80,7 @@ def test_no_headers(request_factory, event_queue):
     finish_event = event_queue.get()
     assert finish_event.journey_id == journey_id
 
-    response = mock_view(request)
+    response = mock_view_creator(request)
     assert headers.JOURNEY_ID_KEY in response.headers
     assert event_queue.qsize() == 2
     journey_id_2 = response.headers.get(headers.JOURNEY_ID_KEY)

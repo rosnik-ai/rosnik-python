@@ -27,7 +27,6 @@ Names:""".format(
     )
 
 
-
 @pytest.mark.vcr
 def test_completion(
     openai,

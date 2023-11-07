@@ -24,6 +24,7 @@ def openai():
     for m in mods:
         del sys.modules[m]
 
+
 @pytest.fixture
 def openai_client(openai):
     return openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "test-key"))

@@ -57,6 +57,7 @@ def azure_openai_chat_completions_class(azure_openai_client):
     yield cls
     cls.create = original_create
 
+
 @pytest.mark.vcr
 def test_completion(
     openai_client,
@@ -132,6 +133,7 @@ def test_chat_completion__with_user(openai_client, openai_chat_completions_class
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.user_id == "test-user"
 
+
 # Skip the test if running in CI since there seems
 # to be an issue with pytest-recording and streaming.
 @pytest.mark.skipif(os.environ.get("CI") == "true", reason="CI doesn't support streaming")
@@ -195,7 +197,9 @@ def test_chat_completion__streaming(openai_client, openai_chat_completions_class
 
 @pytest.mark.vcr
 @pytest.mark.openai_azure
-def test_chat_completion__azure(azure_openai_client, azure_openai_chat_completions_class, event_queue):
+def test_chat_completion__azure(
+    azure_openai_client, azure_openai_chat_completions_class, event_queue
+):
     system_prompt = "You are a helpful assistant."
     input_text = "What is a dog?"
 
@@ -226,7 +230,9 @@ def test_chat_completion__azure(azure_openai_client, azure_openai_chat_completio
 
 @pytest.mark.skipif(os.environ.get("CI") == "true", reason="CI doesn't support streaming")
 @pytest.mark.openai_azure
-def test_chat_completion__streaming__azure(azure_openai_client, azure_openai_chat_completions_class, event_queue):
+def test_chat_completion__streaming__azure(
+    azure_openai_client, azure_openai_chat_completions_class, event_queue
+):
     system_prompt = """
     You are an aspiring edm artist.
     Generate a song using words, for example "uhn tiss uhn tiss", that give the impression of an edm song.
@@ -359,7 +365,7 @@ def test_request_hook_valid_payload(mocker):
         generate_metadata=lambda: AIFunctionMetadata(
             ai_provider=openai_._OAI, ai_action="completions"
         ),
-        instance=mocker.Mock()
+        instance=mocker.Mock(),
     )
 
     assert result.ai_model == "test_model"
@@ -392,7 +398,7 @@ def test_response_hook_valid_payload(mocker, openai_client):
         generate_metadata=lambda: AIFunctionMetadata(
             ai_provider=openai_._OAI, ai_action="completions"
         ),
-        instance=mocker.Mock(_client=openai_client)
+        instance=mocker.Mock(_client=openai_client),
     )
 
     assert result.ai_model == "model_value"
@@ -419,14 +425,16 @@ def test_error_hook_valid_error(mocker):
         generate_metadata=lambda: AIFunctionMetadata(
             ai_provider=openai_._OAI, ai_action="completions"
         ),
-        instance=mocker.Mock()
+        instance=mocker.Mock(),
     )
 
     assert result.error_data.message == "test exception"
 
+
 @pytest.fixture
 def mock_openai(mocker):
     return mocker.Mock()
+
 
 def test_patch_completion_already_patched(mock_openai):
     setattr(mock_openai, f"__{constants.NAMESPACE}_patch", True)
