@@ -454,12 +454,13 @@ def test_patch_openai_already_patched(mock_openai):
     mock_openai.completions.assert_not_called()
     mock_openai.chat.completions.assert_not_called()
 
+
 @pytest.mark.vcr
 @pytest.mark.openai_azure
 def test_multiple_clients(openai_client, azure_openai_client, event_queue):
-    """More of an e2e test. We want to make sure we track 
-        the right information based on the client used, even
-        if multiple are used in one process.
+    """More of an e2e test. We want to make sure we track
+    the right information based on the client used, even
+    if multiple are used in one process.
     """
     openai_.patch()
     openai_client.chat.completions.create(
@@ -488,7 +489,7 @@ def test_multiple_clients(openai_client, azure_openai_client, event_queue):
     assert event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
     assert event.ai_metadata.openai_attributes.api_type == "openai"
     assert event.ai_metadata.openai_attributes.api_version is None
-    
+
     # Second 2 are azureopenai
     event = event_queue.get()
     expected_api_base = "https://rosnik.openai.azure.com/openai/"
@@ -500,4 +501,3 @@ def test_multiple_clients(openai_client, azure_openai_client, event_queue):
     assert event.ai_metadata.openai_attributes.api_base == expected_api_base
     assert event.ai_metadata.openai_attributes.api_type == "azureopenai"
     assert event.ai_metadata.openai_attributes.api_version == expected_api_version
-    
