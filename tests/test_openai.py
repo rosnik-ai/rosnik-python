@@ -13,6 +13,7 @@ from rosnik.types.core import Metadata
 
 pytestmark = pytest.mark.openai_pre_v1
 
+
 @pytest.fixture(autouse=True)
 def config_openai(openai):
     openai.api_key = os.environ.get("OPENAI_API_KEY", "test-key")
