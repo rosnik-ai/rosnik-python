@@ -119,7 +119,8 @@ def response_hook(
         "ai_provider": metadata.ai_provider,
         "ai_action": metadata.ai_action,
         "ai_metadata": metadata,
-        "response_payload": payload,
+        # These are pydantic models, so we need to convert them to dicts.
+        "response_payload": None if is_stream_response else payload.model_dump(),
         "sent_at": now,
         "response_ms": (now - prior_event.sent_at),
         "ai_request_start_event_id": prior_event.event_id,

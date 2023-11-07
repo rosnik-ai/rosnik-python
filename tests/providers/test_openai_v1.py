@@ -1,3 +1,4 @@
+import json
 import os
 import pytest
 from rosnik import constants
@@ -77,12 +78,14 @@ def test_completion(
     assert request_start.ai_metadata.openai_attributes.api_type == "openai"
     assert request_start.ai_metadata.openai_attributes.api_version is None
     assert request_start._metadata.stream is False
+    assert json.dumps(request_start.to_dict())
 
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
     assert request_finish.ai_metadata.openai_attributes.api_type == "openai"
     assert request_finish.ai_metadata.openai_attributes.api_version is None
     assert request_finish._metadata.stream is False
+    assert json.dumps(request_finish.to_dict())
 
 
 @pytest.mark.vcr
@@ -104,12 +107,16 @@ def test_chat_completion(openai_client, openai_chat_completions_class, event_que
     assert request_start.ai_metadata.openai_attributes.api_type == "openai"
     assert request_start.ai_metadata.openai_attributes.api_version is None
     assert request_start._metadata.stream is False
+    # At this point, we should have a JSON serializable event -- mimic the API request
+    assert json.dumps(request_start.to_dict())
 
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
     assert request_finish.ai_metadata.openai_attributes.api_type == "openai"
     assert request_finish.ai_metadata.openai_attributes.api_version is None
     assert request_finish._metadata.stream is False
+    # At this point, we should have a JSON serializable event
+    assert json.dumps(request_finish.to_dict())
 
 
 @pytest.mark.vcr
@@ -167,6 +174,7 @@ def test_chat_completion__streaming(openai_client, openai_chat_completions_class
     assert request_start.ai_metadata.openai_attributes.api_type == "openai"
     assert request_start.ai_metadata.openai_attributes.api_version is None
     assert request_start._metadata.stream is True
+    assert json.dumps(request_start.to_dict())
 
     first_chunk_event: AIRequestStartStream = event_queue.get()
     assert first_chunk_event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
@@ -179,6 +187,7 @@ def test_chat_completion__streaming(openai_client, openai_chat_completions_class
     assert first_chunk_event.ai_action == "chat.completions"
     assert first_chunk_event.response_payload is None
     assert first_chunk_event._metadata.stream is True
+    assert json.dumps(first_chunk_event.to_dict())
 
     request_finish: AIRequestFinish = event_queue.get()
     assert request_finish.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
@@ -193,6 +202,7 @@ def test_chat_completion__streaming(openai_client, openai_chat_completions_class
     assert request_finish._metadata.stream is True
     streamed_completion = request_finish.response_payload["choices"][0]["message"]["content"]
     assert streamed_completion == expected_completion
+    assert json.dumps(request_finish.to_dict())
 
 
 @pytest.mark.vcr
@@ -356,7 +366,7 @@ def test_error(openai, openai_client, openai_chat_completions_class, event_queue
         == "Error code: 429 - {'error': {'message': 'Rate limit reached for gpt-3.5-turbo in organization org-b9yq2nxMHc4y6yjvJ7n6qLpe on tokens per min. Limit: 90000 / min. Current: 1 / min. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}"  # noqa
     )
     assert event.error_data.code is None
-
+    assert json.dumps(event.to_dict())
 
 def test_request_hook_valid_payload(mocker):
     result = openai_.request_hook(
