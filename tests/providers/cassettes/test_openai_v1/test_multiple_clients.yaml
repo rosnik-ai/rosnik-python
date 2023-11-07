@@ -1,0 +1,191 @@
+interactions:
+- request:
+    body: '{"messages": [{"role": "system", "content": "You are a world class poet."},
+      {"role": "user", "content": "Write a poem about dogs in space."}], "model":
+      "gpt-3.5-turbo"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '168'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    content: "{\n  \"id\": \"chatcmpl-8IANXWDDXU33Plh9RoVJoqfP1y9GL\",\n  \"object\":
+      \"chat.completion\",\n  \"created\": 1699340491,\n  \"model\": \"gpt-3.5-turbo-0613\",\n
+      \ \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\":
+      \"assistant\",\n        \"content\": \"In the cosmic expanse, where stars ignite,\\nWhere
+      dreams and wonders ignite the night,\\nA celestial journey awaits with grace,\\nAs
+      dogs take flight in the realms of space.\\n\\nIn sleek steel vessels, they soar
+      up high,\\nWith wagging tails, they touch the sky,\\nWith fearless hearts, they
+      embark anew,\\nThese valiant canines, courageous and true.\\n\\nTheir paws,
+      weightless in zero-gravity's reign,\\nThey chase comets and stardust trails,
+      untamed,\\nBarking a symphony through the galaxy's tune,\\nCreating a cosmic
+      harmony, a celestial boon.\\n\\nOh, dogs in space, how you light the way,\\nGuiding
+      us to a brighter day,\\nWith curious eyes that shimmer and gleam,\\nUnveiling
+      mysteries, fulfilling our dreams.\\n\\nPaws planted on moons, all spherical
+      delight,\\nThe universe, their playground, infinite,\\nThey frolic and dance
+      among asteroids' might,\\nCreating constellations on this interstellar night.\\n\\nTheir
+      bark echoes through nebulas deep,\\nCharting a course, where dreams will keep,\\nThey
+      navigate through auroras' glow,\\nLeaving pawprints on planets, for all to know.\\n\\nIn
+      the depths of the cosmos, a bond so pure,\\nBetween dogs and humanity, steadfast
+      and sure,\\nFor they teach us the essence of loyalty and grace,\\nAs they explore
+      the vastness, enveloped in space.\\n\\nSo, let us celebrate these brave pioneers,\\nIn
+      celestial caps, wagging tails, and cosmic cheers,\\nFor they remind us that
+      even in distant stars' embrace,\\nThe spirit of adventure, embodied by dogs
+      in space.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\":
+      {\n    \"prompt_tokens\": 26,\n    \"completion_tokens\": 322,\n    \"total_tokens\":
+      348\n  }\n}\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8223b496fd98ce58-SJC
+      Cache-Control:
+      - no-cache, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Nov 2023 07:01:39 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-model:
+      - gpt-3.5-turbo-0613
+      openai-organization:
+      - user-owo4fzpozfbbclosr06eubzj
+      openai-processing-ms:
+      - '8302'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=15724800; includeSubDomains
+      x-ratelimit-limit-requests:
+      - '3500'
+      x-ratelimit-limit-tokens:
+      - '90000'
+      x-ratelimit-remaining-requests:
+      - '3499'
+      x-ratelimit-remaining-tokens:
+      - '89967'
+      x-ratelimit-reset-requests:
+      - 17ms
+      x-ratelimit-reset-tokens:
+      - 22ms
+      x-request-id:
+      - 0400023c99bd1f510861bd1b1a9afd58
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"messages": [{"role": "system", "content": "You are a world class songwriter."},
+      {"role": "user", "content": "Write a verse about dogs on the moon."}], "model":
+      "gpt-35-turbo"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      api-key:
+      - abf1a77cb46e41a7be9e1e961c9c4629
+      connection:
+      - keep-alive
+      content-length:
+      - '177'
+      content-type:
+      - application/json
+      host:
+      - rosnik.openai.azure.com
+      user-agent:
+      - AzureOpenAI/Python 1.0.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.0.1
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.11
+    method: POST
+    uri: https://rosnik.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-05-15
+  response:
+    content: '{"id":"chatcmpl-8IANg6JO0jxEAYwGsIVUIxqczjHHs","object":"chat.completion","created":1699340500,"model":"gpt-35-turbo","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","content":"In
+      a world where dreams sail high, beyond the earthly hue,\nThere''s a tale of
+      canine courage, on a moonlit avenue,\nOn the lunar surface, where the stars
+      softly gleam,\nThere I envision a pack of dogs, chasing their cosmic dream.\n\nWith
+      paws gracefully bounding, weightless as a breath,\nThey frolic in moon dust,
+      free from the bounds of gravity''s arrest,\nEyes reflecting lunar glow, they
+      explore an astral scene,\nRadiating love and loyalty, their spirits pure and
+      keen.\n\nTo them, the moon is home, a haven in the sky,\nWith wagging tails
+      and joyful barks, they traverse up high,\nThey howl to the moon, harmonizing
+      a cosmic tune,\nIn this celestial orchestra, their voices sweetly attune.\n\nIn
+      their lunar playground, they navigate with grace,\nBounding over craters and
+      leaving paw prints in a starry trace,\nEvery leap, a testament, that dreams
+      can reach the moon,\nAn ode to furry fearless explorers, who inspire us to swoon.\n\nOh,
+      dogs on the moon, let your spirits always soar,\nA testament to the boundless
+      love and loyalty we adore,\nMay your adventure inspire, with each bark and playful
+      zoom,\nA celestial symphony, created by dogs on the moon."}}],"usage":{"prompt_tokens":27,"completion_tokens":259,"total_tokens":286}}
+
+      '
+    headers:
+      Cache-Control:
+      - no-cache, must-revalidate
+      Content-Length:
+      - '1443'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Nov 2023 07:01:41 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      access-control-allow-origin:
+      - '*'
+      apim-request-id:
+      - c2b5940d-4593-4fa5-95fb-6c996ca96797
+      x-accel-buffering:
+      - 'no'
+      x-content-type-options:
+      - nosniff
+      x-ms-client-request-id:
+      - c2b5940d-4593-4fa5-95fb-6c996ca96797
+      x-ms-region:
+      - Sweden Central
+      x-request-id:
+      - 53132759-1527-4f8c-8417-80daf3d8e259
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

@@ -453,3 +453,51 @@ def test_patch_openai_already_patched(mock_openai):
     openai_.patch()
     mock_openai.completions.assert_not_called()
     mock_openai.chat.completions.assert_not_called()
+
+@pytest.mark.vcr
+@pytest.mark.openai_azure
+def test_multiple_clients(openai_client, azure_openai_client, event_queue):
+    """More of an e2e test. We want to make sure we track 
+        the right information based on the client used, even
+        if multiple are used in one process.
+    """
+    openai_.patch()
+    openai_client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a world class poet."},
+            {"role": "user", "content": "Write a poem about dogs in space."},
+        ],
+    )
+
+    azure_openai_client.chat.completions.create(
+        model="gpt-35-turbo",
+        messages=[
+            {"role": "system", "content": "You are a world class songwriter."},
+            {"role": "user", "content": "Write a verse about dogs on the moon."},
+        ],
+    )
+
+    assert event_queue.qsize() == 4
+    # First 2 are openai
+    event = event_queue.get()
+    assert event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
+    assert event.ai_metadata.openai_attributes.api_type == "openai"
+    assert event.ai_metadata.openai_attributes.api_version is None
+    event = event_queue.get()
+    assert event.ai_metadata.openai_attributes.api_base == "https://api.openai.com/v1/"
+    assert event.ai_metadata.openai_attributes.api_type == "openai"
+    assert event.ai_metadata.openai_attributes.api_version is None
+    
+    # Second 2 are azureopenai
+    event = event_queue.get()
+    expected_api_base = "https://rosnik.openai.azure.com/openai/"
+    expected_api_version = "2023-05-15"
+    assert event.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert event.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert event.ai_metadata.openai_attributes.api_version == expected_api_version
+    event = event_queue.get()
+    assert event.ai_metadata.openai_attributes.api_base == expected_api_base
+    assert event.ai_metadata.openai_attributes.api_type == "azureopenai"
+    assert event.ai_metadata.openai_attributes.api_version == expected_api_version
+    

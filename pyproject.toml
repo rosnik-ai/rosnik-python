@@ -51,7 +51,11 @@ line-length = 100
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-m 'not openai_pre_v1 and not openai_azure'"
+addopts = "-m 'not openai_pre_v1'"
 testpaths = [
     "tests",
+]
+markers = [
+    "openai_pre_v1: mark test to run only if OpenAI SDK version is less than 1.0",
+    "openai_azure: mark test to run only if using OpenAI Azure",
 ]
